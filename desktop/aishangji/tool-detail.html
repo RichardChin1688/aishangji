@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jasper AI - AI 商机</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1890ff;
+            --primary-dark: #096dd9;
+            --primary-light: #40a9ff;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-light: #999;
+            --bg-light: #f5f5f5;
+            --bg-white: #ffffff;
+            --border-color: #e8e8e8;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+            --shadow-hover: 0 4px 16px rgba(24,144,255,0.2);
+            --success: #52c41a;
+            --warning: #faad14;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-light);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            font-size: 16px;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+            padding: 8px 0;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--primary-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Tool Detail Header */
+        .tool-detail-header {
+            background: var(--bg-white);
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tool-detail-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .tool-info {
+            display: flex;
+            gap: 30px;
+        }
+
+        .tool-detail-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            flex-shrink: 0;
+        }
+
+        .tool-detail-text h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .tool-detail-rating {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .rating-stars {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--warning);
+            font-size: 18px;
+        }
+
+        .rating-count {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .tool-detail-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .tool-detail-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 6px 16px;
+            background: #e6f7ff;
+            color: var(--primary-color);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        /* Action Card */
+        .action-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 100px;
+        }
+
+        .action-card .price {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .action-card .price-period {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: normal;
+        }
+
+        .action-card .trial {
+            color: var(--success);
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .action-btn.secondary {
+            background: var(--bg-light);
+            color: var(--text-primary);
+        }
+
+        .action-btn.secondary:hover {
+            background: var(--border-color);
+        }
+
+        .action-card .features-list {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .action-card .features-list li {
+            list-style: none;
+            padding: 8px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-card .features-list li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .content-section {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .content-section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-section h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .feature-item {
+            padding: 20px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .feature-item:hover {
+            background: #e6f7ff;
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .feature-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Screenshot */
+        .screenshot {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        /* Reviews */
+        .review-item {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .reviewer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .review-date {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .review-rating {
+            color: var(--warning);
+            font-size: 14px;
+        }
+
+        .review-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Related Tools */
+        .related-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .related-card {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .related-card:hover {
+            background: #e6f7ff;
+            transform: translateX(5px);
+        }
+
+        .related-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .related-info {
+            flex: 1;
+        }
+
+        .related-name {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .related-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 50px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--primary-light);
+        }
+
+        .footer-section p {
+            font-size: 14px;
+            color: #999;
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .tool-detail-content {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-info {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .tool-detail-tags {
+                justify-content: center;
+            }
+
+            .action-card {
+                position: static;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">🤖</div>
+                    AI 商机
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="tools.html">工具库</a></li>
+                        <li><a href="#">媒体</a></li>
+                        <li><a href="#">服务</a></li>
+                        <li><a href="#">投融资</a></li>
+                        <li><a href="#">案例</a></li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Tool Detail Header -->
+    <section class="tool-detail-header">
+        <div class="container">
+            <div class="tool-detail-content">
+                <div class="tool-info">
+                    <div class="tool-detail-icon">✍️</div>
+                    <div class="tool-detail-text">
+                        <h1>Jasper AI</h1>
+                        <div class="tool-detail-rating">
+                            <div class="rating-stars">⭐⭐⭐⭐⭐ 4.8</div>
+                            <span class="rating-count">2,456 条评价</span>
+                        </div>
+                        <p class="tool-detail-desc">Jasper AI 是一款强大的 AI 写作助手，专为营销人员、内容创作者和企业打造。它能够生成高质量的营销文案、博客文章、社交媒体内容等，支持 30+ 种语言，帮助您提升内容创作效率。</p>
+                        <div class="tool-detail-tags">
+                            <span class="tag">写作创作</span>
+                            <span class="tag">营销文案</span>
+                            <span class="tag">多语言</span>
+                            <span class="tag">企业级</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-card">
+                    <div class="price">¥299<span class="price-period">/月起</span></div>
+                    <div class="trial">✓ 7 天免费试用</div>
+                    <a href="https://jasper.ai?ref=aishangji" target="_blank" class="action-btn">
+                        🚀 立即试用
+                    </a>
+                    <button class="action-btn secondary">
+                        💾 收藏工具
+                    </button>
+                    <ul class="features-list">
+                        <li>50+ 内容模板</li>
+                        <li>30+ 语言支持</li>
+                        <li>SEO 优化模式</li>
+                        <li>团队协作功能</li>
+                        <li>品牌声音定制</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="content-grid">
+                <div class="main-column">
+                    <!-- Tool Introduction -->
+                    <div class="content-section">
+                        <h2>工具介绍</h2>
+                        <div class="screenshot">🖼️</div>
+                        <p style="font-size: 16px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 20px;">
+                            Jasper AI 是全球领先的 AI 内容创作平台，服务于超过 10 万家企业和内容创作者。它基于先进的 GPT-4 模型，结合专有的内容优化算法，能够理解您的品牌声音和内容需求，生成自然流畅、符合语境的高质量内容。
+                        </p>
+                        <p style="font-size: 16px; color: var(--text-secondary); line-height: 1.8;">
+                            无论您是需要撰写营销邮件、博客文章、社交媒体帖子，还是产品描述，Jasper AI 都能帮助您快速完成初稿，让您将更多精力投入到创意和策略层面。
+                        </p>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="content-section">
+                        <h2>功能特点</h2>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon">✍️</div>
+                                <div class="feature-title">智能文案生成</div>
+                                <div class="feature-desc">基于 AI 自动生成高质量营销文案，支持多种风格和语调</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">🌐</div>
+                                <div class="feature-title">30+ 语言支持</div>
+                                <div class="feature-desc">支持全球主流语言，轻松创建多语言内容</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">📈</div>
+                                <div class="feature-title">SEO 优化</div>
+                                <div class="feature-desc">内置 SEO 优化功能，提升内容搜索引擎排名</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">🎯</div>
+                                <div class="feature-title">品牌声音</div>
+                                <div class="feature-desc">学习并模仿您的品牌语调，保持内容一致性</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">📝</div>
+                                <div class="feature-title">50+ 模板</div>
+                                <div class="feature-desc">丰富的内容模板库，覆盖各种使用场景</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">👥</div>
+                                <div class="feature-title">团队协作</div>
+                                <div class="feature-desc">支持多人协作，共享内容库和工作流程</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">🔌</div>
+                                <div class="feature-title">API 集成</div>
+                                <div class="feature-desc">提供 API 接口，可集成到现有工作流中</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">🔒</div>
+                                <div class="feature-title">企业安全</div>
+                                <div class="feature-desc">企业级数据加密和隐私保护</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews -->
+                    <div class="content-section">
+                        <h2>用户评价</h2>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <div class="reviewer">
+                                    <div class="reviewer-avatar">张</div>
+                                    <div>
+                                        <div class="reviewer-name">张先生</div>
+                                        <div class="review-date">2024-04-25</div>
+                                    </div>
+                                </div>
+                                <div class="review-rating">⭐⭐⭐⭐⭐</div>
+                            </div>
+                            <p class="review-text">使用 Jasper AI 已经半年了，内容创作效率提升了至少 3 倍。特别是营销文案的生成质量很高，只需要少量修改就能直接使用。非常推荐给内容创作者！</p>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <div class="reviewer">
+                                    <div class="reviewer-avatar">李</div>
+                                    <div>
+                                        <div class="reviewer-name">李女士</div>
+                                        <div class="review-date">2024-04-20</div>
+                                    </div>
+                                </div>
+                                <div class="review-rating">⭐⭐⭐⭐⭐</div>
+                            </div>
+                            <p class="review-text">我们团队用 Jasper 来写博客和产品描述，效果非常好。品牌声音功能特别实用，能够保持一致的写作风格。客服响应也很及时。</p>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <div class="reviewer">
+                                    <div class="reviewer-avatar">王</div>
+                                    <div>
+                                        <div class="reviewer-name">王先生</div>
+                                        <div class="review-date">2024-04-15</div>
+                                    </div>
+                                </div>
+                                <div class="review-rating">⭐⭐⭐⭐</div>
+                            </div>
+                            <p class="review-text">整体很好用，模板丰富，生成速度快。中文支持还有提升空间，但英文内容质量非常高。性价比不错，值得订阅。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Related Tools -->
+                    <div class="content-section">
+                        <h2>相关工具推荐</h2>
+                        <div class="related-grid">
+                            <div class="related-card" onclick="window.location.href='tool-detail.html'">
+                                <div class="related-icon">✍️</div>
+                                <div class="related-info">
+                                    <div class="related-name">Copy.ai</div>
+                                    <div class="related-desc">营销文案生成器，快速创建广告和社交媒体内容</div>
+                                </div>
+                            </div>
+                            <div class="related-card" onclick="window.location.href='tool-detail.html'">
+                                <div class="related-icon">📊</div>
+                                <div class="related-info">
+                                    <div class="related-name">Notion AI</div>
+                                    <div class="related-desc">智能笔记助手，自动总结、翻译和生成内容</div>
+                                </div>
+                            </div>
+                            <div class="related-card" onclick="window.location.href='tool-detail.html'">
+                                <div class="related-icon">📈</div>
+                                <div class="related-info">
+                                    <div class="related-name">Jenni AI</div>
+                                    <div class="related-desc">学术写作助手，辅助论文写作和文献引用</div>
+                                </div>
+                            </div>
+                            <div class="related-card" onclick="window.location.href='tool-detail.html'">
+                                <div class="related-icon">🎯</div>
+                                <div class="related-info">
+                                    <div class="related-name">Writesonic</div>
+                                    <div class="related-desc">AI 写作平台，专注于营销内容和落地页</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="content-section">
+                        <h2>工具数据</h2>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                            <div style="text-align: center; padding: 15px; background: var(--bg-light); border-radius: 8px;">
+                                <div style="font-size: 24px; font-weight: bold; color: var(--primary-color);">10 万+</div>
+                                <div style="font-size: 13px; color: var(--text-secondary); margin-top: 5px;">活跃用户</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: var(--bg-light); border-radius: 8px;">
+                                <div style="font-size: 24px; font-weight: bold; color: var(--primary-color);">4.8</div>
+                                <div style="font-size: 13px; color: var(--text-secondary); margin-top: 5px;">用户评分</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: var(--bg-light); border-radius: 8px;">
+                                <div style="font-size: 24px; font-weight: bold; color: var(--primary-color);">2021</div>
+                                <div style="font-size: 13px; color: var(--text-secondary); margin-top: 5px;">成立年份</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: var(--bg-light); border-radius: 8px;">
+                                <div style="font-size: 24px; font-weight: bold; color: var(--primary-color);">30+</div>
+                                <div style="font-size: 13px; color: var(--text-secondary); margin-top: 5px;">支持语言</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>AI 商机</h4>
+                    <p>汇聚全球最优质的 AI 工具、资讯与服务，助力您的 AI 商业之旅。我们致力于为用户提供最全面、最及时的 AI 行业信息。</p>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul class="footer-links">
+                        <li><a href="tools.html">工具库</a></li>
+                        <li><a href="#">媒体中心</a></li>
+                        <li><a href="#">服务市场</a></li>
+                        <li><a href="#">投融资</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>关于我们</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">公司简介</a></li>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="#">加入我们</a></li>
+                        <li><a href="#">合作伙伴</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>法律条款</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">隐私政策</a></li>
+                        <li><a href="#">服务条款</a></li>
+                        <li><a href="#">免责声明</a></li>
+                        <li><a href="#">Cookie 政策</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI 商机。All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() {
+            const nav = document.querySelector('nav ul');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Collect button
+        document.querySelector('.action-btn.secondary')?.addEventListener('click', function() {
+            this.textContent = '✓ 已收藏';
+            this.style.background = '#52c41a';
+            this.style.color = 'white';
+        });
+
+        // Affiliate link tracking
+        document.querySelectorAll('a[href*="jasper.ai"]').forEach(link => {
+            link.addEventListener('click', function() {
+                console.log('Affiliate click tracked');
+            });
+        });
+    </script>
+</body>
+</html>

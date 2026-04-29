@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>创作工具 - AI 短剧</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🎬</div>
+        <span>AI 短剧</span>
+      </a>
+      <nav class="nav">
+        <a href="tools.html" class="nav-item active">🎨 创作工具</a>
+        <a href="talent.html" class="nav-item">👥 人才库</a>
+        <a href="ip-library.html" class="nav-item">📚 IP 市场</a>
+        <a href="services.html" class="nav-item">🎞️ 产业服务</a>
+        <a href="data.html" class="nav-item">📊 数据洞察</a>
+      </nav>
+      <div class="header-actions">
+        <a href="#login" class="btn btn-ghost">登录</a>
+        <a href="#" class="btn btn-gold">免费试用</a>
+      </div>
+      <div class="mobile-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section - 工具页 -->
+  <section class="hero hero-cinematic">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-spotlight"></div>
+    <div class="hero-content">
+      <div class="container">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          🎬 AI 驱动 · 智能创作工具
+        </div>
+        <h1 class="hero-title">
+          从剧本到成片<br>
+          <span class="text-gold">全流程智能创作</span>
+        </h1>
+        <p class="hero-subtitle">
+          AI 剧本生成 · 智能分镜 · 文生视频 · 配音配乐<br>
+          一站式完成你的短剧创作
+        </p>
+        <div class="hero-btns">
+          <a href="#script-panel" class="btn btn-red-carpet btn-lg">
+            <span class="btn-icon">✨</span>
+            开始创作
+          </a>
+          <a href="#workflow" class="btn btn-outline-white btn-lg">
+            了解流程
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 胶片条分隔线 -->
+  <div class="film-strip-divider"></div>
+
+  <!-- 工具选择 -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">选择创作工具</h2>
+        <p class="section-subtitle">专业工具，赋能每一个创作环节</p>
+      </div>
+
+      <!-- Tool Tabs -->
+      <div class="tool-tabs">
+        <div class="tool-tab active" data-tool="script">
+          <span class="tab-icon">📝</span>
+          剧本生成
+        </div>
+        <div class="tool-tab" data-tool="storyboard">
+          <span class="tab-icon">🎨</span>
+          分镜生成
+        </div>
+        <div class="tool-tab" data-tool="video">
+          <span class="tab-icon">🎬</span>
+          视频生成
+        </div>
+        <div class="tool-tab" data-tool="audio">
+          <span class="tab-icon">🎵</span>
+          配音配乐
+        </div>
+      </div>
+
+      <!-- Script Tool Panel -->
+      <div class="tool-panel" id="script-panel">
+        <div class="panel-header">
+          <h3 class="panel-title">📝 AI 剧本生成</h3>
+          <p class="panel-desc">输入故事创意，AI 自动生成完整剧本</p>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">故事主题</label>
+          <input type="text" class="form-input" placeholder="例如：都市爱情、悬疑推理、古装奇幻...">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">故事梗概</label>
+          <textarea class="form-textarea" placeholder="简要描述你的故事创意，包括主要人物、情节走向等..."></textarea>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">剧集数量</label>
+            <select class="form-select">
+              <option>5 集</option>
+              <option>10 集</option>
+              <option>15 集</option>
+              <option>20 集</option>
+              <option>自定义</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">每集时长</label>
+            <select class="form-select">
+              <option>1-2 分钟</option>
+              <option>2-3 分钟</option>
+              <option>3-5 分钟</option>
+              <option>5-10 分钟</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">风格偏好</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox"> 轻松幽默
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox"> 悬疑烧脑
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox"> 浪漫爱情
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox"> 热血励志
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox"> 古装武侠
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox"> 科幻未来
+            </label>
+          </div>
+        </div>
+        
+        <button class="btn btn-red-carpet" style="width: 100%; padding: 16px; font-size: 16px;">
+          🚀 开始生成剧本
+        </button>
+
+        <!-- Result Area -->
+        <div class="result-area">
+          <div class="result-placeholder">
+            <div class="result-icon">📝</div>
+            <p>生成结果将显示在这里</p>
+            <p class="result-tip">AI 会根据你的输入，生成完整剧本，包括场景、对白、动作描述等</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Storyboard Panel -->
+      <div class="tool-panel" id="storyboard-panel" style="display: none;">
+        <div class="panel-header">
+          <h3 class="panel-title">🎨 AI 分镜生成</h3>
+          <p class="panel-desc">根据剧本自动生成专业分镜稿</p>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">输入剧本</label>
+          <textarea class="form-textarea" placeholder="粘贴你的剧本内容，或上传剧本文件..."></textarea>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">分镜风格</label>
+            <select class="form-select">
+              <option>写实风格</option>
+              <option>漫画风格</option>
+              <option>水彩风格</option>
+              <option>电影感</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">镜头密度</label>
+            <select class="form-select">
+              <option>标准（每场 3-5 镜）</option>
+              <option>精简（每场 1-2 镜）</option>
+              <option>详细（每场 5-8 镜）</option>
+            </select>
+          </div>
+        </div>
+        
+        <button class="btn btn-red-carpet" style="width: 100%; padding: 16px; font-size: 16px;">
+          🎨 生成分镜
+        </button>
+
+        <div class="result-area">
+          <div class="result-placeholder">
+            <div class="result-icon">🎨</div>
+            <p>分镜稿将显示在这里</p>
+            <p class="result-tip">AI 会分析剧本场景，生成对应的分镜画面和镜头说明</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Panel -->
+      <div class="tool-panel" id="video-panel" style="display: none;">
+        <div class="panel-header">
+          <h3 class="panel-title">🎬 AI 视频生成</h3>
+          <p class="panel-desc">文生视频，让剧本瞬间变成影像</p>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">视频描述</label>
+          <textarea class="form-textarea" placeholder="描述你想生成的视频内容，包括场景、人物、动作等..."></textarea>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">视频时长</label>
+            <select class="form-select">
+              <option>5 秒</option>
+              <option>10 秒</option>
+              <option>15 秒</option>
+              <option>30 秒</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">画面比例</label>
+            <select class="form-select">
+              <option>9:16（竖屏）</option>
+              <option>16:9（横屏）</option>
+              <option>1:1（方形）</option>
+              <option>4:5（小红书）</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">参考图片（可选）</label>
+          <div class="upload-area">
+            <div class="upload-icon">📷</div>
+            <p>点击或拖拽上传图片</p>
+            <p class="upload-tip">支持 JPG、PNG 格式，最大 10MB</p>
+          </div>
+        </div>
+        
+        <button class="btn btn-red-carpet" style="width: 100%; padding: 16px; font-size: 16px;">
+          🎬 生成视频
+        </button>
+
+        <div class="result-area">
+          <div class="result-placeholder">
+            <div class="result-icon">🎬</div>
+            <p>生成的视频将显示在这里</p>
+            <p class="result-tip">AI 会根据描述生成高质量视频，支持角色一致性保持</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audio Panel -->
+      <div class="tool-panel" id="audio-panel" style="display: none;">
+        <div class="panel-header">
+          <h3 class="panel-title">🎵 AI 配音配乐</h3>
+          <p class="panel-desc">多角色配音 + 背景音乐，一站式音频制作</p>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">输入文本</label>
+          <textarea class="form-textarea" placeholder="输入需要配音的台词或文本..."></textarea>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">配音角色</label>
+            <select class="form-select">
+              <option>青年男声</option>
+              <option>青年女声</option>
+              <option>中年男声</option>
+              <option>中年女声</option>
+              <option>儿童声音</option>
+              <option>老人声音</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">情感语调</label>
+            <select class="form-select">
+              <option>平静</option>
+              <option>开心</option>
+              <option>悲伤</option>
+              <option>愤怒</option>
+              <option>紧张</option>
+              <option>温柔</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">背景音乐（可选）</label>
+          <select class="form-select">
+            <option>无</option>
+            <option>轻松愉快</option>
+            <option>紧张悬疑</option>
+            <option>浪漫温馨</option>
+            <option>悲伤抒情</option>
+            <option>激昂热血</option>
+          </select>
+        </div>
+        
+        <button class="btn btn-red-carpet" style="width: 100%; padding: 16px; font-size: 16px;">
+          🎵 生成音频
+        </button>
+
+        <div class="result-area">
+          <div class="result-placeholder">
+            <div class="result-icon">🎵</div>
+            <p>生成的音频将显示在这里</p>
+            <p class="result-tip">AI 会生成自然流畅的配音，支持多角色对话和情感表达</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 创作流程 -->
+  <section id="workflow" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">创作流程</h2>
+        <p class="section-subtitle">四步完成你的 AI 短剧</p>
+      </div>
+      
+      <div class="workflow-timeline">
+        <div class="workflow-step">
+          <div class="step-number">01</div>
+          <div class="step-icon">📝</div>
+          <h3>剧本生成</h3>
+          <p>输入创意，AI 生成完整剧本</p>
+          <div class="step-tech">千问 API</div>
+        </div>
+        
+        <div class="workflow-connector"></div>
+        
+        <div class="workflow-step">
+          <div class="step-number">02</div>
+          <div class="step-icon">🎨</div>
+          <h3>分镜设计</h3>
+          <p>根据剧本生成专业分镜</p>
+          <div class="step-tech">可灵/Midjourney</div>
+        </div>
+        
+        <div class="workflow-connector"></div>
+        
+        <div class="workflow-step">
+          <div class="step-number">03</div>
+          <div class="step-icon">🎬</div>
+          <h3>视频生成</h3>
+          <p>文生视频，角色一致性</p>
+          <div class="step-tech">可灵/Runway/LoRA</div>
+        </div>
+        
+        <div class="workflow-connector"></div>
+        
+        <div class="workflow-step">
+          <div class="step-number">04</div>
+          <div class="step-icon">🎵</div>
+          <h3>配音配乐</h3>
+          <p>AI 配音 + 背景音乐</p>
+          <div class="step-tech">Azure TTS/ElevenLabs</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 胶片条分隔线 -->
+  <div class="film-strip-divider"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <div class="logo-icon">🎬</div>
+            <span>AI 短剧</span>
+          </div>
+          <p>AI 短剧产业基础设施<br>让每个人都能用 AI 拍短剧</p>
+          <div class="social-links">
+            <a href="#" class="social-link">📱</a>
+            <a href="#" class="social-link">📧</a>
+            <a href="#" class="social-link">💬</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-title">产品服务</h4>
+          <ul class="footer-links">
+            <li><a href="tools.html">创作工具</a></li>
+            <li><a href="talent.html">人才市场</a></li>
+            <li><a href="ip-library.html">IP 交易</a></li>
+            <li><a href="#">产业服务</a></li>
+            <li><a href="#">数据智库</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-title">支持帮助</h4>
+          <ul class="footer-links">
+            <li><a href="#">使用教程</a></li>
+            <li><a href="#">常见问题</a></li>
+            <li><a href="#">联系客服</a></li>
+            <li><a href="#">反馈建议</a></li>
+            <li><a href="#">API 文档</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-title">关于我们</h4>
+          <ul class="footer-links">
+            <li><a href="#">公司介绍</a></li>
+            <li><a href="#">加入我们</a></li>
+            <li><a href="#">合作伙伴</a></li>
+            <li><a href="#">联系方式</a></li>
+            <li><a href="#">隐私政策</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 AI 短剧平台。All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!-- 回到顶部按钮组件 - 可嵌入各页面 -->
+<style>
+    .scroll-to-top {
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+        z-index: 999;
+        box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+        font-size: 20px;
+    }
+    .scroll-to-top.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    .scroll-to-top:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(24, 144, 255, 0.4);
+    }
+</style>
+
+<div class="scroll-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</div>
+
+<script>
+(function() {
+    const scrollBtn = document.querySelector('.scroll-to-top');
+    if (!scrollBtn) return;
+
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            scrollBtn.classList.add('show');
+        } else {
+            scrollBtn.classList.remove('show');
+        }
+    });
+})();
+</script>

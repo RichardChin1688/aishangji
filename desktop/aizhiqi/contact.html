@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预约咨询 - AI 智企</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .contact-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .contact-form-wrapper {
+            background: var(--bg-card);
+            padding: 3rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .calendar-widget {
+            background: rgba(255,255,255,0.03);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+        }
+        
+        .calendar-widget h4 {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+        
+        .time-slot {
+            padding: 0.75rem;
+            background: rgba(24, 144, 255, 0.1);
+            border: 1px solid rgba(24, 144, 255, 0.3);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .time-slot:hover, .time-slot.selected {
+            background: var(--gradient);
+            border-color: transparent;
+        }
+        
+        @media (max-width: 900px) {
+            .contact-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">🤖</div>
+            AI 智企
+        </a>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="services.html">服务</a></li>
+                <li><a href="packages.html">方案</a></li>
+                <li><a href="index.html#cases">案例</a></li>
+                <li><a href="index.html#about">关于</a></li>
+                <li><a href="contact.html" class="active">联系</a></li>
+            </ul>
+        </div>
+        <div class="nav-cta">
+            <a href="tel:400-888-8888" class="btn btn-outline">400-888-8888</a>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <h1>预约咨询</h1>
+        <p>填写下方表单，我们的专家团队将在 24 小时内与您联系，为您提供专属解决方案</p>
+    </section>
+
+    <!-- 联系表单 -->
+    <section class="section">
+        <div class="contact-section">
+            <!-- 表单 -->
+            <div class="contact-form-wrapper">
+                <h2 style="margin-bottom: 2rem; font-size: 1.5rem;">咨询表单</h2>
+                <form id="contactForm" onsubmit="handleSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">姓名 *</label>
+                            <input type="text" class="form-input" placeholder="请输入您的姓名" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">公司名称 *</label>
+                            <input type="text" class="form-input" placeholder="请输入公司名称" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">职位</label>
+                            <input type="text" class="form-input" placeholder="请输入您的职位">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系电话 *</label>
+                            <input type="tel" class="form-input" placeholder="请输入手机号码" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">电子邮箱</label>
+                        <input type="email" class="form-input" placeholder="请输入邮箱地址">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">所在行业</label>
+                        <select class="form-select">
+                            <option value="">请选择行业</option>
+                            <option value="finance">金融/银行/保险</option>
+                            <option value="manufacturing">制造业</option>
+                            <option value="retail">零售/电商</option>
+                            <option value="healthcare">医疗/健康</option>
+                            <option value="education">教育/培训</option>
+                            <option value="logistics">物流/运输</option>
+                            <option value="technology">互联网/科技</option>
+                            <option value="government">政府/公共事业</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">咨询需求 *</label>
+                        <textarea class="form-textarea" placeholder="请描述您的具体需求，例如：希望实现智能客服、数据分析、自动化办公等..." required></textarea>
+                    </div>
+                    
+                    <!-- 日历预约 -->
+                    <div class="calendar-widget">
+                        <h4>📅 期望沟通时间（可选）</h4>
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <input type="date" class="form-input" id="preferredDate">
+                        </div>
+                        <div class="time-slots">
+                            <div class="time-slot" onclick="selectTime(this)">09:00</div>
+                            <div class="time-slot" onclick="selectTime(this)">10:00</div>
+                            <div class="time-slot" onclick="selectTime(this)">11:00</div>
+                            <div class="time-slot" onclick="selectTime(this)">14:00</div>
+                            <div class="time-slot" onclick="selectTime(this)">15:00</div>
+                            <div class="time-slot" onclick="selectTime(this)">16:00</div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-large" style="width: 100%; margin-top: 2rem; justify-content: center;">
+                        提交咨询 →
+                    </button>
+                </form>
+            </div>
+            
+            <!-- 联系方式 -->
+            <div>
+                <h2 style="margin-bottom: 2rem; font-size: 1.5rem;">其他联系方式</h2>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-text">
+                            <h4>咨询热线</h4>
+                            <p>400-888-8888</p>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem;">工作日 9:00-18:00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">✉️</div>
+                        <div class="contact-text">
+                            <h4>电子邮箱</h4>
+                            <p>contact@aizhiqi.com</p>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem;">24 小时内回复</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">💬</div>
+                        <div class="contact-text">
+                            <h4>在线客服</h4>
+                            <p>微信：aizhiqi_service</p>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem;">扫码添加客服</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div class="contact-text">
+                            <h4>公司地址</h4>
+                            <p>北京市海淀区中关村大街 1 号</p>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem;">科技大厦 A 座 18 层</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 办公时间 -->
+                <div style="margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.03); border-radius: 12px;">
+                    <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">🕐 办公时间</h3>
+                    <div style="display: grid; gap: 0.75rem; color: var(--text-muted);">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>周一至周五</span>
+                            <span>9:00 - 18:00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>周六</span>
+                            <span>10:00 - 16:00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>周日及节假日</span>
+                            <span>休息</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 地图占位 -->
+                <div style="margin-top: 2rem; height: 300px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
+                    <div style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🗺️</div>
+                        <p>地图加载中...</p>
+                        <p style="font-size: 0.85rem;">北京市海淀区中关村大街 1 号</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" style="background: rgba(0, 21, 41, 0.5);">
+        <div class="section-header">
+            <span class="section-tag">FAQ</span>
+            <h2 class="section-title">常见问题</h2>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">💰 咨询收费吗？</h3>
+                <p class="card-desc">首次咨询完全免费！我们的专家团队会了解您的需求，提供初步建议和方案方向。</p>
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">⏱️ 多久能收到回复？</h3>
+                <p class="card-desc">工作日提交的咨询，我们将在 24 小时内回复。紧急需求可拨打 400 热线直接联系。</p>
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">📋 需要准备什么材料？</h3>
+                <p class="card-desc">建议提前梳理业务痛点、期望目标、预算范围等信息，有助于我们提供更精准的建议。</p>
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">🔒 信息会保密吗？</h3>
+                <p class="card-desc">我们严格遵守保密协议，您的所有信息仅用于方案制定，不会泄露给任何第三方。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="footer-logo">🤖 AI 智企</span>
+                <p class="footer-desc">企业级 AI 解决方案服务商，助力企业智能化转型升级。</p>
+            </div>
+            <div class="footer-links">
+                <h4>产品服务</h4>
+                <ul>
+                    <li><a href="services.html">智能客服</a></li>
+                    <li><a href="services.html">智能办公</a></li>
+                    <li><a href="services.html">数据分析</a></li>
+                    <li><a href="packages.html">解决方案</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>关于我们</h4>
+                <ul>
+                    <li><a href="index.html#about">公司介绍</a></li>
+                    <li><a href="index.html#cases">客户案例</a></li>
+                    <li><a href="#">新闻动态</a></li>
+                    <li><a href="#">加入我们</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>联系方式</h4>
+                <ul>
+                    <li><a href="contact.html">预约咨询</a></li>
+                    <li><a href="tel:400-888-8888">400-888-8888</a></li>
+                    <li><a href="mailto:contact@aizhiqi.com">contact@aizhiqi.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 AI 智企 版权所有 | 京 ICP 备 XXXXXXXX 号</p>
+        </div>
+    </footer>
+
+    <script>
+        // 时间选择
+        function selectTime(element) {
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        // 设置默认日期为明天
+        document.addEventListener('DOMContentLoaded', function() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const dateInput = document.getElementById('preferredDate');
+            if (dateInput) {
+                dateInput.min = tomorrow.toISOString().split('T')[0];
+                dateInput.value = dateInput.min;
+            }
+        });
+
+        // 表单提交
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('感谢您的咨询！我们已收到您的信息，专家团队将在 24 小时内与您联系。');
+            document.getElementById('contactForm').reset();
+        }
+    </script>
+</body>
+</html>

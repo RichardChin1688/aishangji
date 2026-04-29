@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>报告详情 - AI 产业研究院</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #1890ff;
+            --primary-dark: #096dd9;
+            --primary-light: #40a9ff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --text-light: #8c8c8c;
+            --bg-light: #f5f7fa;
+            --bg-white: #ffffff;
+            --bg-dark: #001529;
+            --border-color: #e8e8e8;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-white);
+        }
+
+        /* ========== Header ========== */
+        .header { background: var(--bg-white); box-shadow: 0 2px 8px rgba(0,0,0,0.08); position: fixed; width: 100%; top: 0; z-index: 1000; }
+        .header-container { max-width: 1400px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 80px; }
+        .logo { font-size: 26px; font-weight: 700; color: var(--bg-dark); text-decoration: none; display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; }
+        .logo-text { display: flex; flex-direction: column; gap: 2px; }
+        .logo-main { font-size: 24px; font-weight: 700; }
+        .logo-sub { font-size: 11px; color: var(--text-light); letter-spacing: 1px; }
+        .nav { display: flex; gap: 40px; }
+        .nav a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 15px; transition: all 0.3s; padding: 8px 0; position: relative; }
+        .nav a:hover, .nav a.active { color: var(--primary-color); }
+        .nav a.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--primary-color); }
+        .header-actions { display: flex; gap: 16px; align-items: center; }
+        .btn { padding: 10px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.3s; display: inline-block; border: none; cursor: pointer; }
+        .btn-outline { border: 1px solid var(--border-color); color: var(--text-secondary); background: transparent; }
+        .btn-outline:hover { border-color: var(--primary-color); color: var(--primary-color); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3); }
+
+        /* ========== Breadcrumb ========== */
+        .breadcrumb { padding: 120px 40px 20px; max-width: 1400px; margin: 0 auto; }
+        .breadcrumb a { color: var(--text-secondary); text-decoration: none; font-size: 14px; }
+        .breadcrumb a:hover { color: var(--primary-color); }
+        .breadcrumb span { color: var(--text-light); margin: 0 10px; }
+
+        /* ========== Report Detail ========== */
+        .report-detail { max-width: 1400px; margin: 0 auto; padding: 0 40px 60px; display: grid; grid-template-columns: 1fr 380px; gap: 48px; }
+        .report-main { background: var(--bg-white); }
+
+        .report-header { margin-bottom: 40px; }
+        .report-badge { display: inline-block; padding: 6px 16px; background: rgba(24, 144, 255, 0.1); color: var(--primary-color); border-radius: 6px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
+        .report-title { font-size: 40px; font-weight: 700; margin-bottom: 16px; line-height: 1.3; color: var(--bg-dark); }
+        .report-meta { display: flex; gap: 24px; color: var(--text-secondary); font-size: 14px; margin-bottom: 32px; flex-wrap: wrap; }
+        .report-meta-item { display: flex; align-items: center; gap: 8px; }
+
+        .report-cover-large { height: 320px; background: linear-gradient(135deg, var(--bg-dark) 0%, #003a8c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 96px; margin-bottom: 40px; position: relative; overflow: hidden; }
+        .report-cover-large::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(24, 144, 255, 0.15) 0%, transparent 70%); }
+        .report-cover-large span { position: relative; z-index: 1; }
+
+        .report-section { margin-bottom: 48px; }
+        .report-section h2 { font-size: 24px; margin-bottom: 24px; color: var(--bg-dark); font-weight: 700; }
+        .report-summary { font-size: 16px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 20px; }
+
+        .report-abstract { background: var(--bg-light); padding: 32px; border-radius: 12px; margin-bottom: 32px; border-left: 4px solid var(--primary-color); }
+        .report-abstract h3 { font-size: 16px; margin-bottom: 16px; color: var(--bg-dark); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .report-abstract p { color: var(--text-secondary); line-height: 1.8; font-size: 15px; }
+
+        /* Table of Contents */
+        .toc { background: var(--bg-light); padding: 32px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .toc h3 { font-size: 18px; margin-bottom: 24px; color: var(--bg-dark); font-weight: 600; }
+        .toc-list { list-style: none; }
+        .toc-list li { margin-bottom: 10px; }
+        .toc-list a { color: var(--text-secondary); text-decoration: none; display: flex; justify-content: space-between; padding: 12px 16px; border-radius: 8px; transition: all 0.3s; font-size: 14px; }
+        .toc-list a:hover { background: var(--bg-white); color: var(--primary-color); }
+        .toc-level-1 { font-weight: 600; color: var(--bg-dark); }
+        .toc-level-2 { padding-left: 32px; font-size: 14px; }
+        .toc-page { color: var(--text-light); font-size: 12px; }
+
+        /* Sidebar */
+        .report-sidebar { position: sticky; top: 100px; height: fit-content; }
+        .purchase-card { background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 12px; padding: 32px; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+        .purchase-price { font-size: 36px; font-weight: 700; color: var(--primary-color); margin-bottom: 8px; }
+        .purchase-price span { font-size: 16px; color: var(--text-light); font-weight: 400; }
+        .purchase-original { color: var(--text-light); text-decoration: line-through; font-size: 14px; margin-bottom: 20px; }
+        .purchase-discount { display: inline-block; padding: 4px 12px; background: #fff1f0; color: #f5222d; border-radius: 4px; font-size: 12px; font-weight: 600; margin-bottom: 24px; }
+        .purchase-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-bottom: 12px; }
+        .purchase-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3); }
+        .purchase-btn-outline { background: var(--bg-white); color: var(--primary-color); border: 2px solid var(--primary-color); }
+        .purchase-btn-outline:hover { background: rgba(24, 144, 255, 0.05); }
+        .purchase-features { list-style: none; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border-color); }
+        .purchase-features li { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary); }
+        .purchase-features li::before { content: '✓'; color: var(--primary-color); font-weight: bold; font-size: 16px; }
+
+        .report-info-card { background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; }
+        .info-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: var(--text-light); font-size: 13px; }
+        .info-value { color: var(--text-primary); font-size: 14px; font-weight: 500; }
+
+        /* Related Reports */
+        .related-section { padding: 80px 40px; background: var(--bg-light); }
+        .related-container { max-width: 1400px; margin: 0 auto; }
+        .section-title { text-align: center; margin-bottom: 48px; }
+        .section-tag { display: inline-block; color: var(--primary-color); font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+        .section-title h2 { font-size: 32px; margin-bottom: 12px; color: var(--bg-dark); font-weight: 700; }
+        .section-title p { color: var(--text-light); font-size: 16px; }
+        .related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+        .report-card { background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; transition: all 0.3s; cursor: pointer; }
+        .report-card:hover { border-color: var(--primary-color); box-shadow: 0 8px 24px rgba(24, 144, 255, 0.12); transform: translateY(-4px); }
+        .report-cover { height: 160px; background: linear-gradient(135deg, var(--bg-dark) 0%, #003a8c 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; position: relative; overflow: hidden; }
+        .report-cover::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(24, 144, 255, 0.1) 0%, transparent 70%); }
+        .report-cover span { position: relative; z-index: 1; }
+        .report-info { padding: 20px; }
+        .report-title-small { font-size: 16px; font-weight: 700; margin-bottom: 8px; line-height: 1.4; color: var(--bg-dark); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .report-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-color); }
+        .report-date { font-size: 12px; color: var(--text-light); }
+        .report-price { font-size: 18px; font-weight: 700; color: var(--primary-color); }
+
+        /* ========== Footer ========== */
+        .footer { background: var(--bg-dark); color: rgba(255,255,255,0.7); padding: 60px 40px 30px; }
+        .footer-container { max-width: 1400px; margin: 0 auto; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 40px; }
+        .footer-brand .logo { color: white; margin-bottom: 16px; }
+        .footer-brand p { font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
+        .footer-section h4 { color: white; font-size: 15px; font-weight: 600; margin-bottom: 20px; }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--primary-light); }
+        .footer-bottom { padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 13px; color: rgba(255,255,255,0.5); }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 1200px) {
+            .report-detail { grid-template-columns: 1fr; }
+            .report-sidebar { position: static; }
+            .related-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .header-container { padding: 0 20px; }
+            .nav { display: none; }
+            .breadcrumb { padding: 100px 20px 20px; }
+            .report-detail { padding: 0 20px 40px; }
+            .report-title { font-size: 28px; }
+            .report-meta { gap: 16px; }
+            .related-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
+        @media (max-width: 480px) {
+            .related-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">📊</div>
+                <div class="logo-text">
+                    <span class="logo-main">AI 产业研究院</span>
+                    <span class="logo-sub">AI Industry Research</span>
+                </div>
+            </a>
+            <nav class="nav">
+                <a href="index.html">首页</a>
+                <a href="reports.html" class="active">研究报告</a>
+                <a href="courses.html">培训课程</a>
+                <a href="#">智库服务</a>
+                <a href="data-platform.html">数据平台</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" class="btn btn-outline">登录</a>
+                <a href="#" class="btn btn-primary">免费注册</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="index.html">首页</a>
+        <span>/</span>
+        <a href="reports.html">研究报告</a>
+        <span>/</span>
+        <span>报告详情</span>
+    </nav>
+
+    <!-- Report Detail -->
+    <section class="report-detail">
+        <div class="report-main">
+            <div class="report-header">
+                <span class="report-badge">行业分析</span>
+                <h1 class="report-title">2026 年中国 AI 大模型产业发展白皮书</h1>
+                <div class="report-meta">
+                    <div class="report-meta-item"><span>📅</span><span>2026-04-15 发布</span></div>
+                    <div class="report-meta-item"><span>👤</span><span>AI 产研研究院</span></div>
+                    <div class="report-meta-item"><span>📄</span><span>128 页</span></div>
+                    <div class="report-meta-item"><span>👁️</span><span>12,458 浏览</span></div>
+                </div>
+            </div>
+
+            <div class="report-cover-large"><span>📈</span></div>
+
+            <div class="report-section">
+                <h2>报告摘要</h2>
+                <div class="report-abstract">
+                    <h3>核心观点</h3>
+                    <p>本报告全面梳理了 2026 年中国 AI 大模型产业的发展现状，深入分析了市场竞争格局、技术演进趋势、应用场景落地及未来发展方向。报告基于对 100+ 家企业的调研数据，结合政策环境、资本动态、技术突破等多维度分析，为产业参与者提供决策参考。</p>
+                </div>
+                <p class="report-summary">2026 年是中国 AI 大模型产业从"百花齐放"走向"应用落地"的关键一年。随着技术的成熟和成本的下降，大模型正在从互联网行业向传统行业快速渗透。本报告将深入分析这一转型过程中的机遇与挑战。</p>
+                <p class="report-summary">报告涵盖了大模型技术架构、训练与推理优化、行业应用案例、商业模式创新、政策法规环境等核心议题，并提供了详实的数据支撑和前瞻性判断。</p>
+            </div>
+
+            <div class="report-section">
+                <h2>报告目录</h2>
+                <div class="toc">
+                    <ul class="toc-list">
+                        <li><a href="#"><span class="toc-level-1">第一章 产业概述</span><span class="toc-page">P5</span></a></li>
+                        <li><a href="#"><span class="toc-level-2">1.1 大模型定义与分类</span><span class="toc-page">P6</span></a></li>
+                        <li><a href="#"><span class="toc-level-2">1.2 产业发展历程</span><span class="toc-page">P12</span></a></li>
+                        <li><a href="#"><span class="toc-level-2">1.3 产业链结构分析</span><span class="toc-page">P18</span></a></li>
+                        <li><a href="#"><span class="toc-level-1">第二章 市场规模与竞争格局</span><span class="toc-page">P25</span></a></li>
+                        <li><a href="#"><span class="toc-level-2">2.1 全球市场规模</span><span class="toc-page">P26</span></a></li>
+                        <li><a href="#"><span class="toc-level-2">2.2 中国市场规模</span><span class="toc-page">P32</span></a></li>
+                        <li><a href="#"><span class="toc-level-2">2.3 主要玩家竞争分析</span><span class="toc-page">P40</span></a></li>
+                        <li><a href="#"><span class="toc-level-1">第三章 技术发展趋势</span><span class="toc-page">P55</span></a></li>
+                        <li><a href="#"><span class="toc-level-2">3.1 模型架构演进</span><span class="toc-page">P56</span></a></li>
+                        <li><a href="#"><span class="toc-level-2">3.2 训练技术优化</span><span class="toc-page">P65</span></a></li>
+                        <li><a href="#"><span class="toc-level-2">3.3 推理加速方案</span><span class="toc-page">P72</span></a></li>
+                        <li><a href="#"><span class="toc-level-1">第四章 行业应用实践</span><span class="toc-page">P80</span></a></li>
+                        <li><a href="#"><span class="toc-level-2">4.1 金融服务应用</span><span class="toc-page">P81</span></a></li>
+                        <li><a href="#"><span class="toc-level-2">4.2 医疗健康应用</span><span class="toc-page">P90</span></a></li>
+                        <li><a href="#"><span class="toc-level-2">4.3 智能制造应用</span><span class="toc-page">P98</span></a></li>
+                        <li><a href="#"><span class="toc-level-1">第五章 政策与监管环境</span><span class="toc-page">P105</span></a></li>
+                        <li><a href="#"><span class="toc-level-1">第六章 投资分析与建议</span><span class="toc-page">P112</span></a></li>
+                        <li><a href="#"><span class="toc-level-1">第七章 未来展望</span><span class="toc-page">P120</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <aside class="report-sidebar">
+            <div class="purchase-card">
+                <div class="purchase-price">¥299 <span>/ 份</span></div>
+                <div class="purchase-original">原价 ¥599</div>
+                <span class="purchase-discount">限时优惠 50% OFF</span>
+                <button class="purchase-btn">立即购买</button>
+                <button class="purchase-btn purchase-btn-outline">加入购物车</button>
+                <ul class="purchase-features">
+                    <li>PDF 电子版（可打印）</li>
+                    <li>128 页完整报告</li>
+                    <li>数据来源与参考文献</li>
+                    <li>免费更新 1 年</li>
+                    <li>企业发票支持</li>
+                </ul>
+            </div>
+            <div class="report-info-card">
+                <div class="info-row"><span class="info-label">报告编号</span><span class="info-value">AIIR-2026-001</span></div>
+                <div class="info-row"><span class="info-label">发布机构</span><span class="info-value">AI 产业研究院</span></div>
+                <div class="info-row"><span class="info-label">研究领域</span><span class="info-value">人工智能</span></div>
+                <div class="info-row"><span class="info-label">报告格式</span><span class="info-value">PDF</span></div>
+                <div class="info-row"><span class="info-label">语言版本</span><span class="info-value">中文</span></div>
+            </div>
+        </aside>
+    </section>
+
+    <!-- Related Reports -->
+    <section class="related-section">
+        <div class="related-container">
+            <div class="section-title">
+                <span class="section-tag">RECOMMENDED</span>
+                <h2>相关报告推荐</h2>
+                <p>您可能还对这些报告感兴趣</p>
+            </div>
+            <div class="related-grid">
+                <div class="report-card" onclick="location.href='reports.html'">
+                    <div class="report-cover"><span>🤖</span></div>
+                    <div class="report-info">
+                        <h3 class="report-title-small">生成式 AI 在企业服务中的应用实践</h3>
+                        <div class="report-footer">
+                            <span class="report-date">2026-04-10</span>
+                            <span class="report-price">¥199</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="report-card" onclick="location.href='reports.html'">
+                    <div class="report-cover"><span>💼</span></div>
+                    <div class="report-info">
+                        <h3 class="report-title-small">AI 芯片产业竞争格局研究报告</h3>
+                        <div class="report-footer">
+                            <span class="report-date">2026-03-20</span>
+                            <span class="report-price">¥279</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="report-card" onclick="location.href='reports.html'">
+                    <div class="report-cover"><span>🔒</span></div>
+                    <div class="report-info">
+                        <h3 class="report-title-small">AI 安全与隐私保护技术报告</h3>
+                        <div class="report-footer">
+                            <span class="report-date">2026-02-18</span>
+                            <span class="report-price">¥219</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="report-card" onclick="location.href='reports.html'">
+                    <div class="report-cover"><span>🌐</span></div>
+                    <div class="report-info">
+                        <h3 class="report-title-small">全球 AI 产业发展对比研究</h3>
+                        <div class="report-footer">
+                            <span class="report-date">2026-02-10</span>
+                            <span class="report-price">¥269</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon">📊</div>
+                        <div class="logo-text">
+                            <span class="logo-main">AI 产业研究院</span>
+                            <span class="logo-sub">AI Industry Research</span>
+                        </div>
+                    </a>
+                    <p>中国 AI 行业第一智库，为政府、企业、投资者提供权威 AI 行业洞察与决策支持。</p>
+                </div>
+                <div class="footer-section">
+                    <h4>研究报告</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">白皮书</a></li>
+                        <li><a href="#">深度报告</a></li>
+                        <li><a href="#">数据分析</a></li>
+                        <li><a href="#">免费订阅</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>培训课程</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">入门课程</a></li>
+                        <li><a href="#">进阶课程</a></li>
+                        <li><a href="#">认证体系</a></li>
+                        <li><a href="#">企业内训</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>关于我们</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">研究院介绍</a></li>
+                        <li><a href="#">专家团队</a></li>
+                        <li><a href="#">加入我们</a></li>
+                        <li><a href="#">联系方式</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 AI 产业研究院 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 页面加载淡入效果
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.2s ease-in-out';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 50);
+        });
+
+        // 目录点击平滑滚动
+        document.querySelectorAll('.toc-list a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                // 这里可以扩展到实际章节滚动
+                alert('报告章节滚动功能（示例）');
+            });
+        });
+    </script>
+</body>
+</html>

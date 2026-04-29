@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 商机 - 发现 AI 时代的商业机会</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1890ff;
+            --primary-dark: #096dd9;
+            --primary-light: #40a9ff;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-light: #999;
+            --bg-light: #f5f5f5;
+            --bg-white: #ffffff;
+            --border-color: #e8e8e8;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+            --shadow-hover: 0 4px 16px rgba(24,144,255,0.2);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-white);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            font-size: 16px;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+            padding: 8px 0;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--primary-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 15px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .search-box button {
+            padding: 15px 40px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-box button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 50px;
+            font-size: 16px;
+        }
+
+        /* Hot Tools */
+        .hot-tools {
+            background: var(--bg-light);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .tool-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .tool-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .tool-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .tool-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            background: #e6f7ff;
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        /* Sections Entry */
+        .sections-entry {
+            background: var(--bg-white);
+        }
+
+        .entry-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        .entry-card {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 12px;
+            background: var(--bg-light);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .entry-card:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .entry-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .entry-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Latest News */
+        .latest-news {
+            background: var(--bg-light);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .news-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .news-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+        }
+
+        .news-content {
+            padding: 20px;
+        }
+
+        .news-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .news-excerpt {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 50px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--primary-light);
+        }
+
+        .footer-section p {
+            font-size: 14px;
+            color: #999;
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .entry-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">🤖</div>
+                    AI 商机
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="tools.html" class="active">工具库</a></li>
+                        <li><a href="#">媒体</a></li>
+                        <li><a href="#">服务</a></li>
+                        <li><a href="#">投融资</a></li>
+                        <li><a href="#">案例</a></li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>发现 AI 时代的商业机会</h1>
+            <p>汇聚全球最优质的 AI 工具、资讯与服务，助力您的 AI 商业之旅</p>
+            <div class="search-box">
+                <input type="text" placeholder="搜索 AI 工具、资讯或服务...">
+                <button>搜索</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hot Tools -->
+    <section class="hot-tools">
+        <div class="container">
+            <h2 class="section-title">热门工具</h2>
+            <p class="section-subtitle">精选最受欢迎的 AI 工具，助您提升工作效率</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">✍️</div>
+                    <div class="tool-name">Jasper AI</div>
+                    <div class="tool-desc">AI 写作助手，生成高质量营销文案和博客文章</div>
+                    <div class="tool-tags">
+                        <span class="tag">写作</span>
+                        <span class="tag">营销</span>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🎨</div>
+                    <div class="tool-name">Midjourney</div>
+                    <div class="tool-desc">AI 图像生成工具，创造令人惊叹的视觉艺术</div>
+                    <div class="tool-tags">
+                        <span class="tag">图像</span>
+                        <span class="tag">设计</span>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">💬</div>
+                    <div class="tool-name">ChatGPT</div>
+                    <div class="tool-desc">智能对话助手，解答问题、创作内容、编写代码</div>
+                    <div class="tool-tags">
+                        <span class="tag">对话</span>
+                        <span class="tag">通用</span>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📊</div>
+                    <div class="tool-name">Notion AI</div>
+                    <div class="tool-desc">智能笔记助手，自动总结、翻译和生成内容</div>
+                    <div class="tool-tags">
+                        <span class="tag">效率</span>
+                        <span class="tag">笔记</span>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🎵</div>
+                    <div class="tool-name">Suno AI</div>
+                    <div class="tool-desc">AI 音乐生成，创作原创歌曲和背景音乐</div>
+                    <div class="tool-tags">
+                        <span class="tag">音乐</span>
+                        <span class="tag">创作</span>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📹</div>
+                    <div class="tool-name">Runway</div>
+                    <div class="tool-desc">AI 视频编辑工具，智能剪辑和特效生成</div>
+                    <div class="tool-tags">
+                        <span class="tag">视频</span>
+                        <span class="tag">编辑</span>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📈</div>
+                    <div class="tool-name">Jenni AI</div>
+                    <div class="tool-desc">学术写作助手，辅助论文写作和文献引用</div>
+                    <div class="tool-tags">
+                        <span class="tag">学术</span>
+                        <span class="tag">写作</span>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🔍</div>
+                    <div class="tool-name">Perplexity</div>
+                    <div class="tool-desc">AI 搜索引擎，提供准确答案和来源引用</div>
+                    <div class="tool-tags">
+                        <span class="tag">搜索</span>
+                        <span class="tag">研究</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sections Entry -->
+    <section class="sections-entry">
+        <div class="container">
+            <h2 class="section-title">探索更多</h2>
+            <p class="section-subtitle">五大板块，全方位覆盖 AI 商业生态</p>
+            <div class="entry-grid">
+                <div class="entry-card">
+                    <div class="entry-icon">🛠️</div>
+                    <div class="entry-title">工具库</div>
+                </div>
+                <div class="entry-card">
+                    <div class="entry-icon">📰</div>
+                    <div class="entry-title">媒体</div>
+                </div>
+                <div class="entry-card">
+                    <div class="entry-icon">💼</div>
+                    <div class="entry-title">服务</div>
+                </div>
+                <div class="entry-card">
+                    <div class="entry-icon">💰</div>
+                    <div class="entry-title">投融资</div>
+                </div>
+                <div class="entry-card">
+                    <div class="entry-icon">🏆</div>
+                    <div class="entry-title">案例</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest News -->
+    <section class="latest-news">
+        <div class="container">
+            <h2 class="section-title">最新资讯</h2>
+            <p class="section-subtitle">掌握 AI 行业最新动态和趋势</p>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-image">📰</div>
+                    <div class="news-content">
+                        <div class="news-title">OpenAI 发布 GPT-5，性能提升 300%</div>
+                        <div class="news-excerpt">新一代模型在推理、代码和多模态理解方面取得突破性进展...</div>
+                        <div class="news-meta">
+                            <span>2024-04-28</span>
+                            <span>阅读 2.3k</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-image">📰</div>
+                    <div class="news-content">
+                        <div class="news-title">AI 投资热潮持续，Q1 融资额超 500 亿美元</div>
+                        <div class="news-excerpt">全球 AI 初创企业融资持续升温，大模型和应用层成为投资热点...</div>
+                        <div class="news-meta">
+                            <span>2024-04-27</span>
+                            <span>阅读 1.8k</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-image">📰</div>
+                    <div class="news-content">
+                        <div class="news-title">十大 AI 工具提升工作效率的实用技巧</div>
+                        <div class="news-excerpt">深度解析如何巧妙运用 AI 工具，让日常工作事半功倍...</div>
+                        <div class="news-meta">
+                            <span>2024-04-26</span>
+                            <span>阅读 3.1k</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>AI 商机</h4>
+                    <p>汇聚全球最优质的 AI 工具、资讯与服务，助力您的 AI 商业之旅。我们致力于为用户提供最全面、最及时的 AI 行业信息。</p>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul class="footer-links">
+                        <li><a href="tools.html">工具库</a></li>
+                        <li><a href="#">媒体中心</a></li>
+                        <li><a href="#">服务市场</a></li>
+                        <li><a href="#">投融资</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>关于我们</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">公司简介</a></li>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="#">加入我们</a></li>
+                        <li><a href="#">合作伙伴</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>法律条款</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">隐私政策</a></li>
+                        <li><a href="#">服务条款</a></li>
+                        <li><a href="#">免责声明</a></li>
+                        <li><a href="#">Cookie 政策</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI 商机。All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() {
+            const nav = document.querySelector('nav ul');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Search functionality
+        document.querySelector('.search-box button')?.addEventListener('click', function() {
+            const query = document.querySelector('.search-box input').value;
+            if (query) {
+                window.location.href = `tools.html?search=${encodeURIComponent(query)}`;
+            }
+        });
+
+        // Tool card click
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.addEventListener('click', function() {
+                window.location.href = 'tool-detail.html';
+            });
+        });
+    </script>
+</body>
+</html>

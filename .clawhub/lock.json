@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "skills": {
+    "productivity-automation-kit": {
+      "version": "1.0.0",
+      "installedAt": 1775626506855
+    },
+    "data-analysis-litiao": {
+      "version": "1.0.0",
+      "installedAt": 1775626519067
+    },
+    "content-writer": {
+      "version": "1.0.0",
+      "installedAt": 1775626561362
+    },
+    "system-monitor-pro": {
+      "version": "1.0.0",
+      "installedAt": 1775626576805
+    },
+    "universal-translate": {
+      "version": "1.0.0",
+      "installedAt": 1775642424795
+    },
+    "pdf-helper": {
+      "version": "1.0.0",
+      "installedAt": 1775642463236
+    },
+    "feishu-calendar": {
+      "version": "1.0.0",
+      "installedAt": 1775642478903
+    },
+    "xhs-cover": {
+      "version": "2.0.0",
+      "installedAt": 1775642783787
+    },
+    "openclaw-pixel-agents-dashboard": {
+      "version": "1.0.0",
+      "installedAt": 1775696136965
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "server": {
+    "port": 5070
+  },
+  "gateway": {
+    "url": "http://localhost:18789",
+    "token": "${OPENCLAW_GATEWAY_TOKEN}"
+  },
+  "openclaw": {
+    "agentsDir": "/home/richardchin/.openclaw/agents"
+  },
+  "agents": [
+    {
+      "id": "bingbu",
+      "name": "兵部尚书",
+      "emoji": "⚔️",
+      "palette": 0,
+      "alwaysPresent": true,
+      "title": "兵部·军事外交"
+    },
+    {
+      "id": "danei",
+      "name": "大内总管",
+      "emoji": "🔧",
+      "palette": 1,
+      "alwaysPresent": true,
+      "title": "内务府·统筹协调"
+    },
+    {
+      "id": "gongbu",
+      "name": "工部尚书",
+      "emoji": "🔍",
+      "palette": 2,
+      "alwaysPresent": true,
+      "title": "工部·技能安装"
+    },
+    {
+      "id": "hubu",
+      "name": "户部尚书",
+      "emoji": "💰",
+      "palette": 3,
+      "alwaysPresent": true,
+      "title": "户部·财务数据"
+    },
+    {
+      "id": "laoshi",
+      "name": "老先生",
+      "emoji": "📚",
+      "palette": 4,
+      "alwaysPresent": true,
+      "title": "国子监·教育培训"
+    },
+    {
+      "id": "libu",
+      "name": "礼部尚书",
+      "emoji": "🎋",
+      "palette": 5,
+      "alwaysPresent": true,
+      "title": "礼部·知识信息"
+    },
+    {
+      "id": "libu2",
+      "name": "礼部侍郎",
+      "emoji": "📜",
+      "palette": 0,
+      "alwaysPresent": true,
+      "title": "礼部·辅助礼部"
+    },
+    {
+      "id": "main",
+      "name": "御前侍卫",
+      "emoji": "🛡️",
+      "palette": 1,
+      "alwaysPresent": true,
+      "title": "禁军·主会话"
+    },
+    {
+      "id": "media",
+      "name": "翰林学士",
+      "emoji": "✒️",
+      "palette": 2,
+      "alwaysPresent": true,
+      "title": "翰林院·媒体营销"
+    },
+    {
+      "id": "meigu",
+      "name": "美股军师",
+      "emoji": "📈",
+      "palette": 3,
+      "alwaysPresent": true,
+      "title": "谋士·美股期权"
+    },
+    {
+      "id": "xingbu",
+      "name": "刑部尚书",
+      "emoji": "⚖️",
+      "palette": 4,
+      "alwaysPresent": true,
+      "title": "刑部·安全法务"
+    }
+  ],
+  "spawnable": [],
+  "remoteAgents": [],
+  "features": {
+    "fireAlarm": true,
+    "breakerPanel": true,
+    "hamRadio": true,
+    "serverRack": true,
+    "nickDesk": false,
+    "dayNightCycle": true,
+    "conversationHeat": true,
+    "channelBadges": true,
+    "sounds": true,
+    "door": true
+  }
+}

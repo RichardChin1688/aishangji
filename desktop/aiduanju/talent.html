@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人才市场 - AI 短剧</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🎬</div>
+        <span>AI 短剧</span>
+      </a>
+      <nav class="nav">
+        <a href="tools.html" class="nav-item">🎨 创作工具</a>
+        <a href="talent.html" class="nav-item active">👥 人才库</a>
+        <a href="ip-library.html" class="nav-item">📚 IP 市场</a>
+        <a href="services.html" class="nav-item">🎞️ 产业服务</a>
+        <a href="data.html" class="nav-item">📊 数据洞察</a>
+      </nav>
+      <div class="header-actions">
+        <a href="#login" class="btn btn-ghost">登录</a>
+        <a href="tools.html" class="btn btn-gold">免费试用</a>
+      </div>
+      <div class="mobile-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section - 人才页 -->
+  <section class="hero hero-cinematic">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-spotlight"></div>
+    <div class="hero-content">
+      <div class="container">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          👥 汇聚行业精英 · 组建梦之队
+        </div>
+        <h1 class="hero-title">
+          人才市场<br>
+          <span class="text-gold">发现优秀创作人才</span>
+        </h1>
+        <p class="hero-subtitle">
+          导演 · 演员 · 编剧 · 后期 · 摄影 · 制片<br>
+          全流程专业人才，一键对接合作
+        </p>
+        <div class="hero-btns">
+          <a href="#talent-grid" class="btn btn-red-carpet btn-lg">
+            <span class="btn-icon">🔍</span>
+            寻找人才
+          </a>
+          <a href="#" class="btn btn-outline-white btn-lg">
+            入驻人才库
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 胶片条分隔线 -->
+  <div class="film-strip-divider"></div>
+
+  <!-- 人才筛选 -->
+  <section id="talent-grid" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">人才库</h2>
+        <p class="section-subtitle">找到最适合你的创作伙伴</p>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <span class="filter-label">角色:</span>
+          <select class="form-select">
+            <option value="">全部</option>
+            <option value="director">🎬 导演</option>
+            <option value="actor">🎭 演员</option>
+            <option value="writer">✍️ 编剧</option>
+            <option value="editor">🎞️ 后期</option>
+            <option value="cinematographer">📷 摄影</option>
+            <option value="producer">💼 制片</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">经验:</span>
+          <select class="form-select">
+            <option value="">全部</option>
+            <option value="senior">资深 (5 年+)</option>
+            <option value="mid">中级 (2-5 年)</option>
+            <option value="junior">初级 (1-2 年)</option>
+            <option value="new">新人</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">状态:</span>
+          <select class="form-select">
+            <option value="">全部</option>
+            <option value="available">🟢 可接单</option>
+            <option value="busy">🟡 忙碌中</option>
+            <option value="offline">🔴 暂不接单</option>
+          </select>
+        </div>
+        <div style="flex: 1;"></div>
+        <input type="text" class="form-input" placeholder="搜索人才..." style="width: 200px;">
+      </div>
+
+      <!-- Talent Grid -->
+      <div class="talent-grid">
+        <!-- Talent 1 -->
+        <div class="talent-card">
+          <div class="talent-header">
+            <img src="https://picsum.photos/seed/talent1/150/150" alt="头像" class="talent-avatar">
+            <div class="talent-status available"></div>
+          </div>
+          <div class="talent-body">
+            <h3 class="talent-name">张梦瑶</h3>
+            <p class="talent-role">🎬 导演</p>
+            <div class="talent-tags">
+              <span class="tag">都市情感</span>
+              <span class="tag">悬疑</span>
+              <span class="tag">5 年经验</span>
+            </div>
+            <p class="talent-desc">擅长都市情感题材，作品风格细腻，注重人物情感表达。代表作《深夜食堂》《城市恋人》等。</p>
+            <div class="talent-stats">
+              <div class="stat-item">
+                <div class="stat-value">28</div>
+                <div class="stat-label">作品数</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">4.9</div>
+                <div class="stat-label">评分</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">156</div>
+                <div class="stat-label">播放量 (万)</div>
+              </div>
+            </div>
+            <div class="talent-footer">
+              <div class="talent-price">
+                <span class="price-label">服务价格</span>
+                <span class="price-value">¥5,000-20,000/部</span>
+              </div>
+              <button class="btn btn-gold btn-sm">联系合作</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Talent 2 -->
+        <div class="talent-card">
+          <div class="talent-header">
+            <img src="https://picsum.photos/seed/talent2/150/150" alt="头像" class="talent-avatar">
+            <div class="talent-status available"></div>
+          </div>
+          <div class="talent-body">
+            <h3 class="talent-name">李浩然</h3>
+            <p class="talent-role">🎭 演员</p>
+            <div class="talent-tags">
+              <span class="tag">男主角</span>
+              <span class="tag">古装</span>
+              <span class="tag">3 年经验</span>
+            </div>
+            <p class="talent-desc">专业院校毕业，擅长古装剧和现代剧男主角，形象气质佳，表演自然。</p>
+            <div class="talent-stats">
+              <div class="stat-item">
+                <div class="stat-value">42</div>
+                <div class="stat-label">作品数</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">4.8</div>
+                <div class="stat-label">评分</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">320</div>
+                <div class="stat-label">播放量 (万)</div>
+              </div>
+            </div>
+            <div class="talent-footer">
+              <div class="talent-price">
+                <span class="price-label">服务价格</span>
+                <span class="price-value">¥3,000-10,000/部</span>
+              </div>
+              <button class="btn btn-gold btn-sm">联系合作</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Talent 3 -->
+        <div class="talent-card">
+          <div class="talent-header">
+            <img src="https://picsum.photos/seed/talent3/150/150" alt="头像" class="talent-avatar">
+            <div class="talent-status busy"></div>
+          </div>
+          <div class="talent-body">
+            <h3 class="talent-name">王编剧</h3>
+            <p class="talent-role">✍️ 编剧</p>
+            <div class="talent-tags">
+              <span class="tag">悬疑推理</span>
+              <span class="tag">喜剧</span>
+              <span class="tag">8 年经验</span>
+            </div>
+            <p class="talent-desc">资深编剧，擅长悬疑推理和喜剧题材，多部作品播放量破亿。</p>
+            <div class="talent-stats">
+              <div class="stat-item">
+                <div class="stat-value">65</div>
+                <div class="stat-label">作品数</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">4.9</div>
+                <div class="stat-label">评分</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">580</div>
+                <div class="stat-label">播放量 (万)</div>
+              </div>
+            </div>
+            <div class="talent-footer">
+              <div class="talent-price">
+                <span class="price-label">服务价格</span>
+                <span class="price-value">¥8,000-30,000/部</span>
+              </div>
+              <button class="btn btn-ghost btn-sm">忙碌中</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Talent 4 -->
+        <div class="talent-card">
+          <div class="talent-header">
+            <img src="https://picsum.photos/seed/talent4/150/150" alt="头像" class="talent-avatar">
+            <div class="talent-status available"></div>
+          </div>
+          <div class="talent-body">
+            <h3 class="talent-name">陈后期</h3>
+            <p class="talent-role">🎞️ 后期制作</p>
+            <div class="talent-tags">
+              <span class="tag">剪辑</span>
+              <span class="tag">特效</span>
+              <span class="tag">调色</span>
+            </div>
+            <p class="talent-desc">专业后期团队，提供剪辑、特效、调色、字幕等一站式服务。</p>
+            <div class="talent-stats">
+              <div class="stat-item">
+                <div class="stat-value">120</div>
+                <div class="stat-label">作品数</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">4.9</div>
+                <div class="stat-label">评分</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">890</div>
+                <div class="stat-label">播放量 (万)</div>
+              </div>
+            </div>
+            <div class="talent-footer">
+              <div class="talent-price">
+                <span class="price-label">服务价格</span>
+                <span class="price-value">¥2,000-8,000/部</span>
+              </div>
+              <button class="btn btn-gold btn-sm">联系合作</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Talent 5 -->
+        <div class="talent-card">
+          <div class="talent-header">
+            <img src="https://picsum.photos/seed/talent5/150/150" alt="头像" class="talent-avatar">
+            <div class="talent-status available"></div>
+          </div>
+          <div class="talent-body">
+            <h3 class="talent-name">刘摄影师</h3>
+            <p class="talent-role">📷 摄影指导</p>
+            <div class="talent-tags">
+              <span class="tag">电影感</span>
+              <span class="tag">灯光</span>
+              <span class="tag">6 年经验</span>
+            </div>
+            <p class="talent-desc">擅长电影感画面营造，精通灯光布置和镜头语言，作品质感出色。</p>
+            <div class="talent-stats">
+              <div class="stat-item">
+                <div class="stat-value">55</div>
+                <div class="stat-label">作品数</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">4.8</div>
+                <div class="stat-label">评分</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">420</div>
+                <div class="stat-label">播放量 (万)</div>
+              </div>
+            </div>
+            <div class="talent-footer">
+              <div class="talent-price">
+                <span class="price-label">服务价格</span>
+                <span class="price-value">¥4,000-15,000/部</span>
+              </div>
+              <button class="btn btn-gold btn-sm">联系合作</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Talent 6 -->
+        <div class="talent-card">
+          <div class="talent-header">
+            <img src="https://picsum.photos/seed/talent6/150/150" alt="头像" class="talent-avatar">
+            <div class="talent-status offline"></div>
+          </div>
+          <div class="talent-body">
+            <h3 class="talent-name">赵制片人</h3>
+            <p class="talent-role">💼 制片人</p>
+            <div class="talent-tags">
+              <span class="tag">项目管理</span>
+              <span class="tag">资源整合</span>
+              <span class="tag">10 年经验</span>
+            </div>
+            <p class="talent-desc">资深制片人，丰富的项目管理和资源整合经验，擅长成本控制。</p>
+            <div class="talent-stats">
+              <div class="stat-item">
+                <div class="stat-value">38</div>
+                <div class="stat-label">作品数</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">4.9</div>
+                <div class="stat-label">评分</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">650</div>
+                <div class="stat-label">播放量 (万)</div>
+              </div>
+            </div>
+            <div class="talent-footer">
+              <div class="talent-price">
+                <span class="price-label">服务价格</span>
+                <span class="price-value">¥10,000-50,000/部</span>
+              </div>
+              <button class="btn btn-ghost btn-sm">暂不接单</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <div class="page-item disabled">上一页</div>
+        <div class="page-item active">1</div>
+        <div class="page-item">2</div>
+        <div class="page-item">3</div>
+        <div class="page-item">4</div>
+        <div class="page-item">下一页</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 胶片条分隔线 -->
+  <div class="film-strip-divider"></div>
+
+  <!-- CTA Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-box">
+        <h2 class="cta-title">你是创作人才？</h2>
+        <p class="cta-subtitle">入驻人才库，对接海量项目机会</p>
+        <div class="cta-btns">
+          <a href="#" class="btn btn-red-carpet btn-lg">免费入驻</a>
+          <a href="#" class="btn btn-outline-white btn-lg">了解详情</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <div class="logo-icon">🎬</div>
+            <span>AI 短剧</span>
+          </div>
+          <p>AI 短剧产业基础设施<br>让每个人都能用 AI 拍短剧</p>
+          <div class="social-links">
+            <a href="#" class="social-link">📱</a>
+            <a href="#" class="social-link">📧</a>
+            <a href="#" class="social-link">💬</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-title">产品服务</h4>
+          <ul class="footer-links">
+            <li><a href="tools.html">创作工具</a></li>
+            <li><a href="talent.html">人才市场</a></li>
+            <li><a href="ip-library.html">IP 交易</a></li>
+            <li><a href="#">产业服务</a></li>
+            <li><a href="#">数据智库</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-title">支持帮助</h4>
+          <ul class="footer-links">
+            <li><a href="#">使用教程</a></li>
+            <li><a href="#">常见问题</a></li>
+            <li><a href="#">联系客服</a></li>
+            <li><a href="#">反馈建议</a></li>
+            <li><a href="#">API 文档</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-title">关于我们</h4>
+          <ul class="footer-links">
+            <li><a href="#">公司介绍</a></li>
+            <li><a href="#">加入我们</a></li>
+            <li><a href="#">合作伙伴</a></li>
+            <li><a href="#">联系方式</a></li>
+            <li><a href="#">隐私政策</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 AI 短剧平台。All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

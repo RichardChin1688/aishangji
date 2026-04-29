@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IP 资源库 - AI 短剧</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🎬</div>
+        <span>AI 短剧</span>
+      </a>
+      <nav class="nav">
+        <a href="tools.html" class="nav-item">🎨 创作工具</a>
+        <a href="talent.html" class="nav-item">👥 人才库</a>
+        <a href="ip-library.html" class="nav-item active">📚 IP 市场</a>
+        <a href="services.html" class="nav-item">🎞️ 产业服务</a>
+        <a href="data.html" class="nav-item">📊 数据洞察</a>
+      </nav>
+      <div class="header-actions">
+        <a href="#login" class="btn btn-ghost">登录</a>
+        <a href="tools.html" class="btn btn-gold">免费试用</a>
+      </div>
+      <div class="mobile-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section - IP 页 -->
+  <section class="hero hero-cinematic">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-spotlight"></div>
+    <div class="hero-content">
+      <div class="container">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          📚 海量 IP 资源 · 一键授权变现
+        </div>
+        <h1 class="hero-title">
+          IP 资源库<br>
+          <span class="text-gold">找到你的下一个爆款</span>
+        </h1>
+        <p class="hero-subtitle">
+          小说 · 漫画 · 游戏 · 动画 · 原创剧本<br>
+          海量优质 IP，快速授权，轻松变现
+        </p>
+        <div class="hero-btns">
+          <a href="#ip-grid" class="btn btn-red-carpet btn-lg">
+            <span class="btn-icon">🔍</span>
+            浏览 IP
+          </a>
+          <a href="#" class="btn btn-outline-white btn-lg">
+            提交 IP
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 胶片条分隔线 -->
+  <div class="film-strip-divider"></div>
+
+  <!-- IP 筛选 -->
+  <section id="ip-grid" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">IP 资源库</h2>
+        <p class="section-subtitle">发现值得改编的优质 IP</p>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <span class="filter-label">类型:</span>
+          <select class="form-select">
+            <option value="">全部</option>
+            <option value="novel">📖 小说</option>
+            <option value="comic">🎨 漫画</option>
+            <option value="game">🎮 游戏</option>
+            <option value="animation">🎬 动画</option>
+            <option value="original">✍️ 原创剧本</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">题材:</span>
+          <select class="form-select">
+            <option value="">全部</option>
+            <option value="urban">都市</option>
+            <option value="romance">言情</option>
+            <option value="suspense">悬疑</option>
+            <option value="fantasy">奇幻</option>
+            <option value="scifi">科幻</option>
+            <option value="historical">历史</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">价格:</span>
+          <select class="form-select">
+            <option value="">全部</option>
+            <option value="free">免费</option>
+            <option value="low">¥1,000 以下</option>
+            <option value="mid">¥1,000-5,000</option>
+            <option value="high">¥5,000 以上</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">状态:</span>
+          <select class="form-select">
+            <option value="">全部</option>
+            <option value="available">🟢 可授权</option>
+            <option value="exclusive">🟡 独家</option>
+            <option value="sold">🔴 已售出</option>
+          </select>
+        </div>
+        <div style="flex: 1;"></div>
+        <input type="text" class="form-input" placeholder="搜索 IP..." style="width: 200px;">
+      </div>
+
+      <!-- IP Grid -->
+      <div class="ip-grid">
+        <!-- IP 1 -->
+        <div class="ip-card">
+          <div class="ip-poster">
+            <img src="https://picsum.photos/seed/ip1/400/600" alt="都市仙医" class="ip-cover">
+            <div class="ip-overlay">
+              <span class="ip-type-badge">📖 小说</span>
+            </div>
+          </div>
+          <div class="ip-body">
+            <h3 class="ip-title">都市仙医</h3>
+            <p class="ip-genre">都市异能 · 男频爽文</p>
+            <p class="ip-desc">普通医学生意外获得上古医术传承，从此走上人生巅峰，抱得美人归...</p>
+            <div class="ip-meta">
+              <span class="meta-item">📊 8.5 分</span>
+              <span class="meta-item">👁️ 520 万阅读</span>
+            </div>
+            <div class="ip-footer">
+              <div class="ip-price">
+                <span class="price-value">¥3,800</span>
+                <span class="price-unit">/ 授权费</span>
+              </div>
+              <span class="ip-status available">可授权</span>
+            </div>
+            <button class="btn btn-gold btn-block">立即授权</button>
+          </div>
+        </div>
+
+        <!-- IP 2 -->
+        <div class="ip-card">
+          <div class="ip-poster">
+            <img src="https://picsum.photos/seed/ip2/400/600" alt="末世求生手册" class="ip-cover">
+            <div class="ip-overlay">
+              <span class="ip-type-badge">📖 小说</span>
+            </div>
+          </div>
+          <div class="ip-body">
+            <h3 class="ip-title">末世求生手册</h3>
+            <p class="ip-genre">科幻末世 · 生存冒险</p>
+            <p class="ip-desc">病毒爆发，丧尸横行，幸存者如何在末世中寻找希望？</p>
+            <div class="ip-meta">
+              <span class="meta-item">📊 9.0 分</span>
+              <span class="meta-item">👁️ 890 万阅读</span>
+            </div>
+            <div class="ip-footer">
+              <div class="ip-price">
+                <span class="price-value">¥5,200</span>
+                <span class="price-unit">/ 授权费</span>
+              </div>
+              <span class="ip-status available">可授权</span>
+            </div>
+            <button class="btn btn-gold btn-block">立即授权</button>
+          </div>
+        </div>
+
+        <!-- IP 3 -->
+        <div class="ip-card">
+          <div class="ip-poster">
+            <img src="https://picsum.photos/seed/ip3/400/600" alt="王爷的替嫁妃" class="ip-cover">
+            <div class="ip-overlay">
+              <span class="ip-type-badge">📖 小说</span>
+            </div>
+          </div>
+          <div class="ip-body">
+            <h3 class="ip-title">王爷的替嫁妃</h3>
+            <p class="ip-genre">古代言情 · 宫斗</p>
+            <p class="ip-desc">替姐姐出嫁，却意外俘获冷面王爷的心，开启逆袭之路...</p>
+            <div class="ip-meta">
+              <span class="meta-item">📊 8.8 分</span>
+              <span class="meta-item">👁️ 1200 万阅读</span>
+            </div>
+            <div class="ip-footer">
+              <div class="ip-price">
+                <span class="price-value">¥8,000</span>
+                <span class="price-unit">/ 授权费</span>
+              </div>
+              <span class="ip-status available">可授权</span>
+            </div>
+            <button class="btn btn-gold btn-block">立即授权</button>
+          </div>
+        </div>
+
+        <!-- IP 4 -->
+        <div class="ip-card">
+          <div class="ip-poster">
+            <img src="https://picsum.photos/seed/ip4/400/600" alt="超能学院" class="ip-cover">
+            <div class="ip-overlay">
+              <span class="ip-type-badge">🎨 漫画</span>
+            </div>
+          </div>
+          <div class="ip-body">
+            <h3 class="ip-title">超能学院</h3>
+            <p class="ip-genre">奇幻冒险 · 校园</p>
+            <p class="ip-desc">少年进入超能力学院，与伙伴们一起成长，对抗邪恶势力...</p>
+            <div class="ip-meta">
+              <span class="meta-item">📊 8.6 分</span>
+              <span class="meta-item">👁️ 650 万阅读</span>
+            </div>
+            <div class="ip-footer">
+              <div class="ip-price">
+                <span class="price-value">¥6,500</span>
+                <span class="price-unit">/ 授权费</span>
+              </div>
+              <span class="ip-status exclusive">独家</span>
+            </div>
+            <button class="btn btn-gold btn-block">申请授权</button>
+          </div>
+        </div>
+
+        <!-- IP 5 -->
+        <div class="ip-card">
+          <div class="ip-poster">
+            <img src="https://picsum.photos/seed/ip5/400/600" alt="神探狄仁杰前传" class="ip-cover">
+            <div class="ip-overlay">
+              <span class="ip-type-badge">✍️ 原创剧本</span>
+            </div>
+          </div>
+          <div class="ip-body">
+            <h3 class="ip-title">神探狄仁杰前传</h3>
+            <p class="ip-genre">古装悬疑 · 探案</p>
+            <p class="ip-desc">青年狄仁杰初入官场，破解一桩桩离奇案件...</p>
+            <div class="ip-meta">
+              <span class="meta-item">📊 9.2 分</span>
+              <span class="meta-item">👁️ 专业评分</span>
+            </div>
+            <div class="ip-footer">
+              <div class="ip-price">
+                <span class="price-value">¥15,000</span>
+                <span class="price-unit">/ 授权费</span>
+              </div>
+              <span class="ip-status available">可授权</span>
+            </div>
+            <button class="btn btn-gold btn-block">立即授权</button>
+          </div>
+        </div>
+
+        <!-- IP 6 -->
+        <div class="ip-card">
+          <div class="ip-poster">
+            <img src="https://picsum.photos/seed/ip6/400/600" alt="我的 AI 女友" class="ip-cover">
+            <div class="ip-overlay">
+              <span class="ip-type-badge">📖 小说</span>
+            </div>
+          </div>
+          <div class="ip-body">
+            <h3 class="ip-title">我的 AI 女友</h3>
+            <p class="ip-genre">科幻言情 · 人工智能</p>
+            <p class="ip-desc">程序员与 AI 机器人之间的跨物种爱情故事...</p>
+            <div class="ip-meta">
+              <span class="meta-item">📊 8.3 分</span>
+              <span class="meta-item">👁️ 380 万阅读</span>
+            </div>
+            <div class="ip-footer">
+              <div class="ip-price">
+                <span class="price-value">¥4,200</span>
+                <span class="price-unit">/ 授权费</span>
+              </div>
+              <span class="ip-status sold">已售出</span>
+            </div>
+            <button class="btn btn-ghost btn-block" disabled>已售出</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <div class="page-item disabled">上一页</div>
+        <div class="page-item active">1</div>
+        <div class="page-item">2</div>
+        <div class="page-item">3</div>
+        <div class="page-item">4</div>
+        <div class="page-item">下一页</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 胶片条分隔线 -->
+  <div class="film-strip-divider"></div>
+
+  <!-- CTA Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-box">
+        <h2 class="cta-title">你有优质 IP？</h2>
+        <p class="cta-subtitle">提交 IP，对接专业制作团队，快速变现</p>
+        <div class="cta-btns">
+          <a href="#" class="btn btn-red-carpet btn-lg">免费提交</a>
+          <a href="#" class="btn btn-outline-white btn-lg">了解流程</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <div class="logo-icon">🎬</div>
+            <span>AI 短剧</span>
+          </div>
+          <p>AI 短剧产业基础设施<br>让每个人都能用 AI 拍短剧</p>
+          <div class="social-links">
+            <a href="#" class="social-link">📱</a>
+            <a href="#" class="social-link">📧</a>
+            <a href="#" class="social-link">💬</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-title">产品服务</h4>
+          <ul class="footer-links">
+            <li><a href="tools.html">创作工具</a></li>
+            <li><a href="talent.html">人才市场</a></li>
+            <li><a href="ip-library.html">IP 交易</a></li>
+            <li><a href="#">产业服务</a></li>
+            <li><a href="#">数据智库</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-title">支持帮助</h4>
+          <ul class="footer-links">
+            <li><a href="#">使用教程</a></li>
+            <li><a href="#">常见问题</a></li>
+            <li><a href="#">联系客服</a></li>
+            <li><a href="#">反馈建议</a></li>
+            <li><a href="#">API 文档</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-title">关于我们</h4>
+          <ul class="footer-links">
+            <li><a href="#">公司介绍</a></li>
+            <li><a href="#">加入我们</a></li>
+            <li><a href="#">合作伙伴</a></li>
+            <li><a href="#">联系方式</a></li>
+            <li><a href="#">隐私政策</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 AI 短剧平台。All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

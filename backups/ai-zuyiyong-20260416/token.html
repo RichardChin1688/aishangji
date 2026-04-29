@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算力套餐 - AI 租易用 | 灵活充值 按需使用</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #0EA5E9;
+            --primary-dark: #0C4A6E;
+            --accent: #F59E0B;
+            --bg-dark: #0B1120;
+            --bg-card: #1E293B;
+            --text-light: #F1F5F9;
+            --text-muted: #94A3B8;
+            --gradient: linear-gradient(135deg, #0EA5E9 0%, #7C3AED 100%);
+            --gradient-gold: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+        
+        body {
+            font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 70% 30%, rgba(124, 58, 237, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            background: rgba(11, 17, 32, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .nav-logo-wrapper { position: absolute; left: 5%; }
+        .nav-container { display: flex; align-items: center; gap: 3rem; flex: 1; justify-content: center; }
+        .nav-right-wrapper { position: absolute; right: 5%; }
+        
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        
+        .nav-links { display: flex; gap: 0.5rem; list-style: none; margin: 0; padding: 0; }
+        
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-light);
+            background: rgba(14, 165, 233, 0.12);
+        }
+        
+        .user-menu {
+            position: relative;
+            display: none;
+        }
+        
+        .user-menu.active {
+            display: block;
+        }
+        
+        .user-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 10px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .user-btn:hover {
+            background: rgba(14, 165, 233, 0.2);
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 0.75rem 0;
+            min-width: 180px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            display: none;
+            z-index: 1001;
+        }
+        
+        .user-dropdown.active {
+            display: block;
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .dropdown-item:hover {
+            background: rgba(14, 165, 233, 0.1);
+        }
+        
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 0.5rem 0;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.3);
+        }
+        
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(14, 165, 233, 0.4); }
+        
+        .btn-gold {
+            background: var(--gradient-gold);
+            color: white;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+        }
+        
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245, 158, 11, 0.4); }
+        
+        /* Page Hero */
+        .page-hero {
+            padding: 10rem 5% 3rem;
+            text-align: center;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+        
+        .breadcrumb a:hover { color: var(--primary); }
+        
+        .page-hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .page-hero p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+        
+        /* Balance Card */
+        .balance-section {
+            max-width: 800px;
+            margin: -2rem auto 4rem;
+            padding: 0 5%;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .balance-card {
+            background: var(--gradient);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(14, 165, 233, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        .balance-info h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+        
+        .balance-amount {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+        
+        .balance-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        /* Pricing Section */
+        .pricing-section {
+            padding: 4rem 5% 6rem;
+        }
+        
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+        
+        .section-tag {
+            color: var(--primary);
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        
+        .pricing-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        
+        .pricing-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 2px solid rgba(255,255,255,0.08);
+            padding: 2.5rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(14, 165, 233, 0.4);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+        }
+        
+        .pricing-card.featured {
+            border-color: var(--primary);
+            box-shadow: 0 0 40px rgba(14, 165, 233, 0.2);
+        }
+        
+        .pricing-card.featured::before {
+            content: '最受欢迎';
+            position: absolute;
+            top: 1.5rem;
+            right: -30px;
+            background: var(--gradient);
+            color: white;
+            padding: 0.4rem 3rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            transform: rotate(45deg);
+        }
+        
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .plan-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .plan-price {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .plan-price span {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .plan-period {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        
+        .plan-features li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+        }
+        
+        .plan-features li::before {
+            content: '✓';
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+        
+        .plan-features li.unavailable {
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+        
+        .plan-features li.unavailable::before {
+            content: '✗';
+            color: var(--text-muted);
+        }
+        
+        .plan-btn {
+            width: 100%;
+            text-align: center;
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            padding: 6rem 5%;
+            background: linear-gradient(180deg, var(--bg-dark) 0%, #111827 100%);
+        }
+        
+        .steps-grid {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .step-item {
+            text-align: center;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+        }
+        
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        
+        /* FAQ Section */
+        .faq-section {
+            padding: 6rem 5%;
+        }
+        
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .faq-item {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 1.5rem 2rem;
+        }
+        
+        .faq-question {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .faq-question::before {
+            content: '❓';
+        }
+        
+        .faq-answer {
+            color: var(--text-muted);
+            line-height: 1.7;
+            padding-left: 2rem;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 5rem 5%;
+            text-align: center;
+        }
+        
+        .cta-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 3.5rem;
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .cta-card h2 { font-size: 2rem; margin-bottom: 1rem; }
+        
+        .cta-card p { color: var(--text-muted); margin-bottom: 2rem; }
+        
+        /* Footer */
+        .footer {
+            padding: 4rem 5% 3rem;
+            background: #0B1120;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .footer-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-section-title {
+            color: var(--text-light);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+        
+        .footer-section-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s;
+        }
+        
+        .footer-section-links a:hover { color: var(--primary); }
+        
+        .footer-copy {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-align: center;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .page-hero h1 { font-size: 2rem; }
+            .balance-card { flex-direction: column; text-align: center; }
+            .balance-amount { font-size: 2.5rem; }
+            .pricing-grid { grid-template-columns: 1fr; }
+        }
+            /* Login Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--text-light);
+        }
+
+        .modal-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1.125rem;
+            border-radius: 10px;
+            border: 2px solid rgba(255,255,255,0.15);
+            background: var(--bg-dark);
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .form-row .form-input {
+            flex: 1;
+        }
+
+        .btn-code {
+            padding: 0.875rem 1.25rem;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-code:hover {
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        .btn-code:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(14, 165, 233, 0.4);
+        }
+
+        .user-center-modal {
+            display: none;
+        }
+
+        .user-center-modal.active {
+            display: block;
+        }
+
+        .user-center-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .user-center-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .user-center-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-center-phone {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .user-center-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .user-center-card {
+            background: var(--bg-dark);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-center-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .user-center-card.enterprise {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            border-color: rgba(14, 165, 233, 0.3);
+        }
+
+        .user-center-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .user-center-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-center-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            color: var(--text-light);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            transition: transform 0.3s;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success {
+            border-color: #10B981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .toast.error {
+            border-color: #EF4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-logo-wrapper">
+            <a href="index.html" class="logo">🚀 AI 租易用</a>
+        </div>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="rental.html">设备租赁</a></li>
+                <li><a href="token.html" class="active">Token 工厂</a></li>
+                <li><a href="services.html">AI 技术服务</a></li>
+                <li><a href="community.html">OPC 社区</a></li>
+            </ul>
+        </div>
+        <div class="nav-right-wrapper">
+            <!-- Login button (shown when not logged in) -->
+            <button class="btn btn-primary" id="loginBtn" onclick="openLoginModal()">登录 / 注册</button>
+            <!-- User menu (shown when logged in) -->
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <div class="user-btn" onclick="toggleUserDropdown()">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">用户</span>
+                    <span style="font-size: 0.75rem;">▼</span>
+                </div>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="user.html" class="dropdown-item">
+                        <span>👤</span> 用户中心
+                    </a>
+                    <a href="rental-manage.html" class="dropdown-item">
+                        <span>📋</span> 租赁管理
+                    </a>
+                    <a href="token-manage.html" class="dropdown-item">
+                        <span>🎫</span> Token 管理
+                    </a>
+                    <a href="services-manage.html" class="dropdown-item">
+                        <span>🛠️</span> 服务/工单
+                    </a>
+                    <a href="community.html" class="dropdown-item">
+                        <span>🏘️</span> OPC 社区
+                    </a>
+                    <a href="profile.html" class="dropdown-item">
+                        <span>✏️</span> 编辑资料
+                    </a>
+                    <a href="notification.html" class="dropdown-item">
+                        <span>🔔</span> 消息通知
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" onclick="logout()">
+                        <span>🚪</span> 退出登录
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        
+        <h1>⚡ 灵活算力套餐</h1>
+        <p>Token 永不过期 · 按需充值 · 即刻到账</p>
+    </section>
+
+    <!-- Balance Card -->
+    <div class="balance-section">
+        <div class="balance-card">
+            <div class="balance-info">
+                <h3>当前 Token 余额</h3>
+                <div class="balance-amount">10,000</div>
+            </div>
+            <div class="balance-actions">
+                <a href="#detail" class="btn" style="background:rgba(255,255,255,0.2);color:white;">查看详情</a>
+                <a href="#topup" class="btn" style="background:white;color:#0EA5E9;">立即充值</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="section-header">
+            <span class="section-tag">PRICING PLANS</span>
+            <h2 class="section-title">选择适合您的套餐</h2>
+            <p class="section-desc">灵活充值，用多少充多少，Token 永久有效</p>
+        </div>
+        
+        <div class="pricing-grid">
+            <!-- Starter Plan -->
+            <div class="pricing-card">
+                <h3 class="plan-name">入门版</h3>
+                <p class="plan-desc">适合个人学习和小型项目</p>
+                <div class="plan-price">¥9.9<span></span></div>
+                <p class="plan-period">一次性充值</p>
+                <ul class="plan-features">
+                    <li>10,000 Token</li>
+                    <li>基础模型访问</li>
+                    <li>社区技术支持</li>
+                    <li>标准 API 速率</li>
+                    <li class="unavailable">优先推理队列</li>
+                </ul>
+                <a href="#order" class="btn btn-primary plan-btn">立即充值</a>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="pricing-card featured">
+                <h3 class="plan-name">专业版</h3>
+                <p class="plan-desc">适合OPC老板和小型团队</p>
+                <div class="plan-price">¥99<span></span></div>
+                <p class="plan-period">一次性充值</p>
+                <ul class="plan-features">
+                    <li>50,000 Token</li>
+                    <li>全部模型访问</li>
+                    <li>优先技术支持</li>
+                    <li>优先推理队列</li>
+                    <li>API 速率提升 2 倍</li>
+                   
+                </ul>
+                <a href="#order" class="btn btn-gold plan-btn">立即充值</a>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="pricing-card">
+                <h3 class="plan-name">企业版</h3>
+                <p class="plan-desc">适合企业和大规模应用</p>
+                <div class="plan-price">¥199<span></span></div>
+                <p class="plan-period">一次性充值</p>
+                <ul class="plan-features">
+                    <li>200,000 Token</li>
+                    <li>全部模型访问</li>
+                    <li>专属客户成功经理</li>
+                    <li>最高优先级推理</li>
+                    <li>API 速率提升 5 倍</li>
+                    <li>定制模型支持</li>
+                </ul>
+                <a href="#enterprise" class="btn btn-primary plan-btn">联系销售</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="section-header">
+            <span class="section-tag">HOW IT WORKS</span>
+            <h2 class="section-title">三步开始使用</h2>
+        </div>
+        <div class="steps-grid">
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <h3 class="step-title">选择套餐</h3>
+                <p class="step-desc">根据用量需求选择合适的 Token 套餐</p>
+            </div>
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <h3 class="step-title">在线支付</h3>
+                <p class="step-desc">扫码支付、便捷自由</p>
+            </div>
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <h3 class="step-title">即刻使用</h3>
+                <p class="step-desc">充值成功后 Token 即时到账，立即可用</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="section-header">
+            <span class="section-tag">FAQ</span>
+            <h2 class="section-title">常见问题</h2>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="faq-question">Token 会过期吗？</div>
+                <p class="faq-answer">不会！您充值的 Token 永久有效，没有使用期限，随时可以使用。</p>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">如何查看 Token 消耗？</div>
+                <p class="faq-answer">在用户中心可以实时查看 Token 使用明细，包括每次 API 调用的消耗记录。</p>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">支持退款吗？</div>
+                <p class="faq-answer">充值后 7 天内未使用可申请全额退款。已使用的 Token 不支持退款。</p>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">企业采购有优惠吗？</div>
+                <p class="faq-answer">批量采购可享受专属折扣，请联系企业销售获取定制报价方案。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-card">
+            <h2>需要大额充值或定制方案？</h2>
+            <p>企业客户可享受专属折扣和定制化服务，联系我们获取最优方案</p>
+            <a href="#enterprise" class="btn btn-primary">联系专家顾问 →</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <a href="index.html" class="footer-logo">🚀 AI 租易用</a>
+            <div style="display: flex; gap: 3rem; flex-wrap: wrap;">
+                <div class="footer-section">
+                    <div class="footer-section-title">产品服务</div>
+                    <ul class="footer-section-links">
+                        <li><a href="rental.html">设备租赁</a></li>
+                        <li><a href="token.html" class="active">Token 工厂</a></li>
+                        <li><a href="services.html">AI 技术服务</a></li>
+                        <li><a href="community.html">OPC 社区</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <div class="footer-section-title">用户服务</div>
+                    <ul class="footer-section-links">
+                        <li><a href="user.html">用户中心</a></li>
+                        <li><a href="affiliate.html">分销合作</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <div class="footer-section-title">支持</div>
+                    <ul class="footer-section-links">
+                        <li><a href="#">产品文档</a></li>
+                        <li><a href="#">价格方案</a></li>
+                        <li><a href="#">关于我们</a></li>
+                        <li><a href="#">联系我们</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-copy">© 2024 AI 租易用。All rights reserved.</div>
+        </div>
+    </footer>
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeLoginModal()">×</button>
+            <h2 class="modal-title">欢迎回来</h2>
+            <p class="modal-subtitle">使用手机号验证码登录或注册</p>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label" for="phone">手机号</label>
+                    <input type="tel" id="phone" class="form-input" placeholder="请输入 11 位手机号" maxlength="11" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="code">验证码</label>
+                    <div class="form-row">
+                        <input type="text" id="code" class="form-input" placeholder="6 位验证码" maxlength="6" required>
+                        <button type="button" class="btn-code" id="getCodeBtn" onclick="sendCode()">获取验证码</button>
+                    </div>
+                </div>
+                
+                <div class="form-agreement">
+                    <input type="checkbox" id="agreement" required>
+                    <label for="agreement">我已阅读并同意 <a href="#">用户协议</a> 和 <a href="#">隐私政策</a></label>
+                </div>
+                
+                <button type="submit" class="btn-submit">登录/注册</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Center Modal -->
+    <div class="modal-overlay" id="userCenterModal">
+        <div class="modal-container user-center-modal">
+            <button class="modal-close" onclick="closeUserCenter()">×</button>
+            <div class="user-center-header">
+                <div class="user-center-avatar" id="centerAvatar">U</div>
+                <div class="user-center-name" id="centerName">用户</div>
+                <div class="user-center-phone" id="centerPhone">138****0000</div>
+            </div>
+            
+            <div class="user-center-grid">
+                <a href="pages/enterprise/index.html" class="user-center-card enterprise">
+                    <div class="user-center-icon">🏢</div>
+                    <div>
+                        <h4>企业后台</h4>
+                        <p>管理企业资源与数据</p>
+                    </div>
+                </a>
+                <a href="#" class="user-center-card">
+                    <div class="user-center-icon">📊</div>
+                    <div>
+                        <h4>使用统计</h4>
+                        <p>查看 API 调用情况</p>
+                    </div>
+                </a>
+                <a href="#" class="user-center-card">
+                    <div class="user-center-icon">💳</div>
+                    <div>
+                        <h4>账户充值</h4>
+                        <p>管理余额与套餐</p>
+                    </div>
+                </a>
+                <a href="#" class="user-center-card">
+                    <div class="user-center-icon">⚙️</div>
+                    <div>
+                        <h4>账户设置</h4>
+                        <p>修改个人信息</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+    
+    <script>
+        let currentUser = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('aiZuyiyongUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateUIForLoggedInUser();
+            }
+        });
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        document.getElementById('loginModal').addEventListener('click', (e) => {
+            if (e.target.id === 'loginModal') closeLoginModal();
+        });
+
+        document.getElementById('userCenterModal').addEventListener('click', (e) => {
+            if (e.target.id === 'userCenterModal') closeUserCenter();
+        });
+
+        let codeSent = false, countdown = 0;
+
+        function sendCode() {
+            const phone = document.getElementById('phone').value;
+            if (!/^1[3-9]\d{9}$/.test(phone)) {
+                showToast('请输入正确的 11 位手机号', 'error');
+                return;
+            }
+            if (codeSent && countdown > 0) return;
+
+            const btn = document.getElementById('getCodeBtn');
+            btn.disabled = true;
+            countdown = 60;
+            btn.textContent = `${countdown}s 后重试`;
+            
+            setTimeout(() => {
+                showToast('验证码已发送：123456（演示用）', 'success');
+                codeSent = true;
+                const timer = setInterval(() => {
+                    countdown--;
+                    if (countdown <= 0) {
+                        clearInterval(timer);
+                        btn.disabled = false;
+                        btn.textContent = '获取验证码';
+                    } else {
+                        btn.textContent = `${countdown}s 后重试`;
+                    }
+                }, 1000);
+            }, 500);
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const phone = document.getElementById('phone').value;
+            const code = document.getElementById('code').value;
+            const agreement = document.getElementById('agreement').checked;
+
+            if (!agreement) { showToast('请先同意用户协议和隐私政策', 'error'); return; }
+            if (!/^1[3-9]\d{9}$/.test(phone)) { showToast('请输入正确的 11 位手机号', 'error'); return; }
+            if (code.length !== 6) { showToast('请输入 6 位验证码', 'error'); return; }
+
+            setTimeout(() => {
+                const user = {
+                    phone: phone,
+                    name: phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2'),
+                    avatar: phone.charAt(phone.length - 1) % 2 === 0 ? '👨' : '👩'
+                };
+                currentUser = user;
+                localStorage.setItem('aiZuyiyongUser', JSON.stringify(user));
+                updateUIForLoggedInUser();
+                closeLoginModal();
+                showToast('登录成功！', 'success');
+                document.getElementById('loginForm').reset();
+                codeSent = false;
+                document.getElementById('getCodeBtn').disabled = false;
+                document.getElementById('getCodeBtn').textContent = '获取验证码';
+            }, 500);
+        }
+
+        function updateUIForLoggedInUser() {
+            if (!currentUser) return;
+            const loginBtn = document.getElementById('loginBtn');
+            const userMenu = document.getElementById('userMenu');
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (userMenu) {
+                userMenu.style.display = 'block';
+                userMenu.classList.add('active');
+            }
+            document.getElementById('userAvatar').textContent = currentUser.avatar || 'U';
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('centerAvatar').textContent = currentUser.avatar || 'U';
+            document.getElementById('centerName').textContent = currentUser.name;
+            document.getElementById('centerPhone').textContent = currentUser.phone;
+        }
+
+        function toggleUserDropdown() {
+            document.getElementById('userDropdown').classList.toggle('active');
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.user-btn') && !e.target.closest('.user-dropdown')) {
+                document.getElementById('userDropdown').classList.remove('active');
+            }
+        });
+
+        function openUserCenter() {
+            if (!currentUser) { openLoginModal(); return; }
+            document.getElementById('userCenterModal').classList.add('active');
+            document.getElementById('userDropdown').classList.remove('active');
+        }
+
+        function closeUserCenter() {
+            document.getElementById('userCenterModal').classList.remove('active');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('aiZuyiyongUser');
+            const loginBtn = document.getElementById('loginBtn');
+            const userMenu = document.getElementById('userMenu');
+            if (loginBtn) loginBtn.style.display = 'inline-block';
+            if (userMenu) {
+                userMenu.style.display = 'none';
+                userMenu.classList.remove('active');
+            }
+            document.getElementById('userDropdown').classList.remove('active');
+            showToast('已退出登录', 'success');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
+
+</body>
+</html>

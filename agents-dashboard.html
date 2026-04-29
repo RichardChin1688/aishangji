@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👑 陛下的大臣们 - OpenClaw Agent 团队</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            padding-top: 100px;
+        }
+        
+        /* 顶部悬浮横幅 */
+        .top-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 90px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .banner-logo {
+            height: 70px;
+            width: auto;
+            position: absolute;
+            left: 40px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+        
+        .banner-title {
+            color: white;
+            font-size: 2.2em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 3px;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .banner-play-btn {
+            position: absolute;
+            right: 40px;
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+        
+        .banner-play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
+        }
+        
+        .banner-play-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .banner-play-btn.playing {
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .section-title {
+            color: white;
+            font-size: 1.8em;
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .agent-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .agent-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .agent-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .agent-info h3 {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .agent-id {
+            font-size: 0.85em;
+            color: #888;
+            font-family: monospace;
+            background: #f5f5f5;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .agent-role {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .agent-duties {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .agent-duties ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .agent-duties li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .agent-duties li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .workspace-path {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 0.8em;
+            color: #888;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        
+        .agent-play-btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .agent-play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .agent-play-btn:active {
+            transform: translateY(0);
+        }
+        
+        .agent-play-btn.playing {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            animation: pulse 1s infinite;
+        }
+        
+        /* Department colors */
+        .danei .agent-avatar { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .gongbu .agent-avatar { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .xingbu .agent-avatar { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .libu .agent-avatar { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .hubu .agent-avatar { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .libu2 .agent-avatar { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+        .bingbu .agent-avatar { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+        .meigu .agent-avatar { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+        .laoshi .agent-avatar { background: linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%); }
+        .media .agent-avatar { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid rgba(255,255,255,0.3);
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .agents-grid { grid-template-columns: 1fr; }
+            
+            /* 手机端横幅优化 */
+            .top-banner {
+                height: 60px;
+                padding: 0 15px;
+            }
+            
+            .banner-logo {
+                height: 45px; /* Logo 等比例缩小 */
+                width: auto;
+                left: 15px;
+            }
+            
+            .banner-title {
+                font-size: 0.9em;
+                text-align: center;
+                position: static;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: 0 60px; /* 给 Logo 和按钮留空间 */
+            }
+            
+            .banner-play-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部悬浮横幅 -->
+    <div class="top-banner">
+        <img src="图片素材/设计启橙 AI 创 logo (2).png" alt="启橙 AI 创 Logo" class="banner-logo">
+        <div class="banner-title">深圳 启橙AI创 OPENCLAW+OPC 创业孵化学院</div>
+        <button class="banner-play-btn" onclick="togglePlayAll()" title="播放所有 Agent 自我介绍">🔊</button>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>👑 陛下的大臣们</h1>
+            <p>OpenClaw Agent 团队 · 十司完备 · 各司其职</p>
+        </div>
+        
+        <!-- 中央机构 -->
+        <h2 class="section-title">🏛️ 中央机构</h2>
+        <div class="agents-grid">
+            <div class="agent-card danei">
+                <div class="agent-header">
+                    <div class="agent-avatar">🫡</div>
+                    <div class="agent-info">
+                        <h3>大内总管 · 王德发</h3>
+                        <span class="agent-id">陛下身边的红人</span>
+                    </div>
+                </div>
+                <div class="agent-role">大内总管 · 统筹协调</div>
+                <div class="agent-duties">
+                    <strong>主要职责:</strong>
+                    <ul>
+                        <li>项目管理（多项目协调）</li>
+                        <li>统筹协调各部门</li>
+                        <li>应急处理</li>
+                        <li>查天气</li>
+                    </ul>
+                </div>
+                <button class="agent-play-btn" onclick="playAgentAudio(0, this)">🎤 听自我介绍</button>
+            </div>
+        </div>
+        
+        <!-- 六部 -->
+        <h2 class="section-title">📜 六部</h2>
+        <div class="agents-grid">
+            <div class="agent-card gongbu">
+                <div class="agent-header">
+                    <div class="agent-avatar">🏗️</div>
+                    <div class="agent-info">
+                        <h3>工部 · 小载子</h3>
+                        <span class="agent-id">gongbu</span>
+                    </div>
+                </div>
+                <div class="agent-role">工部尚书 · 技能建设</div>
+                <div class="agent-duties">
+                    <strong>主要职责:</strong>
+                    <ul>
+                        <li>技能下载</li>
+                        <li>技能安装</li>
+                    </ul>
+                </div>
+                <button class="agent-play-btn" onclick="playAgentAudio(1, this)">🎤 听自我介绍</button>
+            </div>
+            
+            <div class="agent-card media">
+                <div class="agent-header">
+                    <div class="agent-avatar">🎬</div>
+                    <div class="agent-info">
+                        <h3>工部 · 大导演</h3>
+                        <span class="agent-id">media</span>
+                    </div>
+                </div>
+                <div class="agent-role">工部尚书 · 媒体营销</div>
+                <div class="agent-duties">
+                    <strong>主要职责:</strong>
+                    <ul>
+                        <li>自媒体营销</li>
+                        <li>视频剪辑</li>
+                        <li>海报设计</li>
+                        <li>多平台分发</li>
+                    </ul>
+                </div>
+                <button class="agent-play-btn" onclick="playAgentAudio(2, this)">🎤 听自我介绍</button>
+            </div>
+            
+            <div class="agent-card xingbu">
+                <div class="agent-header">
+                    <div class="agent-avatar">⚖️</div>
+                    <div class="agent-info">
+                        <h3>刑部 · 小审子</h3>
+                        <span class="agent-id">xingbu</span>
+                    </div>
+                </div>
+                <div class="agent-role">刑部尚书 · 安全法务</div>
+                <div class="agent-duties">
+                    <strong>主要职责:</strong>
+                    <ul>
+                        <li>安全审查（Skill Vetter）</li>
+                        <li>备份文件</li>
+                        <li>安全检查</li>
+                        <li>法务合规</li>
+                    </ul>
+                </div>
+                <button class="agent-play-btn" onclick="playAgentAudio(3, this)">🎤 听自我介绍</button>
+            </div>
+            
+            <div class="agent-card libu">
+                <div class="agent-header">
+                    <div class="agent-avatar">📋</div>
+                    <div class="agent-info">
+                        <h3>吏部 · 小仁子</h3>
+                        <span class="agent-id">libu</span>
+                    </div>
+                </div>
+                <div class="agent-role">吏部尚书 · 人事组织</div>
+                <div class="agent-duties">
+                    <strong>主要职责:</strong>
+                    <ul>
+                        <li>技能管理</li>
+                        <li>Agent 配置</li>
+                        <li>人力资源管理</li>
+                        <li>绩效考核</li>
+                    </ul>
+                </div>
+                <button class="agent-play-btn" onclick="playAgentAudio(4, this)">🎤 听自我介绍</button>
+            </div>
+            
+            <div class="agent-card hubu">
+                <div class="agent-header">
+                    <div class="agent-avatar">💰</div>
+                    <div class="agent-info">
+                        <h3>户部 · 小财宝</h3>
+                        <span class="agent-id">hubu</span>
+                    </div>
+                </div>
+                <div class="agent-role">户部尚书 · 财务数据</div>
+                <div class="agent-duties">
+                    <strong>主要职责:</strong>
+                    <ul>
+                        <li>API 成本追踪</li>
+                        <li>Token 统计</li>
+                        <li>数据分析（BI 报表）</li>
+                        <li>财务报告</li>
+                    </ul>
+                </div>
+                <button class="agent-play-btn" onclick="playAgentAudio(5, this)">🎤 听自我介绍</button>
+            </div>
+            
+            <div class="agent-card libu2">
+                <div class="agent-header">
+                    <div class="agent-avatar">📚</div>
+                    <div class="agent-info">
+                        <h3>礼部 · 小学子</h3>
+                        <span class="agent-id">libu2</span>
+                    </div>
+                </div>
+                <div class="agent-role">礼部尚书 · 知识信息</div>
+                <div class="agent-duties">
+                    <strong>主要职责:</strong>
+                    <ul>
+                        <li>信息搜集</li>
+                        <li>飞书知识库管理</li>
+                        <li>知识管理</li>
+                        <li>查天气</li>
+                    </ul>
+                </div>
+                <button class="agent-play-btn" onclick="playAgentAudio(6, this)">🎤 听自我介绍</button>
+            </div>
+        </div>
+        
+        <!-- 兵部三将 -->
+        <h2 class="section-title">⚔️ 兵部三将</h2>
+        <div class="agents-grid">
+            <div class="agent-card bingbu">
+                <div class="agent-header">
+                    <div class="agent-avatar">🌐</div>
+                    <div class="agent-info">
+                        <h3>跨境 · 大老板</h3>
+                        <span class="agent-id">bingbu</span>
+                    </div>
+                </div>
+                <div class="agent-role">兵部尚书 · 跨境电商</div>
+                <div class="agent-duties">
+                    <strong>主要职责:</strong>
+                    <ul>
+                        <li>跨境电商运营</li>
+                        <li>市场分析</li>
+                        <li>客户服务</li>
+                        <li>营销策略</li>
+                    </ul>
+                </div>
+                <button class="agent-play-btn" onclick="playAgentAudio(7, this)">🎤 听自我介绍</button>
+            </div>
+            
+            <div class="agent-card meigu">
+                <div class="agent-header">
+                    <div class="agent-avatar">📈</div>
+                    <div class="agent-info">
+                        <h3>美股 · 巴菲特</h3>
+                        <span class="agent-id">meigu</span>
+                    </div>
+                </div>
+                <div class="agent-role">兵部尚书 · 美股期权</div>
+                <div class="agent-duties">
+                    <strong>主要职责:</strong>
+                    <ul>
+                        <li>美股盯盘</li>
+                        <li>查股价</li>
+                        <li>期权策略</li>
+                        <li>交易执行</li>
+                    </ul>
+                </div>
+                <button class="agent-play-btn" onclick="playAgentAudio(8, this)">🎤 听自我介绍</button>
+            </div>
+            
+            <div class="agent-card laoshi">
+                <div class="agent-header">
+                    <div class="agent-avatar">🎓</div>
+                    <div class="agent-info">
+                        <h3>教培 · 老先生</h3>
+                        <span class="agent-id">laoshi</span>
+                    </div>
+                </div>
+                <div class="agent-role">兵部尚书 · OpenClaw 教培</div>
+                <div class="agent-duties">
+                    <strong>主要职责:</strong>
+                    <ul>
+                        <li>OpenClaw 技术研究</li>
+                        <li>培训课程设计</li>
+                        <li>演讲授课</li>
+                        <li>政策研究</li>
+                        <li>创业辅导</li>
+                    </ul>
+                </div>
+                <button class="agent-play-btn" onclick="playAgentAudio(9, this)">🎤 听自我介绍</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🫡 各司其职，井井有条 · 陛下可以垂拱而治</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">最后更新：2026 年 3 月 18 日</p>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+// 播放单个 Agent 自我介绍
+let currentPlayingBtn = null;
+let currentAudio = null;
+
+function playAgentAudio(index, btn) {
+    // 如果正在播放其他 Agent，先停止
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        if (currentPlayingBtn) {
+            currentPlayingBtn.innerHTML = '🎤 听自我介绍';
+            currentPlayingBtn.classList.remove('playing');
+        }
+    }
+    
+    // 如果点击的是正在播放的按钮，停止播放
+    if (currentPlayingBtn === btn) {
+        currentPlayingBtn = null;
+        currentAudio = null;
+        return;
+    }
+    
+    const agentsAudio = [
+        '01-王德发.mp3',
+        '02-工部小载子.mp3',
+        '03-工部大导演.mp3',
+        '04-刑部小审子.mp3',
+        '05-吏部小仁子.mp3',
+        '06-户部小财宝.mp3',
+        '07-礼部小学子.mp3',
+        '08-跨境大老板.mp3',
+        '09-美股巴菲特.mp3',
+        '10-教培老先生.mp3'
+    ];
+    
+    currentAudio = new Audio('./agent-voices/' + agentsAudio[index]);
+    currentPlayingBtn = btn;
+    btn.innerHTML = '⏹️ 停止';
+    btn.classList.add('playing');
+    
+    currentAudio.addEventListener('ended', function() {
+        btn.innerHTML = '🎤 听自我介绍';
+        btn.classList.remove('playing');
+        currentPlayingBtn = null;
+        currentAudio = null;
+    });
+    
+    currentAudio.addEventListener('error', function() {
+        console.error('无法播放:', agentsAudio[index]);
+        btn.innerHTML = '🎤 听自我介绍';
+        btn.classList.remove('playing');
+        currentPlayingBtn = null;
+        currentAudio = null;
+    });
+    
+    currentAudio.play();
+}
+
+// 播放所有 Agent 自我介绍
+let currentAudioIndex = 0;
+let isPlaying = false;
+
+const agentsAudio = [
+    '01-王德发.mp3',
+    '02-工部小载子.mp3',
+    '03-工部大导演.mp3',
+    '04-刑部小审子.mp3',
+    '05-吏部小仁子.mp3',
+    '06-户部小财宝.mp3',
+    '07-礼部小学子.mp3',
+    '08-跨境大老板.mp3',
+    '09-美股巴菲特.mp3',
+    '10-教培老先生.mp3'
+];
+
+function togglePlayAll() {
+    const btn = document.querySelector('.banner-play-btn');
+    
+    // 停止单个 Agent 播放
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        if (currentPlayingBtn) {
+            currentPlayingBtn.innerHTML = '🎤 听自我介绍';
+            currentPlayingBtn.classList.remove('playing');
+        }
+        currentPlayingBtn = null;
+        currentAudio = null;
+    }
+    
+    if (isPlaying) {
+        isPlaying = false;
+        btn.innerHTML = '🔊';
+        btn.classList.remove('playing');
+        // 停止当前播放的音频
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+            currentAudio = null;
+        }
+        return;
+    }
+    
+    isPlaying = true;
+    btn.innerHTML = '⏹️';
+    btn.classList.add('playing');
+    currentAudioIndex = 0;
+    playNextAgent();
+}
+
+function playNextAgent() {
+    if (!isPlaying || currentAudioIndex >= agentsAudio.length) {
+        isPlaying = false;
+        currentAudioIndex = 0;
+        const btn = document.querySelector('.banner-play-btn');
+        btn.innerHTML = '🔊';
+        btn.classList.remove('playing');
+        currentAudio = null;
+        return;
+    }
+    
+    const audioFile = agentsAudio[currentAudioIndex];
+    currentAudio = new Audio('./agent-voices/' + audioFile);
+    
+    currentAudio.addEventListener('ended', function() {
+        currentAudioIndex++;
+        playNextAgent();
+    });
+    
+    currentAudio.addEventListener('error', function() {
+        console.error('无法播放:', audioFile);
+        currentAudioIndex++;
+        playNextAgent();
+    });
+    
+    currentAudio.play();
+}
+</script>

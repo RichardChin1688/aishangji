@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程详情 - AI 产业研究院</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #1890ff;
+            --primary-dark: #096dd9;
+            --primary-light: #40a9ff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --text-light: #8c8c8c;
+            --bg-light: #f5f7fa;
+            --bg-white: #ffffff;
+            --bg-dark: #001529;
+            --border-color: #e8e8e8;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-white);
+        }
+
+        /* ========== Header ========== */
+        .header {
+            background: var(--bg-white);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--bg-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .logo-main { font-size: 24px; font-weight: 700; }
+        .logo-sub { font-size: 11px; color: var(--text-light); letter-spacing: 1px; }
+        .nav { display: flex; gap: 40px; }
+        .nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s;
+            padding: 8px 0;
+            position: relative;
+        }
+        .nav a:hover, .nav a.active { color: var(--primary-color); }
+        .nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary-color);
+        }
+        .header-actions { display: flex; gap: 16px; align-items: center; }
+        .btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-outline { border: 1px solid var(--border-color); color: var(--text-secondary); background: transparent; }
+        .btn-outline:hover { border-color: var(--primary-color); color: var(--primary-color); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3); }
+
+        /* ========== Breadcrumb ========== */
+        .breadcrumb {
+            padding: 120px 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .breadcrumb a { color: var(--text-secondary); text-decoration: none; font-size: 14px; }
+        .breadcrumb a:hover { color: var(--primary-color); }
+        .breadcrumb span { color: var(--text-light); margin: 0 10px; }
+
+        /* ========== Course Detail ========== */
+        .course-detail {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px 60px;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 48px;
+        }
+        .course-main { background: var(--bg-white); }
+
+        .course-header { margin-bottom: 40px; }
+        .course-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .course-badge.beginner { background: #e6f7ff; color: #1890ff; }
+        .course-badge.intermediate { background: #fff7e6; color: #fa8c16; }
+        .course-badge.advanced { background: #f9f0ff; color: #722ed1; }
+
+        .course-title { font-size: 40px; font-weight: 700; margin-bottom: 16px; line-height: 1.3; color: var(--bg-dark); }
+        .course-subtitle { font-size: 18px; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.6; }
+        .course-meta { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 32px; }
+        .course-meta-item { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 14px; }
+
+        .course-cover-large {
+            height: 320px;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #003a8c 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 96px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .course-cover-large::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(24, 144, 255, 0.15) 0%, transparent 70%);
+        }
+        .course-cover-large span { position: relative; z-index: 1; }
+
+        .course-section { margin-bottom: 48px; }
+        .course-section h2 { font-size: 24px; margin-bottom: 24px; color: var(--bg-dark); font-weight: 700; }
+        .course-description { font-size: 16px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 20px; }
+
+        .course-features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 24px; }
+        .course-feature { display: flex; align-items: flex-start; gap: 16px; }
+        .course-feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, rgba(24, 144, 255, 0.1) 0%, rgba(9, 109, 217, 0.1) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        .course-feature-text h4 { font-size: 16px; margin-bottom: 6px; color: var(--bg-dark); font-weight: 600; }
+        .course-feature-text p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+        /* Syllabus */
+        .syllabus { background: var(--bg-light); border-radius: 12px; padding: 32px; }
+        .syllabus h3 { font-size: 18px; margin-bottom: 24px; color: var(--bg-dark); font-weight: 600; }
+        .syllabus-list { list-style: none; }
+        .syllabus-item { background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 12px; overflow: hidden; transition: all 0.3s; }
+        .syllabus-item:hover { border-color: var(--primary-color); }
+        .syllabus-header {
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .syllabus-header:hover { background: var(--bg-light); }
+        .syllabus-title { display: flex; align-items: center; gap: 12px; font-weight: 600; color: var(--bg-dark); font-size: 15px; }
+        .syllabus-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .syllabus-meta { display: flex; gap: 16px; font-size: 13px; color: var(--text-light); }
+        .syllabus-content { padding: 0 24px 20px 68px; }
+        .syllabus-content ul { list-style: disc; padding-left: 20px; color: var(--text-secondary); font-size: 14px; }
+        .syllabus-content li { margin-bottom: 8px; }
+
+        /* Instructor */
+        .instructor-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 32px;
+            display: flex;
+            gap: 28px;
+            align-items: flex-start;
+        }
+        .instructor-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+        .instructor-info h3 { font-size: 20px; margin-bottom: 8px; color: var(--bg-dark); font-weight: 700; }
+        .instructor-title { color: var(--primary-color); font-size: 14px; margin-bottom: 12px; font-weight: 500; }
+        .instructor-desc { color: var(--text-secondary); font-size: 14px; line-height: 1.7; margin-bottom: 16px; }
+        .instructor-stats { display: flex; gap: 24px; }
+        .instructor-stat { text-align: center; }
+        .instructor-stat-value { font-size: 20px; font-weight: 700; color: var(--primary-color); }
+        .instructor-stat-label { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+
+        /* Sidebar */
+        .course-sidebar { position: sticky; top: 100px; height: fit-content; }
+        .purchase-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        .preview-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #003a8c 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            cursor: pointer;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .preview-video::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(24, 144, 255, 0.15) 0%, transparent 70%);
+        }
+        .preview-video span { position: relative; z-index: 1; }
+        .preview-video::after {
+            content: '▶';
+            width: 64px;
+            height: 64px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            backdrop-filter: blur(4px);
+        }
+        .purchase-price { font-size: 36px; font-weight: 700; color: var(--primary-color); margin-bottom: 8px; }
+        .purchase-price span { font-size: 16px; color: var(--text-light); font-weight: 400; }
+        .purchase-original { color: var(--text-light); text-decoration: line-through; font-size: 14px; margin-bottom: 16px; }
+        .purchase-discount {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #fff1f0;
+            color: #f5222d;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        .purchase-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 12px;
+        }
+        .purchase-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3); }
+        .purchase-btn-outline {
+            background: var(--bg-white);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        .purchase-btn-outline:hover { background: rgba(24, 144, 255, 0.05); }
+        .purchase-features { list-style: none; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border-color); }
+        .purchase-features li { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary); }
+        .purchase-features li::before { content: '✓'; color: var(--primary-color); font-weight: bold; font-size: 16px; }
+
+        .course-info-card { background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; }
+        .info-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: var(--text-light); font-size: 13px; }
+        .info-value { color: var(--text-primary); font-size: 14px; font-weight: 500; }
+
+        /* Related Courses */
+        .related-section { padding: 80px 40px; background: var(--bg-light); }
+        .related-container { max-width: 1400px; margin: 0 auto; }
+        .section-title { text-align: center; margin-bottom: 48px; }
+        .section-tag { display: inline-block; color: var(--primary-color); font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+        .section-title h2 { font-size: 32px; margin-bottom: 12px; color: var(--bg-dark); font-weight: 700; }
+        .section-title p { color: var(--text-light); font-size: 16px; }
+        .related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+        .course-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .course-card:hover { border-color: var(--primary-color); box-shadow: 0 8px 24px rgba(24, 144, 255, 0.12); transform: translateY(-4px); }
+        .course-cover {
+            height: 160px;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #003a8c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+        .course-cover::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(24, 144, 255, 0.15) 0%, transparent 70%);
+        }
+        .course-cover span { position: relative; z-index: 1; }
+        .course-info { padding: 20px; }
+        .course-level-small { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 10px; }
+        .course-level-small.beginner { background: #e6f7ff; color: #1890ff; }
+        .course-level-small.intermediate { background: #fff7e6; color: #fa8c16; }
+        .course-level-small.advanced { background: #f9f0ff; color: #722ed1; }
+        .course-title-small { font-size: 16px; font-weight: 700; margin-bottom: 8px; line-height: 1.4; color: var(--bg-dark); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .course-instructor-small { font-size: 13px; color: var(--text-light); margin-bottom: 12px; }
+        .course-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 1px solid var(--border-color); }
+        .course-price { font-size: 18px; font-weight: 700; color: var(--primary-color); }
+        .course-rating { display: flex; align-items: center; gap: 4px; font-size: 13px; color: #faad14; font-weight: 600; }
+
+        /* ========== Footer ========== */
+        .footer { background: var(--bg-dark); color: rgba(255,255,255,0.7); padding: 60px 40px 30px; }
+        .footer-container { max-width: 1400px; margin: 0 auto; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 40px; }
+        .footer-brand .logo { color: white; margin-bottom: 16px; }
+        .footer-brand p { font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
+        .footer-section h4 { color: white; font-size: 15px; font-weight: 600; margin-bottom: 20px; }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--primary-light); }
+        .footer-bottom { padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 13px; color: rgba(255,255,255,0.5); }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 1200px) {
+            .course-detail { grid-template-columns: 1fr; }
+            .course-sidebar { position: static; }
+            .related-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .header-container { padding: 0 20px; }
+            .nav { display: none; }
+            .breadcrumb { padding: 100px 20px 20px; }
+            .course-detail { padding: 0 20px 40px; }
+            .course-title { font-size: 28px; }
+            .course-features { grid-template-columns: 1fr; }
+            .instructor-card { flex-direction: column; align-items: center; text-align: center; }
+            .instructor-stats { justify-content: center; }
+            .related-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
+        @media (max-width: 480px) {
+            .related-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">📊</div>
+                <div class="logo-text">
+                    <span class="logo-main">AI 产业研究院</span>
+                    <span class="logo-sub">AI Industry Research</span>
+                </div>
+            </a>
+            <nav class="nav">
+                <a href="index.html">首页</a>
+                <a href="reports.html">研究报告</a>
+                <a href="courses.html" class="active">培训课程</a>
+                <a href="#">智库服务</a>
+                <a href="data-platform.html">数据平台</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" class="btn btn-outline">登录</a>
+                <a href="#" class="btn btn-primary">免费注册</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="index.html">首页</a>
+        <span>/</span>
+        <a href="courses.html">培训课程</a>
+        <span>/</span>
+        <span>课程详情</span>
+    </nav>
+
+    <!-- Course Detail -->
+    <section class="course-detail">
+        <div class="course-main">
+            <div class="course-header">
+                <span class="course-badge intermediate">进阶</span>
+                <h1 class="course-title">Prompt Engineering 实战课程</h1>
+                <p class="course-subtitle">掌握高效提示词设计技巧，让大模型更好地为你工作</p>
+                <div class="course-meta">
+                    <div class="course-meta-item"><span>📺</span><span>16 课时</span></div>
+                    <div class="course-meta-item"><span>⏱️</span><span>约 8 小时</span></div>
+                    <div class="course-meta-item"><span>👥</span><span>1,892 人已学</span></div>
+                    <div class="course-meta-item"><span>⭐</span><span>4.8 (256 评价)</span></div>
+                    <div class="course-meta-item"><span>📅</span><span>最近更新：2026-04-01</span></div>
+                </div>
+            </div>
+
+            <div class="course-cover-large"><span>💻</span></div>
+
+            <div class="course-section">
+                <h2>课程介绍</h2>
+                <p class="course-description">本课程将系统讲解 Prompt Engineering（提示工程）的核心原理与实战技巧。通过大量案例演示，帮助学员掌握如何设计高效的提示词，充分发挥大模型的能力，解决实际工作和生活中的各种问题。</p>
+                <p class="course-description">课程涵盖基础概念、设计框架、高级技巧、行业应用等多个模块，适合有一定 AI 使用经验、希望进一步提升效果的学员。</p>
+                <div class="course-features">
+                    <div class="course-feature">
+                        <div class="course-feature-icon">📚</div>
+                        <div class="course-feature-text">
+                            <h4>系统化知识体系</h4>
+                            <p>从基础到进阶，完整覆盖 Prompt 设计方法论</p>
+                        </div>
+                    </div>
+                    <div class="course-feature">
+                        <div class="course-feature-icon">💡</div>
+                        <div class="course-feature-text">
+                            <h4>丰富实战案例</h4>
+                            <p>50+ 真实场景案例，即学即用</p>
+                        </div>
+                    </div>
+                    <div class="course-feature">
+                        <div class="course-feature-icon">🎯</div>
+                        <div class="course-feature-text">
+                            <h4>行业应用导向</h4>
+                            <p>针对内容创作、编程、数据分析等场景专项训练</p>
+                        </div>
+                    </div>
+                    <div class="course-feature">
+                        <div class="course-feature-icon">👨‍🏫</div>
+                        <div class="course-feature-text">
+                            <h4>专属学习社群</h4>
+                            <p>加入学员群，与讲师和同学交流互动</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="course-section">
+                <h2>课程大纲</h2>
+                <div class="syllabus">
+                    <ul class="syllabus-list">
+                        <li class="syllabus-item">
+                            <div class="syllabus-header">
+                                <div class="syllabus-title"><span class="syllabus-number">1</span><span>课程导论：Prompt Engineering 概述</span></div>
+                                <div class="syllabus-meta"><span>📺 2 课时</span><span>⏱️ 45 分钟</span></div>
+                            </div>
+                            <div class="syllabus-content"><ul><li>什么是 Prompt Engineering</li><li>为什么 Prompt 设计如此重要</li><li>大模型工作原理简介</li><li>课程学习路径说明</li></ul></div>
+                        </li>
+                        <li class="syllabus-item">
+                            <div class="syllabus-header">
+                                <div class="syllabus-title"><span class="syllabus-number">2</span><span>Prompt 设计基础原则</span></div>
+                                <div class="syllabus-meta"><span>📺 3 课时</span><span>⏱️ 60 分钟</span></div>
+                            </div>
+                            <div class="syllabus-content"><ul><li>清晰性原则</li><li>具体性原则</li><li>上下文提供技巧</li><li>角色设定方法</li></ul></div>
+                        </li>
+                        <li class="syllabus-item">
+                            <div class="syllabus-header">
+                                <div class="syllabus-title"><span class="syllabus-number">3</span><span>高级 Prompt 技巧（上）</span></div>
+                                <div class="syllabus-meta"><span>📺 3 课时</span><span>⏱️ 65 分钟</span></div>
+                            </div>
+                            <div class="syllabus-content"><ul><li>思维链（Chain of Thought）</li><li>少样本学习（Few-Shot Learning）</li><li>分步拆解复杂任务</li><li>自我一致性验证</li></ul></div>
+                        </li>
+                        <li class="syllabus-item">
+                            <div class="syllabus-header">
+                                <div class="syllabus-title"><span class="syllabus-number">4</span><span>高级 Prompt 技巧（下）</span></div>
+                                <div class="syllabus-meta"><span>📺 3 课时</span><span>⏱️ 60 分钟</span></div>
+                            </div>
+                            <div class="syllabus-content"><ul><li>约束条件设置</li><li>输出格式控制</li><li>迭代优化方法</li><li>Prompt 模板化</li></ul></div>
+                        </li>
+                        <li class="syllabus-item">
+                            <div class="syllabus-header">
+                                <div class="syllabus-title"><span class="syllabus-number">5</span><span>内容创作场景应用</span></div>
+                                <div class="syllabus-meta"><span>📺 2 课时</span><span>⏱️ 50 分钟</span></div>
+                            </div>
+                            <div class="syllabus-content"><ul><li>文章写作 Prompt 设计</li><li>社交媒体内容生成</li><li>营销文案创作</li><li>创意写作辅助</li></ul></div>
+                        </li>
+                        <li class="syllabus-item">
+                            <div class="syllabus-header">
+                                <div class="syllabus-title"><span class="syllabus-number">6</span><span>编程与数据分析场景</span></div>
+                                <div class="syllabus-meta"><span>📺 2 课时</span><span>⏱️ 55 分钟</span></div>
+                            </div>
+                            <div class="syllabus-content"><ul><li>代码生成与调试</li><li>代码解释与文档</li><li>数据分析任务拆解</li><li>可视化图表生成</li></ul></div>
+                        </li>
+                        <li class="syllabus-item">
+                            <div class="syllabus-header">
+                                <div class="syllabus-title"><span class="syllabus-number">7</span><span>常见问题与调试技巧</span></div>
+                                <div class="syllabus-meta"><span>📺 1 课时</span><span>⏱️ 30 分钟</span></div>
+                            </div>
+                            <div class="syllabus-content"><ul><li>常见错误类型分析</li><li>调试方法论</li><li>Prompt 优化 checklist</li><li>最佳实践总结</li></ul></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="course-section">
+                <h2>讲师介绍</h2>
+                <div class="instructor-card">
+                    <div class="instructor-avatar">👨‍🏫</div>
+                    <div class="instructor-info">
+                        <h3>李老师</h3>
+                        <p class="instructor-title">资深 AI 应用专家 / 前大厂 AI 产品负责人</p>
+                        <p class="instructor-desc">拥有 10 年 + 互联网产品经验，专注于 AI 技术应用与落地。曾主导多个千万级用户 AI 产品的研发，在 Prompt Engineering、大模型应用架构等领域有深厚积累。现任多家企业 AI 顾问，致力于推动 AI 技术的普及与应用。</p>
+                        <div class="instructor-stats">
+                            <div class="instructor-stat"><div class="instructor-stat-value">15+</div><div class="instructor-stat-label">年从业经验</div></div>
+                            <div class="instructor-stat"><div class="instructor-stat-value">10,000+</div><div class="instructor-stat-label">累计学员</div></div>
+                            <div class="instructor-stat"><div class="instructor-stat-value">4.9</div><div class="instructor-stat-label">平均评分</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <aside class="course-sidebar">
+            <div class="purchase-card">
+                <div class="preview-video"><span>🎬</span></div>
+                <div class="purchase-price">¥1,599 <span>/ 人</span></div>
+                <div class="purchase-original">原价 ¥2,299</div>
+                <span class="purchase-discount">限时优惠 30% OFF</span>
+                <button class="purchase-btn">立即报名</button>
+                <button class="purchase-btn purchase-btn-outline">加入购物车</button>
+                <ul class="purchase-features">
+                    <li>16 节高清视频课程</li>
+                    <li>永久观看权限</li>
+                    <li>课程资料下载</li>
+                    <li>专属学习社群</li>
+                    <li>讲师在线答疑</li>
+                    <li>结业证书</li>
+                </ul>
+            </div>
+            <div class="course-info-card">
+                <div class="info-row"><span class="info-label">课程编号</span><span class="info-value">AIC-2026-002</span></div>
+                <div class="info-row"><span class="info-label">难度级别</span><span class="info-value">进阶</span></div>
+                <div class="info-row"><span class="info-label">课程时长</span><span class="info-value">约 8 小时</span></div>
+                <div class="info-row"><span class="info-label">有效期</span><span class="info-value">永久</span></div>
+                <div class="info-row"><span class="info-label">语言</span><span class="info-value">中文</span></div>
+            </div>
+        </aside>
+    </section>
+
+    <!-- Related Courses -->
+    <section class="related-section">
+        <div class="related-container">
+            <div class="section-title">
+                <span class="section-tag">RECOMMENDED</span>
+                <h2>相关课程推荐</h2>
+                <p>你可能还对这些课程感兴趣</p>
+            </div>
+            <div class="related-grid">
+                <div class="course-card" onclick="location.href='courses.html'">
+                    <div class="course-cover"><span>🚀</span></div>
+                    <div class="course-info">
+                        <span class="course-level-small beginner">入门</span>
+                        <h3 class="course-title-small">AI 大模型基础与应用入门</h3>
+                        <p class="course-instructor-small">主讲：AI 产研研究院</p>
+                        <div class="course-footer">
+                            <span class="course-price">¥999</span>
+                            <div class="course-rating">⭐ 4.9</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-card" onclick="location.href='courses.html'">
+                    <div class="course-cover"><span>🤖</span></div>
+                    <div class="course-info">
+                        <span class="course-level-small intermediate">进阶</span>
+                        <h3 class="course-title-small">LangChain 应用开发实战</h3>
+                        <p class="course-instructor-small">主讲：AI 产研研究院</p>
+                        <div class="course-footer">
+                            <span class="course-price">¥1,799</span>
+                            <div class="course-rating">⭐ 4.8</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-card" onclick="location.href='courses.html'">
+                    <div class="course-cover"><span>🎨</span></div>
+                    <div class="course-info">
+                        <span class="course-level-small intermediate">进阶</span>
+                        <h3 class="course-title-small">AIGC 内容创作实战训练</h3>
+                        <p class="course-instructor-small">主讲：AI 产研研究院</p>
+                        <div class="course-footer">
+                            <span class="course-price">¥1,299</span>
+                            <div class="course-rating">⭐ 4.7</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-card" onclick="location.href='courses.html'">
+                    <div class="course-cover"><span>🧠</span></div>
+                    <div class="course-info">
+                        <span class="course-level-small advanced">高阶</span>
+                        <h3 class="course-title-small">大模型微调与部署实战</h3>
+                        <p class="course-instructor-small">主讲：AI 产研研究院</p>
+                        <div class="course-footer">
+                            <span class="course-price">¥4,599</span>
+                            <div class="course-rating">⭐ 4.9</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon">📊</div>
+                        <div class="logo-text">
+                            <span class="logo-main">AI 产业研究院</span>
+                            <span class="logo-sub">AI Industry Research</span>
+                        </div>
+                    </a>
+                    <p>中国 AI 行业第一智库，为政府、企业、投资者提供权威 AI 行业洞察与决策支持。</p>
+                </div>
+                <div class="footer-section">
+                    <h4>研究报告</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">白皮书</a></li>
+                        <li><a href="#">深度报告</a></li>
+                        <li><a href="#">数据分析</a></li>
+                        <li><a href="#">免费订阅</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>培训课程</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">入门课程</a></li>
+                        <li><a href="#">进阶课程</a></li>
+                        <li><a href="#">认证体系</a></li>
+                        <li><a href="#">企业内训</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>关于我们</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">研究院介绍</a></li>
+                        <li><a href="#">专家团队</a></li>
+                        <li><a href="#">加入我们</a></li>
+                        <li><a href="#">联系方式</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 AI 产业研究院 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        //  syllabus 展开/收起
+        document.querySelectorAll('.syllabus-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                content.style.display = content.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+
+        // 页面加载淡入效果
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.2s ease-in-out';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 50);
+        });
+    </script>
+</body>
+</html>

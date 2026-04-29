@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 产研 - 中国 AI 行业第一智库</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1890ff;
+            --primary-dark: #096dd9;
+            --primary-light: #40a9ff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --text-light: #8c8c8c;
+            --bg-light: #f5f7fa;
+            --bg-white: #ffffff;
+            --bg-dark: #001529;
+            --border-color: #e8e8e8;
+            --accent-gold: #d4af37;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-white);
+        }
+
+        /* ========== Header ========== */
+        .header {
+            background: var(--bg-white);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--bg-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .logo-main {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            color: var(--text-light);
+            letter-spacing: 1px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: var(--primary-color);
+        }
+
+        .nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary-color);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+        }
+
+        /* ========== Hero Section with Data Panel ========== */
+        .hero {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #003a8c 100%);
+            color: white;
+            padding: 180px 40px 120px;
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .hero-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hero-content {
+            padding: 20px 0;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(24, 144, 255, 0.2);
+            border: 1px solid var(--primary-light);
+            color: var(--primary-light);
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            margin-bottom: 24px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.75);
+            margin-bottom: 40px;
+            line-height: 1.8;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-hero-primary {
+            background: white;
+            color: var(--bg-dark);
+            padding: 14px 40px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .btn-hero-primary:hover {
+            background: var(--bg-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-hero-outline {
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 14px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            background: transparent;
+        }
+
+        .btn-hero-outline:hover {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ========== Pillars Section ========== */
+        .pillars {
+            padding: 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            color: var(--primary-color);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--bg-dark);
+            margin-bottom: 16px;
+        }
+
+        .section-desc {
+            font-size: 16px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .pillar-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px 32px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .pillar-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 24px rgba(24, 144, 255, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .pillar-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .pillar-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: rgba(24, 144, 255, 0.15);
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            line-height: 1;
+        }
+
+        .pillar-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, rgba(24, 144, 255, 0.1) 0%, rgba(9, 109, 217, 0.1) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 24px;
+        }
+
+        .pillar-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--bg-dark);
+            margin-bottom: 8px;
+        }
+
+        .pillar-subtitle {
+            font-size: 14px;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .pillar-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .pillar-list {
+            list-style: none;
+        }
+
+        .pillar-list li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .pillar-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .pillar-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 16px;
+            transition: gap 0.3s;
+        }
+
+        .pillar-link:hover {
+            gap: 10px;
+        }
+
+        /* ========== Reports Section ========== */
+        .reports {
+            background: var(--bg-light);
+            padding: 100px 40px;
+        }
+
+        .reports-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .report-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+        }
+
+        .report-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+        }
+
+        .report-cover {
+            height: 200px;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #003a8c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-cover::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(24, 144, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .report-icon {
+            font-size: 64px;
+            z-index: 1;
+        }
+
+        .report-tag {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(24, 144, 255, 0.9);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .report-content {
+            padding: 24px;
+        }
+
+        .report-date {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .report-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--bg-dark);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .report-abstract {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .report-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .report-author {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .report-download {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .report-download:hover {
+            text-decoration: underline;
+        }
+
+        /* ========== Courses Section ========== */
+        .courses {
+            padding: 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .course-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .course-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 24px rgba(24, 144, 255, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .course-thumbnail {
+            height: 160px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .course-content {
+            padding: 24px;
+        }
+
+        .course-category {
+            display: inline-block;
+            background: rgba(24, 144, 255, 0.1);
+            color: var(--primary-color);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .course-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--bg-dark);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .course-instructor {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .course-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .course-price span {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .course-enroll {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .course-enroll:hover {
+            text-decoration: underline;
+        }
+
+        /* ========== Trust Section ========== */
+        .trust {
+            background: var(--bg-dark);
+            color: white;
+            padding: 80px 40px;
+        }
+
+        .trust-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .trust-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--primary-light);
+        }
+
+        .trust-logos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .trust-logo {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .trust-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        .trust-stat {
+            text-align: center;
+        }
+
+        .trust-stat-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary-light);
+            line-height: 1;
+        }
+
+        .trust-stat-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 8px;
+        }
+
+        /* ========== Footer ========== */
+        .footer {
+            background: #000c17;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 60px 40px 30px;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand .logo {
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .footer-brand p {
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer-section h4 {
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Scroll to Top */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+            font-size: 20px;
+        }
+        .scroll-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .scroll-to-top:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(24, 144, 255, 0.4);
+        }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 1200px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .data-panel {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .pillars-grid,
+            .reports-grid,
+            .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 20px;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 120px 20px 60px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .pillars,
+            .reports,
+            .courses {
+                padding: 60px 20px;
+            }
+
+            .pillars-grid,
+            .reports-grid,
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .trust-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">📊</div>
+                <div class="logo-text">
+                    <span class="logo-main">AI 产业研究院</span>
+                    <span class="logo-sub">AI Industry Research</span>
+                </div>
+            </a>
+            <nav class="nav">
+                <a href="index.html" class="active">首页</a>
+                <a href="reports.html">研究报告</a>
+                <a href="courses.html">培训课程</a>
+                <a href="thinktank.html">智库服务</a>
+                <a href="data-platform.html">数据平台</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" class="btn btn-outline">登录</a>
+                <a href="#" class="btn btn-primary">免费注册</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <span class="hero-badge">🚀 中国 AI 行业第一智库</span>
+            <h1>看懂 <span>AI 趋势</span><br>掌握 <span>产业机遇</span></h1>
+            <p class="hero-tagline">AI 产业研究院 — 研究树品牌 · 教育建流量 · 智库做变现<br>为政府、企业、投资者提供权威 AI 行业洞察与决策支持</p>
+            <div class="hero-btns">
+                <a href="reports.html" class="btn btn-hero-primary">查看最新报告</a>
+                <a href="courses.html" class="btn btn-hero-outline">免费试听课程</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three Pillars Section -->
+    <section class="pillars">
+        <div class="section-header">
+            <span class="section-tag">BUSINESS PILLARS</span>
+            <h2 class="section-title">三大业务支柱</h2>
+            <p class="section-desc">研究 + 教育 + 智库三位一体，打造 AI 行业完整生态</p>
+        </div>
+        <div class="pillars-grid">
+            <div class="pillar-card">
+                <span class="pillar-number">01</span>
+                <div class="pillar-icon">📚</div>
+                <h3 class="pillar-title">研究</h3>
+                <div class="pillar-subtitle">树品牌 · 建立行业权威</div>
+                <p class="pillar-desc">深度研究 AI 产业发展趋势、竞争格局、技术路线，为行业提供客观、专业的第三方洞察。</p>
+                <ul class="pillar-list">
+                    <li>年度 AI 产业白皮书</li>
+                    <li>细分领域深度报告</li>
+                    <li>企业竞争力分析</li>
+                    <li>投融资数据追踪</li>
+                </ul>
+                <a href="reports.html" class="pillar-link">浏览研究报告 →</a>
+            </div>
+            <div class="pillar-card">
+                <span class="pillar-number">02</span>
+                <div class="pillar-icon">🎓</div>
+                <h3 class="pillar-title">教育</h3>
+                <div class="pillar-subtitle">建流量 · 培养行业人才</div>
+                <p class="pillar-desc">体系化 AI 课程 + 权威认证，帮助从业者系统掌握 AI 知识，提升职业竞争力。</p>
+                <ul class="pillar-list">
+                    <li>AI 行业分析入门课</li>
+                    <li>大模型应用实战</li>
+                    <li>AI 投资分析进阶</li>
+                    <li>产业研究员认证</li>
+                </ul>
+                <a href="courses.html" class="pillar-link">查看培训课程 →</a>
+            </div>
+            <div class="pillar-card">
+                <span class="pillar-number">03</span>
+                <div class="pillar-icon">💼</div>
+                <h3 class="pillar-title">智库</h3>
+                <div class="pillar-subtitle">做变现 · 提供决策咨询</div>
+                <p class="pillar-desc">为政府、企业、投资机构提供定制化 AI 战略咨询，助力科学决策。</p>
+                <ul class="pillar-list">
+                    <li>政府 AI 产业规划</li>
+                    <li>企业 AI 转型战略</li>
+                    <li>投资机构行业尽调</li>
+                    <li>园区招商策略</li>
+                </ul>
+                <a href="reports.html" class="pillar-link">了解智库服务 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Reports Section -->
+    <section class="reports">
+        <div class="reports-container">
+            <div class="section-header">
+                <span class="section-tag">LATEST RESEARCH</span>
+                <h2 class="section-title">最新研究报告</h2>
+                <p class="section-desc">深度、客观、专业的 AI 行业研究成果</p>
+            </div>
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-cover">
+                        <span class="report-tag">重磅</span>
+                        <div class="report-icon">📊</div>
+                    </div>
+                    <div class="report-content">
+                        <div class="report-date">2026 年 4 月发布</div>
+                        <h3 class="report-title">《2026 中国 AI 产业白皮书》</h3>
+                        <p class="report-abstract">全面梳理中国 AI 产业发展现状、竞争格局、技术趋势，收录 2800+AI 企业数据，是了解 AI 行业的必备参考。</p>
+                        <div class="report-meta">
+                            <span class="report-author">AI 产研研究院</span>
+                            <a href="report-detail.html" class="report-download">📥 下载报告</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="report-card">
+                    <div class="report-cover">
+                        <span class="report-tag">热门</span>
+                        <div class="report-icon">🤖</div>
+                    </div>
+                    <div class="report-content">
+                        <div class="report-date">2026 年 3 月发布</div>
+                        <h3 class="report-title">《大模型竞争格局分析报告》</h3>
+                        <p class="report-abstract">深度分析国内外大模型厂商技术路线、商业模式、市场份额，预判未来 3 年竞争态势。</p>
+                        <div class="report-meta">
+                            <span class="report-author">AI 产研研究院</span>
+                            <a href="report-detail.html" class="report-download">📥 下载报告</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="report-card">
+                    <div class="report-cover">
+                        <div class="report-icon">💾</div>
+                    </div>
+                    <div class="report-content">
+                        <div class="report-date">2026 年 2 月发布</div>
+                        <h3 class="report-title">《AI 芯片产业链深度研究》</h3>
+                        <p class="report-abstract">从 GPU 到专用 AI 芯片，全面分析 AI 算力产业链上下游格局、技术壁垒、投资机会。</p>
+                        <div class="report-meta">
+                            <span class="report-author">AI 产研研究院</span>
+                            <a href="report-detail.html" class="report-download">📥 下载报告</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Courses Section -->
+    <section class="courses">
+        <div class="section-header">
+            <span class="section-tag">POPULAR COURSES</span>
+            <h2 class="section-title">热门培训课程</h2>
+            <p class="section-desc">体系化课程 + 权威认证，快速提升 AI 行业认知</p>
+        </div>
+        <div class="courses-grid">
+            <div class="course-card">
+                <div class="course-thumbnail">🎯</div>
+                <div class="course-content">
+                    <span class="course-category">入门必修</span>
+                    <h3 class="course-title">AI 行业分析入门课</h3>
+                    <div class="course-instructor">主讲：AI 产研研究院</div>
+                    <div class="course-footer">
+                        <div class="course-price">¥999</div>
+                        <a href="course-detail.html" class="course-enroll">立即学习 →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-thumbnail" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">🚀</div>
+                <div class="course-content">
+                    <span class="course-category">实战进阶</span>
+                    <h3 class="course-title">大模型应用实战课</h3>
+                    <div class="course-instructor">主讲：AI 产研研究院</div>
+                    <div class="course-footer">
+                        <div class="course-price">¥2,999</div>
+                        <a href="course-detail.html" class="course-enroll">立即学习 →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-thumbnail" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">📈</div>
+                <div class="course-content">
+                    <span class="course-category">专业认证</span>
+                    <h3 class="course-title">AI 产业研究员认证</h3>
+                    <div class="course-instructor">主讲：AI 产研研究院</div>
+                    <div class="course-footer">
+                        <div class="course-price">¥9,999</div>
+                        <a href="course-detail.html" class="course-enroll">立即学习 →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="trust">
+        <div class="trust-container">
+            <div class="trust-grid">
+                <div class="trust-section">
+                    <h3>🏛️ 服务客户</h3>
+                    <div class="trust-logos">
+                        <span class="trust-logo">国家发改委</span>
+                        <span class="trust-logo">科技部</span>
+                        <span class="trust-logo">中关村管委会</span>
+                        <span class="trust-logo">华为</span>
+                        <span class="trust-logo">腾讯</span>
+                        <span class="trust-logo">阿里巴巴</span>
+                        <span class="trust-logo">百度</span>
+                        <span class="trust-logo">字节跳动</span>
+                    </div>
+                </div>
+                <div class="trust-section">
+                    <h3>📊 平台数据</h3>
+                    <div class="trust-stats">
+                        <div class="trust-stat">
+                            <div class="trust-stat-value">156</div>
+                            <div class="trust-stat-label">发布研究报告</div>
+                        </div>
+                        <div class="trust-stat">
+                            <div class="trust-stat-value">89</div>
+                            <div class="trust-stat-label">服务政府/企业</div>
+                        </div>
+                        <div class="trust-stat">
+                            <div class="trust-stat-value">12,580</div>
+                            <div class="trust-stat-label">培训学员</div>
+                        </div>
+                        <div class="trust-stat">
+                            <div class="trust-stat-value">¥2.3 亿</div>
+                            <div class="trust-stat-label">客户融资总额</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon">📊</div>
+                        <div class="logo-text">
+                            <span class="logo-main">AI 产业研究院</span>
+                            <span class="logo-sub">AI Industry Research</span>
+                        </div>
+                    </a>
+                    <p>中国 AI 行业第一智库，为政府、企业、投资者提供权威 AI 行业洞察与决策支持。</p>
+                </div>
+                <div class="footer-section">
+                    <h4>研究报告</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">白皮书</a></li>
+                        <li><a href="#">深度报告</a></li>
+                        <li><a href="#">数据分析</a></li>
+                        <li><a href="#">免费订阅</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>培训课程</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">入门课程</a></li>
+                        <li><a href="#">进阶课程</a></li>
+                        <li><a href="#">认证体系</a></li>
+                        <li><a href="#">企业内训</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>关于我们</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">研究院介绍</a></li>
+                        <li><a href="#">专家团队</a></li>
+                        <li><a href="#">加入我们</a></li>
+                        <li><a href="#">联系方式</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 AI 产业研究院 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</div>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // 卡片点击优化
+        document.querySelectorAll('.report-card, .course-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (!e.target.closest('a')) {
+                    const link = this.querySelector('a[href*="detail"]');
+                    if (link) {
+                        window.location.href = link.href;
+                    }
+                }
+            });
+        });
+
+        // Scroll to Top Button
+        const scrollBtn = document.querySelector('.scroll-to-top');
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollBtn.classList.add('show');
+            } else {
+                scrollBtn.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

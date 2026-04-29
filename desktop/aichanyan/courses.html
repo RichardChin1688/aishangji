@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>培训课程 - AI 产业研究院</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1890ff;
+            --primary-dark: #096dd9;
+            --primary-light: #40a9ff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --text-light: #8c8c8c;
+            --bg-light: #f5f7fa;
+            --bg-white: #ffffff;
+            --bg-dark: #001529;
+            --border-color: #e8e8e8;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-white);
+        }
+
+        /* ========== Header ========== */
+        .header {
+            background: var(--bg-white);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--bg-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .logo-main {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            color: var(--text-light);
+            letter-spacing: 1px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: var(--primary-color);
+        }
+
+        .nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary-color);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+        }
+
+        /* ========== Page Header ========== */
+        .page-header {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #003a8c 100%);
+            color: white;
+            padding: 140px 40px 80px;
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .page-header-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        /* ========== Filters ========== */
+        .filters {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 24px 40px;
+            position: sticky;
+            top: 80px;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .filters-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .filters-row {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            font-size: 14px;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-white);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        /* ========== Courses Section ========== */
+        .courses-section {
+            padding: 60px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .courses-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .courses-count {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .courses-count strong {
+            color: var(--primary-color);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .course-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 24px rgba(24, 144, 255, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .course-thumbnail {
+            height: 180px;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #003a8c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            position: relative;
+        }
+        .course-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(24, 144, 255, 0.15) 0%, transparent 70%);
+        }
+        .course-thumbnail span { position: relative; z-index: 1; }
+
+        .course-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .course-badge.beginner {
+            background: rgba(24, 144, 255, 0.9);
+        }
+
+        .course-badge.intermediate {
+            background: rgba(250, 140, 22, 0.9);
+        }
+
+        .course-badge.advanced {
+            background: rgba(114, 46, 209, 0.9);
+        }
+
+        .course-content {
+            padding: 24px;
+        }
+
+        .course-category {
+            display: inline-block;
+            background: rgba(24, 144, 255, 0.1);
+            color: var(--primary-color);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .course-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--bg-dark);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .course-instructor {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .course-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .course-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .course-price-original {
+            font-size: 13px;
+            color: var(--text-light);
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .course-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            color: #faad14;
+            font-weight: 600;
+        }
+
+        .course-rating span {
+            color: var(--text-light);
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        /* ========== Pagination ========== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 60px;
+            padding: 40px 0;
+        }
+
+        .pagination button {
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            background: var(--bg-white);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .pagination button:hover:not(:disabled) {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .pagination button.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ========== Footer ========== */
+        .footer {
+            background: var(--bg-dark);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 60px 40px 30px;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand .logo {
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .footer-brand p {
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer-section h4 {
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+            font-size: 20px;
+        }
+        .scroll-to-top.show { opacity: 1; visibility: visible; }
+        .scroll-to-top:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(24, 144, 255, 0.4); }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 1200px) {
+            .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 20px;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .page-header {
+                padding: 120px 20px 60px;
+            }
+
+            .page-header h1 {
+                font-size: 32px;
+            }
+
+            .filters {
+                padding: 20px;
+            }
+
+            .filters-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .courses-section {
+                padding: 40px 20px;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">📊</div>
+                <div class="logo-text">
+                    <span class="logo-main">AI 产业研究院</span>
+                    <span class="logo-sub">AI Industry Research</span>
+                </div>
+            </a>
+            <nav class="nav">
+                <a href="index.html">首页</a>
+                <a href="reports.html">研究报告</a>
+                <a href="courses.html" class="active">培训课程</a>
+                <a href="#">智库服务</a>
+                <a href="data-platform.html">数据平台</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" class="btn btn-outline">登录</a>
+                <a href="#" class="btn btn-primary">免费注册</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="page-header-container">
+            <span class="page-badge">🎓 POPULAR COURSES</span>
+            <h1>培训课程</h1>
+            <p>体系化课程 + 权威认证，快速提升 AI 行业认知与实战能力</p>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters">
+        <div class="filters-container">
+            <div class="filters-row">
+                <div class="filter-group">
+                    <span class="filter-label">级别：</span>
+                    <div class="filter-options">
+                        <button class="filter-btn active">全部</button>
+                        <button class="filter-btn">入门</button>
+                        <button class="filter-btn">进阶</button>
+                        <button class="filter-btn">高阶</button>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">类型：</span>
+                    <div class="filter-options">
+                        <button class="filter-btn active">全部</button>
+                        <button class="filter-btn">技术实战</button>
+                        <button class="filter-btn">应用开发</button>
+                        <button class="filter-btn">商业应用</button>
+                        <button class="filter-btn">行业专题</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses-section">
+        <div class="courses-header">
+            <p class="courses-count">共找到 <strong>52</strong> 门课程</p>
+        </div>
+        <div class="courses-grid">
+            <div class="course-card" onclick="location.href='course-detail.html'">
+                <div class="course-thumbnail">
+                    <span class="course-badge beginner">入门</span>
+                    <span>🚀</span>
+                </div>
+                <div class="course-content">
+                    <span class="course-category">技术基础</span>
+                    <h3 class="course-title">AI 大模型基础与应用入门</h3>
+                    <div class="course-instructor">主讲：AI 产研研究院</div>
+                    <div class="course-meta">
+                        <span class="course-meta-item">📺 12 课时</span>
+                        <span class="course-meta-item">👥 2,458 人已学</span>
+                    </div>
+                    <div class="course-footer">
+                        <div>
+                            <span class="course-price">¥999</span>
+                            <span class="course-price-original">¥1,599</span>
+                        </div>
+                        <div class="course-rating">⭐ 4.9 <span>(328)</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card" onclick="location.href='course-detail.html'">
+                <div class="course-thumbnail">
+                    <span class="course-badge intermediate">进阶</span>
+                    <span>💻</span>
+                </div>
+                <div class="course-content">
+                    <span class="course-category">实战技能</span>
+                    <h3 class="course-title">Prompt Engineering 实战课程</h3>
+                    <div class="course-instructor">主讲：AI 产研研究院</div>
+                    <div class="course-meta">
+                        <span class="course-meta-item">📺 16 课时</span>
+                        <span class="course-meta-item">👥 1,892 人已学</span>
+                    </div>
+                    <div class="course-footer">
+                        <div>
+                            <span class="course-price">¥1,599</span>
+                            <span class="course-price-original">¥2,299</span>
+                        </div>
+                        <div class="course-rating">⭐ 4.8 <span>(256)</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card" onclick="location.href='course-detail.html'">
+                <div class="course-thumbnail">
+                    <span class="course-badge advanced">高阶</span>
+                    <span>🎯</span>
+                </div>
+                <div class="course-content">
+                    <span class="course-category">专业认证</span>
+                    <h3 class="course-title">AI 产业研究员认证</h3>
+                    <div class="course-instructor">主讲：AI 产研研究院</div>
+                    <div class="course-meta">
+                        <span class="course-meta-item">📺 24 课时</span>
+                        <span class="course-meta-item">👥 856 人已学</span>
+                    </div>
+                    <div class="course-footer">
+                        <div>
+                            <span class="course-price">¥9,999</span>
+                        </div>
+                        <div class="course-rating">⭐ 4.9 <span>(142)</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card" onclick="location.href='course-detail.html'">
+                <div class="course-thumbnail">
+                    <span class="course-badge intermediate">进阶</span>
+                    <span>🎨</span>
+                </div>
+                <div class="course-content">
+                    <span class="course-category">AIGC 应用</span>
+                    <h3 class="course-title">AIGC 内容创作实战训练</h3>
+                    <div class="course-instructor">主讲：AI 产研研究院</div>
+                    <div class="course-meta">
+                        <span class="course-meta-item">📺 14 课时</span>
+                        <span class="course-meta-item">👥 1,567 人已学</span>
+                    </div>
+                    <div class="course-footer">
+                        <div>
+                            <span class="course-price">¥1,299</span>
+                            <span class="course-price-original">¥1,899</span>
+                        </div>
+                        <div class="course-rating">⭐ 4.7 <span>(218)</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card" onclick="location.href='course-detail.html'">
+                <div class="course-thumbnail">
+                    <span class="course-badge intermediate">进阶</span>
+                    <span>🤖</span>
+                </div>
+                <div class="course-content">
+                    <span class="course-category">开发框架</span>
+                    <h3 class="course-title">LangChain 应用开发实战</h3>
+                    <div class="course-instructor">主讲：AI 产研研究院</div>
+                    <div class="course-meta">
+                        <span class="course-meta-item">📺 18 课时</span>
+                        <span class="course-meta-item">👥 1,234 人已学</span>
+                    </div>
+                    <div class="course-footer">
+                        <div>
+                            <span class="course-price">¥1,799</span>
+                            <span class="course-price-original">¥2,499</span>
+                        </div>
+                        <div class="course-rating">⭐ 4.8 <span>(189)</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card" onclick="location.href='course-detail.html'">
+                <div class="course-thumbnail">
+                    <span class="course-badge beginner">入门</span>
+                    <span>📊</span>
+                </div>
+                <div class="course-content">
+                    <span class="course-category">数据分析</span>
+                    <h3 class="course-title">Python 数据分析与 AI 入门</h3>
+                    <div class="course-instructor">主讲：AI 产研研究院</div>
+                    <div class="course-meta">
+                        <span class="course-meta-item">📺 24 课时</span>
+                        <span class="course-meta-item">👥 3,567 人已学</span>
+                    </div>
+                    <div class="course-footer">
+                        <div>
+                            <span class="course-price">¥899</span>
+                            <span class="course-price-original">¥1,299</span>
+                        </div>
+                        <div class="course-rating">⭐ 4.9 <span>(456)</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card" onclick="location.href='course-detail.html'">
+                <div class="course-thumbnail">
+                    <span class="course-badge advanced">高阶</span>
+                    <span>🧠</span>
+                </div>
+                <div class="course-content">
+                    <span class="course-category">模型技术</span>
+                    <h3 class="course-title">大模型微调与部署实战</h3>
+                    <div class="course-instructor">主讲：AI 产研研究院</div>
+                    <div class="course-meta">
+                        <span class="course-meta-item">📺 22 课时</span>
+                        <span class="course-meta-item">👥 678 人已学</span>
+                    </div>
+                    <div class="course-footer">
+                        <div>
+                            <span class="course-price">¥4,599</span>
+                            <span class="course-price-original">¥6,999</span>
+                        </div>
+                        <div class="course-rating">⭐ 4.9 <span>(98)</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card" onclick="location.href='course-detail.html'">
+                <div class="course-thumbnail">
+                    <span class="course-badge intermediate">进阶</span>
+                    <span>💬</span>
+                </div>
+                <div class="course-content">
+                    <span class="course-category">企业应用</span>
+                    <h3 class="course-title">智能客服系统开发实战</h3>
+                    <div class="course-instructor">主讲：AI 产研研究院</div>
+                    <div class="course-meta">
+                        <span class="course-meta-item">📺 16 课时</span>
+                        <span class="course-meta-item">👥 945 人已学</span>
+                    </div>
+                    <div class="course-footer">
+                        <div>
+                            <span class="course-price">¥1,999</span>
+                            <span class="course-price-original">¥2,799</span>
+                        </div>
+                        <div class="course-rating">⭐ 4.7 <span>(167)</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card" onclick="location.href='course-detail.html'">
+                <div class="course-thumbnail">
+                    <span class="course-badge beginner">入门</span>
+                    <span>🔍</span>
+                </div>
+                <div class="course-content">
+                    <span class="course-category">效率工具</span>
+                    <h3 class="course-title">AI 工具效率提升指南</h3>
+                    <div class="course-instructor">主讲：AI 产研研究院</div>
+                    <div class="course-meta">
+                        <span class="course-meta-item">📺 10 课时</span>
+                        <span class="course-meta-item">👥 4,123 人已学</span>
+                    </div>
+                    <div class="course-footer">
+                        <div>
+                            <span class="course-price">¥599</span>
+                            <span class="course-price-original">¥899</span>
+                        </div>
+                        <div class="course-rating">⭐ 4.8 <span>(523)</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button disabled>上一页</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+            <span>...</span>
+            <button>7</button>
+            <button>下一页</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon">📊</div>
+                        <div class="logo-text">
+                            <span class="logo-main">AI 产业研究院</span>
+                            <span class="logo-sub">AI Industry Research</span>
+                        </div>
+                    </a>
+                    <p>中国 AI 行业第一智库，为政府、企业、投资者提供权威 AI 行业洞察与决策支持。</p>
+                </div>
+                <div class="footer-section">
+                    <h4>研究报告</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">白皮书</a></li>
+                        <li><a href="#">深度报告</a></li>
+                        <li><a href="#">数据分析</a></li>
+                        <li><a href="#">免费订阅</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>培训课程</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">入门课程</a></li>
+                        <li><a href="#">进阶课程</a></li>
+                        <li><a href="#">认证体系</a></li>
+                        <li><a href="#">企业内训</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>关于我们</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">研究院介绍</a></li>
+                        <li><a href="#">专家团队</a></li>
+                        <li><a href="#">加入我们</a></li>
+                        <li><a href="#">联系方式</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 AI 产业研究院 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <div class="scroll-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</div>
+
+    <script>
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const parent = this.parentElement;
+                parent.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // 卡片点击优化
+        document.querySelectorAll('.course-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (!e.target.closest('a')) {
+                    window.location.href = 'course-detail.html';
+                }
+            });
+        });
+
+        // Scroll to Top
+        const scrollBtn = document.querySelector('.scroll-to-top');
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollBtn.classList.add('show');
+            } else {
+                scrollBtn.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

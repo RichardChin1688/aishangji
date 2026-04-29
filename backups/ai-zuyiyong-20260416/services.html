@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 技术服务 - AI 租易用 | 企业级 AI 解决方案</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --primary: #0EA5E9;
+      --primary-dark: #0C4A6E;
+      --accent: #F59E0B;
+      --bg-dark: #0B1120;
+      --bg-card: #1E293B;
+      --text-light: #F1F5F9;
+      --text-muted: #94A3B8;
+      --gradient: linear-gradient(135deg, #0EA5E9 0%, #7C3AED 100%);
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+    }
+    
+    body {
+      font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-top: 0;
+      padding-top: 0;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(ellipse at 50% 10%, rgba(124, 58, 237, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 0.75rem 5%;
+      background: rgba(11, 17, 32, 0.95);
+      backdrop-filter: blur(20px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      height: 70px;
+    }
+    
+    .navbar + .page-hero {
+      padding-top: 8rem;
+    }
+    
+    .nav-logo-wrapper { position: absolute; left: 5%; }
+    .nav-container { display: flex; align-items: center; gap: 3rem; flex: 1; justify-content: center; }
+    .nav-right-wrapper { position: absolute; right: 5%; }
+    
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+    
+    .nav-links { display: flex; gap: 0.5rem; list-style: none; margin: 0; padding: 0; }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--text-light);
+      background: rgba(14, 165, 233, 0.12);
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--gradient);
+      color: white;
+      box-shadow: 0 4px 20px rgba(14, 165, 233, 0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(14, 165, 233, 0.4); }
+    
+    .page-hero {
+      padding: 6rem 5% 2rem;
+      text-align: center;
+      background: radial-gradient(ellipse at 50% 0%, rgba(14, 165, 233, 0.15) 0%, transparent 50%);
+    }
+    .page-hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .page-hero p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .category-nav {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background: rgba(11, 17, 32, 0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      z-index: 99;
+      padding: 0.5rem 5%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    
+    .category-tabs {
+      display: flex;
+      gap: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+    
+    .services-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem 5% 3rem;
+      position: relative;
+      z-index: 1;
+      margin-top: 100px;
+    }
+    .category-tabs {
+      display: flex;
+      gap: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+    .category-tab {
+      padding: 0.5rem 1.25rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50px;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.3s;
+    }
+    .category-tab:hover, .category-tab.active {
+      background: var(--gradient);
+      color: white;
+      border-color: transparent;
+    }
+    
+    .services-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 4rem 5% 3rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .category-section {
+      margin-bottom: 4rem;
+    }
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid rgba(14, 165, 233, 0.3);
+    }
+    .category-icon {
+      font-size: 2rem;
+    }
+    .category-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .category-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .service-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 1.5rem;
+      transition: all 0.3s;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(14, 165, 233, 0.3);
+      box-shadow: 0 10px 40px rgba(14, 165, 233, 0.15);
+    }
+    .service-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .service-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .service-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .service-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .feature-tag {
+      padding: 0.25rem 0.75rem;
+      background: rgba(14, 165, 233, 0.1);
+      color: var(--primary);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    
+    .solution-section {
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 0 5%;
+    }
+    .solution-section h2 {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .solution-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .solution-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(14, 165, 233, 0.3);
+    }
+    .solution-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 4px;
+      background: var(--gradient);
+    }
+    .solution-card.premium::before {
+      background: linear-gradient(135deg, #F59E0B, #EF4444);
+    }
+    .solution-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .solution-size {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    .solution-price {
+      font-size: 2rem;
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+    }
+    .solution-features {
+      text-align: left;
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+    
+    .solution-actions {
+      margin-top: auto;
+    }
+    .solution-features li {
+      padding: 0.5rem 0;
+      color: var(--text-muted);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .solution-features li::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: 700;
+    }
+    
+    .cta-section {
+      text-align: center;
+      padding: 4rem 5%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(14, 165, 233, 0.1) 0%, transparent 50%);
+    }
+    .cta-section h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .cta-section p {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .services-grid { grid-template-columns: 1fr; }
+      .category-tabs { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-logo-wrapper">
+      <a href="index.html" class="logo">🚀 AI 租易用</a>
+    </div>
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li><a href="index.html">首页</a></li>
+        <li><a href="rental.html">设备租赁</a></li>
+        <li><a href="token.html">Token 工厂</a></li>
+        <li><a href="services.html" class="active">技术服务</a></li>
+        <li><a href="community.html">OPC 社区</a></li>
+      </ul>
+    </div>
+    <div class="nav-right-wrapper">
+      <a href="user.html" class="btn btn-primary">用户中心</a>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <h1>🛠️ 企业级 AI 技术服务</h1>
+    <p>让每一家企业，都拥有一支不用发工资、24 小时在岗、绝对安全可控的 AI 智能团队</p>
+  </section>
+
+  <div class="category-nav">
+    <div class="category-tabs">
+      <div class="category-tab active" data-category="all">全部服务</div>
+      <div class="category-tab" data-category="basic">🏗️ 基础层</div>
+      <div class="category-tab" data-category="capability">⚡ 能力层</div>
+      <div class="category-tab" data-category="governance">🛡️ 治理层</div>
+      <div class="category-tab" data-category="operation">📦 托管层</div>
+      <div class="category-tab" data-category="strategy">💡 战略层</div>
+    </div>
+  </div>
+
+  <div class="services-container" id="servicesContainer">
+    <!-- 服务列表将通过 JavaScript 动态渲染 -->
+  </div>
+
+  <div class="solution-section">
+    <h2>📦 标准化解决方案</h2>
+    <div class="solutions-grid">
+      <div class="solution-card">
+        <h3 class="solution-name">小微企业方案</h3>
+        <p class="solution-size">适合 ＜30 人团队</p>
+        <div class="solution-price" style="color:var(--text-muted);font-size:1.2rem;">📩 咨询获取报价</div>
+        <ul class="solution-features">
+          <li>OpenClaw 专业工作站 ×1</li>
+          <li>Token 工厂企业版</li>
+          <li>基础业务 Skill ×2</li>
+          <li>国内 GEO 优化</li>
+          <li>年度 AI 代运维</li>
+        </ul>
+        <div class="solution-actions">
+          <a href="contact.html" class="btn btn-primary" style="width:100%;">立即咨询</a>
+        </div>
+      </div>
+      
+      <div class="solution-card premium">
+        <h3 class="solution-name">中型企业方案</h3>
+        <p class="solution-size">适合 30-200 人团队</p>
+        <div class="solution-price" style="color:var(--text-muted);font-size:1.2rem;">📩 咨询获取报价</div>
+        <ul class="solution-features">
+          <li>3 机智能集群</li>
+          <li>全球 Token 中转 + 安全风控</li>
+          <li>行业 Skill 套件</li>
+          <li>中型私有知识库</li>
+          <li>私有化部署 + 安全合规全套</li>
+          <li>年度陪跑服务</li>
+        </ul>
+        <div class="solution-actions">
+          <a href="contact.html" class="btn btn-primary" style="width:100%;">立即咨询</a>
+        </div>
+      </div>
+      
+      <div class="solution-card premium">
+        <h3 class="solution-name">大型企业方案</h3>
+        <p class="solution-size">适合 200 人以上</p>
+        <div class="solution-price" style="color:var(--text-muted);font-size:1.2rem;">📩 咨询获取报价</div>
+        <ul class="solution-features">
+          <li>全栈治理体系</li>
+          <li>多智能体集群调度</li>
+          <li>全球 GEO 加速</li>
+          <li>全系统 AI 化集成</li>
+          <li>合规审计 + 安全加固</li>
+          <li>专属客户成功团队</li>
+          <li>效果保底承诺</li>
+        </ul>
+        <div class="solution-actions">
+          <a href="contact.html" class="btn btn-primary" style="width:100%;">立即咨询</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="cta-section">
+    <h2>🚀 开启您的 AI 转型之旅</h2>
+    <p>专业团队一对一咨询，定制最适合您的 AI 解决方案</p>
+    <a href="contact.html" class="btn btn-primary" style="padding:1rem 3rem;font-size:1.1rem;">免费获取方案</a>
+  </section>
+
+  <script>
+    // 服务数据（按 5 层架构分类）
+    const servicesData = [
+      // 基础层服务
+      { id: 1, category: 'basic', icon: '🖥️', name: 'AI 智能体设备租赁', desc: '开箱即用的 OpenClaw 企业智能硬件，预装完整 AI 系统，数据本地化存储，按月租赁。', features: ['开箱即用', '数据本地', '弹性扩容', '全周期维护'] },
+      { id: 2, category: 'basic', icon: '🎫', name: 'Token 工厂服务', desc: '统一 API 网关聚合多模型，智能路由、请求缓存、成本监控，降低 AI 成本 30%-70%。', features: ['统一入口', '智能缓存', '成本优化', '用量可视'] },
+      { id: 3, category: 'basic', icon: '🌐', name: 'Geo 优化服务', desc: 'AI 专用全球加速网络，智能就近接入、故障自动切换，响应速度提升 40%-80%。', features: ['就近接入', '自动容灾', '全链路监控', '全球加速'] },
+      { id: 4, category: 'basic', icon: '🔒', name: '私有化/隔离部署', desc: '私有云/VPC/本地服务器部署，数据完全隔离，满足等保、行业监管要求。', features: ['纯内网部署', '数据不触公网', '自主可控', '最高安全'] },
+      
+      // 能力构建层
+      { id: 5, category: 'capability', icon: '🤖', name: '智能体定制开发', desc: '根据业务场景开发专属 AI Skill，让 AI 从通用对话升级为可执行的业务助手。', features: ['Skill 定制', '工作流编排', '系统对接', '快速落地'] },
+      { id: 6, category: 'capability', icon: '📚', name: '企业私有知识库', desc: '将企业制度、产品手册、技术文档向量化，构建企业内部 AI 大脑，人走知识不走。', features: ['海量文档', '智能问答', '持续更新', '知识沉淀'] },
+      { id: 7, category: 'capability', icon: '👨‍💼', name: '数字员工定制', desc: '封装可直接上岗的 AI 数字员工，替代人工完成高重复、标准化岗位，24 小时在岗。', features: ['AI 客服', '销售 SOP', '运营自动化', '成本降 50%'] },
+      { id: 8, category: 'capability', icon: '⚙️', name: 'AI 工作流自动化', desc: '跨系统、跨平台、多步骤业务流程端到端全自动执行，无需人工干预。', features: ['跨系统打通', '自动触发', '异常处理', '全流程可视'] },
+      { id: 9, category: 'capability', icon: '🔄', name: '系统 AI 化升级', desc: '将 ERP/CRM/OA 等老系统封装为 AI 可调用接口，不换系统、低成本智能化升级。', features: ['老系统封装', '安全权限', '数据打通', '保护投资'] },
+      
+      // 治理与风控层
+      { id: 10, category: 'governance', icon: '🔐', name: '账号安全与风控', desc: 'API Key 加密存储、分级授权、异常流量检测，防止泄露、盗用、盗刷。', features: ['加密存储', '分级授权', '盗刷预警', '全程审计'] },
+      { id: 11, category: 'governance', icon: '✅', name: '合规与数据安全审计', desc: '对 AI 使用行为、数据流向、内容安全进行全面诊断审计，输出专业报告。', features: ['合规检查', '数据审计', '敏感过滤', '整改建议'] },
+      { id: 12, category: 'governance', icon: '📹', name: 'AI 行为审计', desc: '全链路留存智能体操作记录，相当于给 AI 装上"行车记录仪"，可追溯可审计。', features: ['日志留存', '敏感拦截', '审计报告', '监管查验'] },
+      { id: 13, category: 'governance', icon: '🚧', name: '权限围栏设计', desc: '按部门、岗位、角色设置最小权限，数据隔离、功能隔离，AI 能力安全释放。', features: ['分级权限', '数据隔离', '不可越权', '安全最大化'] },
+      { id: 14, category: 'governance', icon: '🛑', name: '熔断降级机制', desc: 'AI 异常时自动暂停、降级、通知，防止错误扩大，保障业务连续性。', features: ['异常检测', '自动熔断', '自动降级', '实时通知'] },
+      { id: 15, category: 'governance', icon: '📊', name: '智能体 KPI 评估', desc: '建立 AI 效果、效率、成本、ROI 量化指标，让 AI 像员工一样可考核。', features: ['指标建模', '自动统计', '可视化报表', '持续优化'] },
+      { id: 16, category: 'governance', icon: '👥', name: '多智能体协同', desc: '多台 AI 智能体组成协同团队，任务自动分配、负载均衡，像人类团队一样高效。', features: ['任务分发', '负载均衡', '状态同步', '大规模并发'] },
+      { id: 17, category: 'governance', icon: '🧠', name: '业务本体建模', desc: '将企业隐性业务规则转化为机器可理解的结构化模型，让 AI 真正懂生意。', features: ['规则抽取', '关系建模', '动态更新', '复杂逻辑'] },
+      
+      // 托管运营层
+      { id: 18, category: 'operation', icon: '🎯', name: 'AI 员工托管服务', desc: '提供完整 AI 数字员工代运营，企业只提需求，我们负责训练、维护、优化、迭代。', features: ['代运营', '7x24 监控', 'SLA 保障', '持续迭代'] },
+      { id: 19, category: 'operation', icon: '🔧', name: 'AI 代运维与托管', desc: '全生命周期运维：实时监控、版本升级、故障处理、性能调优、安全加固。', features: ['实时监控', '故障响应', '性能优化', '安全巡检'] },
+      { id: 20, category: 'operation', icon: '🎓', name: '内部 AI 培训与陪跑', desc: '从管理层到执行层的 AI 能力培训，实操训练、落地陪跑，让团队真正会用 AI。', features: ['定制课程', '实操教学', '落地陪跑', '案例输出'] },
+      
+      // 战略咨询层
+      { id: 21, category: 'strategy', icon: '📈', name: 'SaaS 到 GaaS 转型咨询', desc: '帮助传统软件企业从"卖工具"转向"卖结果"，抓住 AI 时代商业模式升级机遇。', features: ['转型规划', '产品 AI 化', '定价设计', '落地支持'] },
+      { id: 22, category: 'strategy', icon: '💰', name: '效果付费模式设计', desc: '设计可度量、可验证、可分成的 AI 效果付费模式，风险共担、收益共享。', features: ['指标设计', '计量系统', '分成机制', '合规方案'] },
+      { id: 23, category: 'strategy', icon: '🎤', name: '高管 AI 认知工作坊', desc: '面向决策层的 AI 战略闭门培训，帮助高管看懂 AI、投对 AI、用 AI 驱动增长。', features: ['认知升级', '路径设计', '风险规划', '实战方法'] },
+    ];
+    
+    // 渲染服务
+    function renderServices(category = 'all') {
+      const container = document.getElementById('servicesContainer');
+      const filtered = category === 'all' 
+        ? servicesData 
+        : servicesData.filter(s => s.category === category);
+      
+      // 按类别分组渲染
+      const categories = {
+        basic: { icon: '🏗️', title: '基础层服务', desc: '让企业零门槛、低成本、安全用上 AI' },
+        capability: { icon: '⚡', title: '能力构建层', desc: '让 AI 真正为业务干活、创造价值' },
+        governance: { icon: '🛡️', title: '治理与风控层', desc: '安全、合规、可控、不背锅' },
+        operation: { icon: '📦', title: '托管运营层', desc: '企业不用管，我们全包' },
+        strategy: { icon: '💡', title: '战略咨询层', desc: '升维・转型・增长・模式创新' }
+      };
+      
+      if (category === 'all') {
+        let html = '';
+        Object.keys(categories).forEach(catKey => {
+          const catServices = filtered.filter(s => s.category === catKey);
+          if (catServices.length === 0) return;
+          
+          const cat = categories[catKey];
+          html += `
+            <div class="category-section">
+              <div class="category-header">
+                <span class="category-icon">${cat.icon}</span>
+                <div>
+                  <h3 class="category-title">${cat.title}</h3>
+                  <p class="category-desc">${cat.desc}</p>
+                </div>
+              </div>
+              <div class="services-grid">
+                ${catServices.map(s => renderServiceCard(s)).join('')}
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      } else if (category === 'solution') {
+        container.innerHTML = '<div style="text-align:center;padding:4rem;color:var(--text-muted);"><p>请查看下方"标准化解决方案"区域</p></div>';
+      } else {
+        container.innerHTML = `
+          <div class="category-section">
+            <div class="category-header">
+              <span class="category-icon">${categories[category]?.icon || ''}</span>
+              <div>
+                <h3 class="category-title">${categories[category]?.title || ''}</h3>
+                <p class="category-desc">${categories[category]?.desc || ''}</p>
+              </div>
+            </div>
+            <div class="services-grid">
+              ${filtered.map(s => renderServiceCard(s)).join('')}
+            </div>
+          </div>
+        `;
+      }
+    }
+    
+    function renderServiceCard(service) {
+      return `
+        <div class="service-card">
+          <div class="service-icon">${service.icon}</div>
+          <h3 class="service-name">${service.name}</h3>
+          <p class="service-desc">${service.desc}</p>
+          <div class="service-features">
+            ${service.features.map(f => `<span class="feature-tag">${f}</span>`).join('')}
+          </div>
+        </div>
+      `;
+    }
+    
+    // 分类切换
+    document.querySelectorAll('.category-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        renderServices(this.dataset.category);
+      });
+    });
+    
+    // 初始化
+    renderServices('all');
+  </script>
+</body>
+</html>
