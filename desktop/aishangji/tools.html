@@ -3,834 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>工具库 - AI 商机</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-color: #1890ff;
-            --primary-dark: #096dd9;
-            --primary-light: #40a9ff;
-            --text-primary: #333;
-            --text-secondary: #666;
-            --text-light: #999;
-            --bg-light: #f5f5f5;
-            --bg-white: #ffffff;
-            --border-color: #e8e8e8;
-            --shadow: 0 2px 8px rgba(0,0,0,0.1);
-            --shadow-hover: 0 4px 16px rgba(24,144,255,0.2);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background: var(--bg-light);
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        header {
-            background: var(--bg-white);
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 18px;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-
-        nav a {
-            font-size: 16px;
-            color: var(--text-secondary);
-            transition: color 0.3s;
-            padding: 8px 0;
-        }
-
-        nav a:hover,
-        nav a.active {
-            color: var(--primary-color);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        /* Page Header */
-        .page-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 60px 0 40px;
-            text-align: center;
-            color: white;
-        }
-
-        .page-header h1 {
-            font-size: 36px;
-            margin-bottom: 15px;
-        }
-
-        .page-header p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        /* Filters */
-        .filters-section {
-            background: var(--bg-white);
-            padding: 30px 0;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-        }
-
-        .filters-content {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            align-items: end;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .filter-label {
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .filter-select {
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 14px;
-            background: var(--bg-white);
-            cursor: pointer;
-            transition: border-color 0.3s;
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .filter-button {
-            padding: 12px 30px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-weight: 500;
-        }
-
-        .filter-button:hover {
-            background: var(--primary-dark);
-        }
-
-        .filter-button.reset {
-            background: var(--bg-light);
-            color: var(--text-secondary);
-        }
-
-        .filter-button.reset:hover {
-            background: var(--border-color);
-        }
-
-        /* Tools Grid */
-        .tools-section {
-            padding: 40px 0;
-        }
-
-        .tools-count {
-            margin-bottom: 20px;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .tool-card {
-            background: var(--bg-white);
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: var(--shadow);
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .tool-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .tool-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-            font-size: 28px;
-        }
-
-        .tool-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 10px;
-        }
-
-        .tool-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .tool-rating {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            color: #faad14;
-            font-size: 14px;
-        }
-
-        .tool-desc {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .tool-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .tool-price {
-            font-size: 14px;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .tool-price.free {
-            color: #52c41a;
-        }
-
-        .tool-users {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-
-        .tool-tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            padding: 4px 12px;
-            background: #e6f7ff;
-            color: var(--primary-color);
-            border-radius: 4px;
-            font-size: 12px;
-        }
-
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            padding: 40px 0;
-        }
-
-        .pagination button {
-            padding: 10px 20px;
-            background: var(--bg-white);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-
-        .pagination button:hover:not(:disabled) {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .pagination button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .pagination button.active {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        .pagination .page-info {
-            padding: 10px 20px;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        /* Footer */
-        footer {
-            background: #1a1a1a;
-            color: white;
-            padding: 50px 0 30px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-section h4 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: var(--primary-light);
-        }
-
-        .footer-section p {
-            font-size: 14px;
-            color: #999;
-            line-height: 1.8;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            font-size: 14px;
-            color: #999;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary-light);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid #333;
-            color: #666;
-            font-size: 14px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .page-header h1 {
-                font-size: 28px;
-            }
-
-            .filters-content {
-                grid-template-columns: 1fr;
-            }
-
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-
-            .pagination {
-                flex-wrap: wrap;
-            }
-        }
-    </style>
+    <title>AI 工具库 - AI 商机</title>
+    <meta name="description" content="发现全球优质 AI 工具，分类清晰、评测专业、持续更新">
+    <link rel="stylesheet" href="styles-dark.css">
 </head>
 <body>
     <!-- Header -->
-    <header>
+    <header class="header-dark">
         <div class="container">
             <div class="header-content">
                 <a href="index.html" class="logo">
-                    <div class="logo-icon">🤖</div>
-                    AI 商机
+                    <span class="logo-icon logo-icon-dark">AI</span>
+                    <span class="logo-text-dark">AI 商机</span>
                 </a>
                 <nav>
                     <ul>
-                        <li><a href="tools.html" class="active">工具库</a></li>
-                        <li><a href="#">媒体</a></li>
-                        <li><a href="#">服务</a></li>
-                        <li><a href="#">投融资</a></li>
-                        <li><a href="#">案例</a></li>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="services.html">AI 服务</a></li>
+                        <li><a href="tools.html" class="active">AI 工具库</a></li>
+                        <li><a href="cases.html">案例库</a></li>
+                        <li><a href="media.html">AI 媒体</a></li>
                     </ul>
                 </nav>
+                <div style="display: flex; gap: var(--space-3);">
+                    <a href="services.html" class="btn btn-primary btn-glow">发布需求</a>
+                </div>
                 <button class="mobile-menu-btn">☰</button>
             </div>
         </div>
     </header>
 
-    <!-- Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <h1>AI 工具库</h1>
-            <p>探索全球最优质的 AI 工具，找到适合您的生产力神器</p>
-        </div>
-    </section>
-
-    <!-- Filters -->
-    <section class="filters-section">
-        <div class="container">
-            <div class="filters-content">
-                <div class="filter-group">
-                    <label class="filter-label">工具分类</label>
-                    <select class="filter-select">
-                        <option value="">全部分类</option>
-                        <option value="writing">写作创作</option>
-                        <option value="image">图像生成</option>
-                        <option value="video">视频编辑</option>
-                        <option value="audio">音频处理</option>
-                        <option value="code">编程开发</option>
-                        <option value="productivity">效率工具</option>
-                        <option value="research">研究分析</option>
-                        <option value="chat">对话助手</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label class="filter-label">价格区间</label>
-                    <select class="filter-select">
-                        <option value="">全部价格</option>
-                        <option value="free">免费</option>
-                        <option value="freemium">免费 + 付费</option>
-                        <option value="paid">付费</option>
-                        <option value="enterprise">企业版</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label class="filter-label">最低评分</label>
-                    <select class="filter-select">
-                        <option value="">全部评分</option>
-                        <option value="4.5">4.5 星以上</option>
-                        <option value="4.0">4.0 星以上</option>
-                        <option value="3.5">3.5 星以上</option>
-                        <option value="3.0">3.0 星以上</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label class="filter-label">&nbsp;</label>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="filter-button">筛选</button>
-                        <button class="filter-button reset">重置</button>
+    <!-- Hero Section -->
+    <section class="hero-dark" style="padding: var(--space-10) 0; min-height: 400px;">
+        <div class="hero-gradient-bg"></div>
+        <div class="hero-glow hero-glow-1"></div>
+        <div class="hero-grid"></div>
+        
+        <div class="container hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title" style="font-size: 40px;">
+                    AI 工具库 · <span class="gradient-text">发现全球优质 AI 工具</span>
+                </h1>
+                <p class="hero-subtitle">分类清晰、评测专业、持续更新，帮你快速找到合适的 AI 生产力工具</p>
+                <div class="search-box-dark" style="max-width: 650px;">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="搜索工具名称、功能、类别..." class="search-input">
                     </div>
+                    <button class="btn btn-primary btn-glow">搜索</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Tools Grid -->
-    <section class="tools-section">
+    <!-- 筛选器 -->
+    <section class="section-dark">
         <div class="container">
-            <div class="tools-count">共找到 <strong>156</strong> 个工具</div>
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <div class="tool-icon">✍️</div>
-                    <div class="tool-header">
-                        <div class="tool-name">Jasper AI</div>
-                        <div class="tool-rating">⭐ 4.8</div>
+            <div class="filters" style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-6);">
+                <button class="filter-btn active" style="padding: var(--space-2) var(--space-4); background: var(--primary-500); border: 1px solid var(--primary-500); border-radius: var(--radius-full); font-size: 14px; color: white; cursor: pointer;">全部</button>
+                <button class="filter-btn" style="padding: var(--space-2) var(--space-4); background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-full); font-size: 14px; color: var(--text-tertiary); cursor: pointer;">文本生成</button>
+                <button class="filter-btn" style="padding: var(--space-2) var(--space-4); background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-full); font-size: 14px; color: var(--text-tertiary); cursor: pointer;">图像生成</button>
+                <button class="filter-btn" style="padding: var(--space-2) var(--space-4); background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-full); font-size: 14px; color: var(--text-tertiary); cursor: pointer;">视频生成</button>
+                <button class="filter-btn" style="padding: var(--space-2) var(--space-4); background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-full); font-size: 14px; color: var(--text-tertiary); cursor: pointer;">音频处理</button>
+                <button class="filter-btn" style="padding: var(--space-2) var(--space-4); background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-full); font-size: 14px; color: var(--text-tertiary); cursor: pointer;">代码编程</button>
+                <button class="filter-btn" style="padding: var(--space-2) var(--space-4); background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-full); font-size: 14px; color: var(--text-tertiary); cursor: pointer;">数据分析</button>
+                <button class="filter-btn" style="padding: var(--space-2) var(--space-4); background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-full); font-size: 14px; color: var(--text-tertiary); cursor: pointer;">办公效率</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6);">
+                <p style="color: var(--text-tertiary); font-size: 14px;">共收录 <strong class="highlight">1,247</strong> 个 AI 工具</p>
+                <select style="padding: var(--space-2) var(--space-3); background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-md); font-size: 14px; color: var(--text-primary);">
+                    <option>默认排序</option>
+                    <option>最新发布</option>
+                    <option>最多关注</option>
+                    <option>评分最高</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- 工具列表 -->
+    <section class="section-dark-alt">
+        <div class="container">
+            <div class="grid grid-3">
+                <!-- 工具卡片 1 -->
+                <a href="tool-detail.html" class="card-dark">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-3);">
+                        <div class="card-icon-gradient icon-blue-purple" style="width: 56px; height: 56px; font-size: 28px; margin: 0;">🤖</div>
+                        <span class="tag-dark" style="background: rgba(249, 115, 22, 0.15); color: #F97316; border-color: rgba(249, 115, 22, 0.3);">🔥 热门</span>
                     </div>
-                    <div class="tool-desc">AI 写作助手，生成高质量营销文案和博客文章，支持 30+ 语言</div>
-                    <div class="tool-meta">
-                        <span class="tool-price">¥299/月起</span>
-                        <span class="tool-users">10k+ 用户</span>
+                    <h3 class="card-title">ChatGPT</h3>
+                    <p class="card-desc">OpenAI 出品的通用 AI 助手，支持对话、写作、编程、分析等多种任务。</p>
+                    <div style="display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-4);">
+                        <span class="tag-dark">文本生成</span>
+                        <span class="tag-dark">代码编程</span>
                     </div>
-                    <div class="tool-tags">
-                        <span class="tag">写作</span>
-                        <span class="tag">营销</span>
+                    <div class="card-meta">
+                        <span class="tag-dark" style="background: rgba(16, 185, 129, 0.15); color: var(--success); border-color: rgba(16, 185, 129, 0.3);">免费</span>
+                        <span style="font-size: 13px; color: var(--text-tertiary);">⭐ 4.9 (12,453)</span>
                     </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🎨</div>
-                    <div class="tool-header">
-                        <div class="tool-name">Midjourney</div>
-                        <div class="tool-rating">⭐ 4.9</div>
+                </a>
+
+                <!-- 工具卡片 2 -->
+                <a href="tool-detail.html" class="card-dark">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-3);">
+                        <div class="card-icon-gradient icon-pink-purple" style="width: 56px; height: 56px; font-size: 28px; margin: 0;">🎨</div>
+                        <span class="tag-dark" style="background: rgba(249, 115, 22, 0.15); color: #F97316; border-color: rgba(249, 115, 22, 0.3);">🔥 热门</span>
                     </div>
-                    <div class="tool-desc">AI 图像生成工具，创造令人惊叹的视觉艺术作品</div>
-                    <div class="tool-meta">
-                        <span class="tool-price">¥240/月起</span>
-                        <span class="tool-users">50k+ 用户</span>
+                    <h3 class="card-title">Midjourney</h3>
+                    <p class="card-desc">领先的 AI 绘画创作工具，通过文本描述生成高质量艺术图像。</p>
+                    <div style="display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-4);">
+                        <span class="tag-dark">图像生成</span>
+                        <span class="tag-dark">艺术设计</span>
                     </div>
-                    <div class="tool-tags">
-                        <span class="tag">图像</span>
-                        <span class="tag">设计</span>
+                    <div class="card-meta">
+                        <span class="tag-dark" style="background: rgba(245, 158, 11, 0.15); color: var(--warning); border-color: rgba(245, 158, 11, 0.3);">付费</span>
+                        <span style="font-size: 13px; color: var(--text-tertiary);">⭐ 4.8 (8,932)</span>
                     </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">💬</div>
-                    <div class="tool-header">
-                        <div class="tool-name">ChatGPT</div>
-                        <div class="tool-rating">⭐ 4.7</div>
+                </a>
+
+                <!-- 工具卡片 3 -->
+                <a href="tool-detail.html" class="card-dark">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-3);">
+                        <div class="card-icon-gradient icon-cyan-blue" style="width: 56px; height: 56px; font-size: 28px; margin: 0;">📝</div>
                     </div>
-                    <div class="tool-desc">智能对话助手，解答问题、创作内容、编写代码</div>
-                    <div class="tool-meta">
-                        <span class="tool-price free">免费</span>
-                        <span class="tool-users">100k+ 用户</span>
+                    <h3 class="card-title">Notion AI</h3>
+                    <p class="card-desc">智能笔记与写作助手，集成在 Notion 工作流中的 AI 能力。</p>
+                    <div style="display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-4);">
+                        <span class="tag-dark">文本生成</span>
+                        <span class="tag-dark">办公效率</span>
                     </div>
-                    <div class="tool-tags">
-                        <span class="tag">对话</span>
-                        <span class="tag">通用</span>
+                    <div class="card-meta">
+                        <span class="tag-dark" style="background: rgba(245, 158, 11, 0.15); color: var(--warning); border-color: rgba(245, 158, 11, 0.3);">付费</span>
+                        <span style="font-size: 13px; color: var(--text-tertiary);">⭐ 4.7 (6,234)</span>
                     </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">📊</div>
-                    <div class="tool-header">
-                        <div class="tool-name">Notion AI</div>
-                        <div class="tool-rating">⭐ 4.6</div>
+                </a>
+
+                <!-- 工具卡片 4 -->
+                <a href="tool-detail.html" class="card-dark">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-3);">
+                        <div class="card-icon-gradient icon-orange-pink" style="width: 56px; height: 56px; font-size: 28px; margin: 0;">🎬</div>
+                        <span class="tag-dark" style="background: rgba(249, 115, 22, 0.15); color: #F97316; border-color: rgba(249, 115, 22, 0.3);">🔥 热门</span>
                     </div>
-                    <div class="tool-desc">智能笔记助手，自动总结、翻译和生成内容</div>
-                    <div class="tool-meta">
-                        <span class="tool-price">¥80/月起</span>
-                        <span class="tool-users">30k+ 用户</span>
+                    <h3 class="card-title">Runway</h3>
+                    <p class="card-desc">AI 视频生成与编辑工具，支持文生视频、视频风格转换等。</p>
+                    <div style="display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-4);">
+                        <span class="tag-dark">视频生成</span>
+                        <span class="tag-dark">视频编辑</span>
                     </div>
-                    <div class="tool-tags">
-                        <span class="tag">效率</span>
-                        <span class="tag">笔记</span>
+                    <div class="card-meta">
+                        <span class="tag-dark" style="background: rgba(245, 158, 11, 0.15); color: var(--warning); border-color: rgba(245, 158, 11, 0.3);">付费</span>
+                        <span style="font-size: 13px; color: var(--text-tertiary);">⭐ 4.8 (5,621)</span>
                     </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🎵</div>
-                    <div class="tool-header">
-                        <div class="tool-name">Suno AI</div>
-                        <div class="tool-rating">⭐ 4.5</div>
+                </a>
+
+                <!-- 工具卡片 5 -->
+                <a href="tool-detail.html" class="card-dark">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-3);">
+                        <div class="card-icon-gradient icon-green-cyan" style="width: 56px; height: 56px; font-size: 28px; margin: 0;">🎵</div>
                     </div>
-                    <div class="tool-desc">AI 音乐生成，创作原创歌曲和背景音乐</div>
-                    <div class="tool-meta">
-                        <span class="tool-price freemium">免费 + 付费</span>
-                        <span class="tool-users">20k+ 用户</span>
+                    <h3 class="card-title">Suno AI</h3>
+                    <p class="card-desc">AI 音乐生成工具，通过文本描述创作完整歌曲。</p>
+                    <div style="display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-4);">
+                        <span class="tag-dark">音频处理</span>
+                        <span class="tag-dark">音乐创作</span>
                     </div>
-                    <div class="tool-tags">
-                        <span class="tag">音乐</span>
-                        <span class="tag">创作</span>
+                    <div class="card-meta">
+                        <span class="tag-dark" style="background: rgba(16, 185, 129, 0.15); color: var(--success); border-color: rgba(16, 185, 129, 0.3);">免费</span>
+                        <span style="font-size: 13px; color: var(--text-tertiary);">⭐ 4.6 (4,892)</span>
                     </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">📹</div>
-                    <div class="tool-header">
-                        <div class="tool-name">Runway</div>
-                        <div class="tool-rating">⭐ 4.7</div>
+                </a>
+
+                <!-- 工具卡片 6 -->
+                <a href="tool-detail.html" class="card-dark">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-3);">
+                        <div class="card-icon-gradient" style="width: 56px; height: 56px; font-size: 28px; margin: 0; background: linear-gradient(135deg, #3B82F6, #8B5CF6);">💻</div>
                     </div>
-                    <div class="tool-desc">AI 视频编辑工具，智能剪辑和特效生成</div>
-                    <div class="tool-meta">
-                        <span class="tool-price">¥380/月起</span>
-                        <span class="tool-users">15k+ 用户</span>
+                    <h3 class="card-title">GitHub Copilot</h3>
+                    <p class="card-desc">AI 编程助手，智能代码补全、生成、解释，提升开发效率。</p>
+                    <div style="display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-4);">
+                        <span class="tag-dark">代码编程</span>
+                        <span class="tag-dark">开发工具</span>
                     </div>
-                    <div class="tool-tags">
-                        <span class="tag">视频</span>
-                        <span class="tag">编辑</span>
+                    <div class="card-meta">
+                        <span class="tag-dark" style="background: rgba(245, 158, 11, 0.15); color: var(--warning); border-color: rgba(245, 158, 11, 0.3);">付费</span>
+                        <span style="font-size: 13px; color: var(--text-tertiary);">⭐ 4.9 (9,123)</span>
                     </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">📈</div>
-                    <div class="tool-header">
-                        <div class="tool-name">Jenni AI</div>
-                        <div class="tool-rating">⭐ 4.4</div>
-                    </div>
-                    <div class="tool-desc">学术写作助手，辅助论文写作和文献引用</div>
-                    <div class="tool-meta">
-                        <span class="tool-price">¥160/月起</span>
-                        <span class="tool-users">8k+ 用户</span>
-                    </div>
-                    <div class="tool-tags">
-                        <span class="tag">学术</span>
-                        <span class="tag">写作</span>
-                    </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🔍</div>
-                    <div class="tool-header">
-                        <div class="tool-name">Perplexity</div>
-                        <div class="tool-rating">⭐ 4.8</div>
-                    </div>
-                    <div class="tool-desc">AI 搜索引擎，提供准确答案和来源引用</div>
-                    <div class="tool-meta">
-                        <span class="tool-price free">免费</span>
-                        <span class="tool-users">40k+ 用户</span>
-                    </div>
-                    <div class="tool-tags">
-                        <span class="tag">搜索</span>
-                        <span class="tag">研究</span>
-                    </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🎯</div>
-                    <div class="tool-header">
-                        <div class="tool-name">Copy.ai</div>
-                        <div class="tool-rating">⭐ 4.5</div>
-                    </div>
-                    <div class="tool-desc">营销文案生成器，快速创建广告、邮件和社交媒体内容</div>
-                    <div class="tool-meta">
-                        <span class="tool-price freemium">免费 + 付费</span>
-                        <span class="tool-users">25k+ 用户</span>
-                    </div>
-                    <div class="tool-tags">
-                        <span class="tag">营销</span>
-                        <span class="tag">文案</span>
-                    </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🎭</div>
-                    <div class="tool-header">
-                        <div class="tool-name">DALL-E 3</div>
-                        <div class="tool-rating">⭐ 4.6</div>
-                    </div>
-                    <div class="tool-desc">OpenAI 图像生成模型，精准理解复杂提示词</div>
-                    <div class="tool-meta">
-                        <span class="tool-price">按量付费</span>
-                        <span class="tool-users">35k+ 用户</span>
-                    </div>
-                    <div class="tool-tags">
-                        <span class="tag">图像</span>
-                        <span class="tag">AI</span>
-                    </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">💻</div>
-                    <div class="tool-header">
-                        <div class="tool-name">GitHub Copilot</div>
-                        <div class="tool-rating">⭐ 4.8</div>
-                    </div>
-                    <div class="tool-desc">AI 编程助手，智能代码补全和生成</div>
-                    <div class="tool-meta">
-                        <span class="tool-price">¥100/月</span>
-                        <span class="tool-users">60k+ 用户</span>
-                    </div>
-                    <div class="tool-tags">
-                        <span class="tag">编程</span>
-                        <span class="tag">开发</span>
-                    </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🎙️</div>
-                    <div class="tool-header">
-                        <div class="tool-name">Descript</div>
-                        <div class="tool-rating">⭐ 4.5</div>
-                    </div>
-                    <div class="tool-desc">AI 音频视频编辑，像编辑文档一样编辑媒体</div>
-                    <div class="tool-meta">
-                        <span class="tool-price freemium">免费 + 付费</span>
-                        <span class="tool-users">12k+ 用户</span>
-                    </div>
-                    <div class="tool-tags">
-                        <span class="tag">音频</span>
-                        <span class="tag">视频</span>
-                    </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">📊</div>
-                    <div class="tool-header">
-                        <div class="tool-name">Beautiful.ai</div>
-                        <div class="tool-rating">⭐ 4.4</div>
-                    </div>
-                    <div class="tool-desc">AI 演示文稿制作，自动设计精美幻灯片</div>
-                    <div class="tool-meta">
-                        <span class="tool-price">¥120/月起</span>
-                        <span class="tool-users">10k+ 用户</span>
-                    </div>
-                    <div class="tool-tags">
-                        <span class="tag">演示</span>
-                        <span class="tag">设计</span>
-                    </div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🌐</div>
-                    <div class="tool-header">
-                        <div class="tool-name">DeepL</div>
-                        <div class="tool-rating">⭐ 4.9</div>
-                    </div>
-                    <div class="tool-desc">AI 翻译工具，提供自然准确的翻译服务</div>
-                    <div class="tool-meta">
-                        <span class="tool-price free">免费</span>
-                        <span class="tool-users">80k+ 用户</span>
-                    </div>
-                    <div class="tool-tags">
-                        <span class="tag">翻译</span>
-                        <span class="tag">语言</span>
-                    </div>
-                </div>
+                </a>
             </div>
 
-            <!-- Pagination -->
-            <div class="pagination">
-                <button disabled>← 上一页</button>
-                <button class="active">1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>4</button>
-                <button>5</button>
-                <button class="page-info">... 11</button>
-                <button>下一页 →</button>
+            <!-- 分页 -->
+            <div style="display: flex; justify-content: center; gap: var(--space-2); margin-top: var(--space-10);">
+                <button class="btn btn-secondary" disabled style="opacity: 0.5; cursor: not-allowed;">&lt; 上一页</button>
+                <button class="btn btn-primary">1</button>
+                <button class="btn btn-secondary">2</button>
+                <button class="btn btn-secondary">3</button>
+                <button class="btn btn-secondary">4</button>
+                <button class="btn btn-secondary">5</button>
+                <button class="btn btn-secondary">...</button>
+                <button class="btn btn-secondary">42</button>
+                <button class="btn btn-secondary">下一页 &gt;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 提交工具 CTA -->
+    <section class="cta-section-dark">
+        <div class="cta-gradient-bg"></div>
+        <div class="container cta-container">
+            <h2 class="cta-title">发现了好用的 AI 工具？</h2>
+            <p class="cta-subtitle">欢迎提交推荐！我们的编辑团队会审核并收录优质工具，让更多用户受益。</p>
+            <div class="cta-actions">
+                <button class="btn btn-lg btn-white btn-glow">提交工具</button>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="footer-dark">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>AI 商机</h4>
-                    <p>汇聚全球最优质的 AI 工具、资讯与服务，助力您的 AI 商业之旅。我们致力于为用户提供最全面、最及时的 AI 行业信息。</p>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">AI 商机</h3>
+                    <p class="footer-desc">
+                        中国领先的 AI 服务交易平台<br>
+                        连接企业与优质 AI 服务商
+                    </p>
                 </div>
-                <div class="footer-section">
-                    <h4>快速链接</h4>
+                <div class="footer-column">
+                    <h4 class="footer-title">核心服务</h4>
                     <ul class="footer-links">
-                        <li><a href="tools.html">工具库</a></li>
-                        <li><a href="#">媒体中心</a></li>
-                        <li><a href="#">服务市场</a></li>
-                        <li><a href="#">投融资</a></li>
+                        <li><a href="services.html">AI 服务交易</a></li>
+                        <li><a href="services.html">应用开发</a></li>
+                        <li><a href="services.html">咨询规划</a></li>
                     </ul>
                 </div>
-                <div class="footer-section">
-                    <h4>关于我们</h4>
+                <div class="footer-column">
+                    <h4 class="footer-title">生态服务</h4>
+                    <ul class="footer-links">
+                        <li><a href="tools.html">AI 工具库</a></li>
+                        <li><a href="cases.html">案例库</a></li>
+                        <li><a href="media.html">AI 媒体</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">关于我们</h4>
                     <ul class="footer-links">
                         <li><a href="#">公司简介</a></li>
-                        <li><a href="#">联系我们</a></li>
+                        <li><a href="#">联系方式</a></li>
                         <li><a href="#">加入我们</a></li>
-                        <li><a href="#">合作伙伴</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>法律条款</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">隐私政策</a></li>
-                        <li><a href="#">服务条款</a></li>
-                        <li><a href="#">免责声明</a></li>
-                        <li><a href="#">Cookie 政策</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 AI 商机。All rights reserved.</p>
+                <p>&copy; 2026 AI 商机平台。All rights reserved.</p>
             </div>
         </div>
     </footer>
-
-    <script>
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() {
-            const nav = document.querySelector('nav ul');
-            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-        });
-
-        // Filter functionality
-        document.querySelectorAll('.filter-button').forEach(btn => {
-            btn.addEventListener('click', function() {
-                if (!this.classList.contains('reset')) {
-                    alert('筛选功能演示 - 实际使用需连接后端 API');
-                } else {
-                    document.querySelectorAll('.filter-select').forEach(select => {
-                        select.value = '';
-                    });
-                }
-            });
-        });
-
-        // Tool card click
-        document.querySelectorAll('.tool-card').forEach(card => {
-            card.addEventListener('click', function() {
-                window.location.href = 'tool-detail.html';
-            });
-        });
-
-        // Pagination
-        document.querySelectorAll('.pagination button').forEach(btn => {
-            btn.addEventListener('click', function() {
-                if (!this.disabled && !this.classList.contains('active') && !this.classList.contains('page-info')) {
-                    document.querySelectorAll('.pagination button').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                }
-            });
-        });
-    </script>
 </body>
 </html>
