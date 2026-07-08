@@ -152,9 +152,27 @@ function initMobileMenu() {
   const menuToggle = document.querySelector('.menu-toggle');
   const navLinks = document.querySelector('.nav-links');
   
-  if (menuToggle) {
-    menuToggle.addEventListener('click', function() {
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
       navLinks.classList.toggle('active');
+      menuToggle.classList.toggle('active');
+    });
+    
+    // 点击菜单外部关闭
+    document.addEventListener('click', function(e) {
+      if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+        navLinks.classList.remove('active');
+        menuToggle.classList.remove('active');
+      }
+    });
+    
+    // 点击菜单项后关闭
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        menuToggle.classList.remove('active');
+      });
     });
   }
 }

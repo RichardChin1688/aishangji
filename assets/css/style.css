@@ -651,25 +651,62 @@ table td strong {
 }
 
 @media (max-width: 768px) {
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  
   .navbar .nav-links {
     display: none;
     position: absolute;
-    top: 64px;
+    top: 100%;
     left: 0;
     right: 0;
     background: rgba(13, 27, 42, 0.98);
+    backdrop-filter: blur(20px);
     flex-direction: column;
-    padding: 20px;
+    padding: 20px 5%;
     gap: 16px;
-    border-bottom: 1px solid var(--border-subtle);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    z-index: 1001;
   }
   
   .navbar .nav-links.active {
     display: flex;
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
   .navbar .menu-toggle {
     display: flex;
+    z-index: 1002;
+    padding: 10px;
+  }
+  
+  .navbar .menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+  }
+  
+  .navbar .menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .navbar .menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
   }
   
   .banner {
