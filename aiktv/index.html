@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 智能·KTV 娱乐管理系统｜产品架构 + 商业报价方案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-purple: #a855f7;
+            --neon-pink: #ec4899;
+            --neon-blue: #3b82f6;
+            --neon-cyan: #06b6d4;
+            --gold: #fbbf24;
+            --dark-bg: #0f0a1f;
+            --card-bg: #1a1025;
+            --text-light: #f8fafc;
+            --text-gray: #94a3b8;
+            --gradient-main: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #fbbf24 100%);
+            --gradient-neon: linear-gradient(135deg, #a855f7, #ec4899, #3b82f6);
+            --gradient-gold: linear-gradient(135deg, #fbbf24, #f59e0b);
+            --glow: 0 0 40px rgba(168, 85, 247, 0.4);
+            --glow-strong: 0 0 60px rgba(236, 72, 153, 0.5);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.7;
+            color: var(--text-light);
+            background: var(--dark-bg);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            animation: bgPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 10, 31, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        nav a:hover {
+            color: var(--gold);
+            background: rgba(168, 85, 247, 0.2);
+        }
+
+        .hero {
+            background: linear-gradient(180deg, rgba(15, 10, 31, 0.9) 0%, var(--dark-bg) 100%);
+            padding: 10rem 2rem 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '🎤';
+            position: absolute;
+            font-size: 30rem;
+            opacity: 0.03;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 80px rgba(168, 85, 247, 0.5);
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .hero .subtitle {
+            font-size: 1.4rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+        }
+
+        .hero .tagline {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.2);
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .hero-icons {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-icon {
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-icon:nth-child(2) { animation-delay: 0.5s; }
+        .hero-icon:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero-icon .emoji {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.5));
+        }
+
+        .hero-icon span {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        section {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            color: var(--text-gray);
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .architecture {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 3rem;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            box-shadow: var(--glow);
+            margin-bottom: 3rem;
+        }
+
+        .arch-level {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .arch-box {
+            padding: 1.5rem 2.5rem;
+            border-radius: 15px;
+            font-weight: 600;
+            text-align: center;
+            min-width: 220px;
+            transition: all 0.3s;
+        }
+
+        .arch-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .arch-main {
+            background: var(--gradient-neon);
+            color: white;
+            font-size: 1.3rem;
+            box-shadow: 0 10px 40px rgba(168, 85, 247, 0.4);
+        }
+
+        .arch-sub {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+            color: var(--text-light);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+        }
+
+        .arch-extra {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%);
+            color: var(--gold);
+            border: 2px solid rgba(251, 191, 36, 0.5);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-neon);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: var(--glow);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card h3 {
+            color: var(--text-light);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card h3 .icon {
+            font-size: 2rem;
+            filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));
+        }
+
+        .card p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card .features {
+            list-style: none;
+        }
+
+        .card .features li {
+            padding: 0.6rem 0;
+            padding-left: 1.8rem;
+            position: relative;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.1);
+        }
+
+        .card .features li:last-child {
+            border-bottom: none;
+        }
+
+        .card .features li::before {
+            content: '✨';
+            position: absolute;
+            left: 0;
+            font-size: 0.9rem;
+        }
+
+        .card.featured {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+            border: 2px solid rgba(168, 85, 247, 0.4);
+        }
+
+        .card.featured h3 {
+            color: var(--gold);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 3rem;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+            border: 2px solid rgba(168, 85, 247, 0.5);
+            box-shadow: var(--glow);
+        }
+
+        .pricing-card.featured::before {
+            content: '🔥 热门推荐';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-gold);
+            color: var(--dark-bg);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.6rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card .desc {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-card .price {
+            font-size: 3rem;
+            font-weight: bold;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 1.5rem 0;
+        }
+
+        .pricing-card .price span {
+            font-size: 1rem;
+            color: var(--text-gray);
+            font-weight: normal;
+            -webkit-text-fill-color: var(--text-gray);
+        }
+
+        .pricing-card .features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .pricing-card .features li {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .pricing-card .features li::before {
+            content: '✓';
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .compliance-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            justify-content: center;
+        }
+
+        .compliance-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.2) 100%);
+            color: #34d399;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            transition: all 0.3s;
+        }
+
+        .compliance-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .deployment-steps {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .step {
+            background: var(--card-bg);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            min-width: 280px;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            transition: all 0.4s;
+        }
+
+        .step:hover {
+            transform: translateY(-8px);
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: var(--glow);
+        }
+
+        .step .step-num {
+            background: var(--gradient-neon);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+        }
+
+        .step h3 {
+            color: var(--text-light);
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .step p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .advantages {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+            border-radius: 25px;
+            padding: 4rem;
+            margin-top: 3rem;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .advantages h3 {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 2.5rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .advantages ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .advantages li {
+            padding: 1.5rem;
+            background: rgba(15, 10, 31, 0.5);
+            border-radius: 15px;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            transition: all 0.3s;
+        }
+
+        .advantages li:hover {
+            border-color: rgba(168, 85, 247, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .advantages li strong {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-size: 1.15rem;
+            color: var(--text-light);
+        }
+
+        .advantages li {
+            color: var(--text-gray);
+        }
+
+        .value-add {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        .value-add-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .value-add-col h4 {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .value-add-col.free h4 {
+            color: #34d399;
+        }
+
+        .value-add-col.paid h4 {
+            color: var(--gold);
+        }
+
+        footer {
+            background: linear-gradient(180deg, var(--dark-bg) 0%, #0a0614 100%);
+            border-top: 1px solid rgba(168, 85, 247, 0.3);
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-top: 5rem;
+        }
+
+        footer .logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.5));
+        }
+
+        footer h2 {
+            font-size: 1.8rem;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        footer p {
+            color: var(--text-gray);
+            margin-top: 0.5rem;
+        }
+
+        footer .copyright {
+            margin-top: 3rem;
+            font-size: 0.85rem;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-icons {
+                gap: 1.5rem;
+            }
+            
+            .hero-icon .emoji {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                gap: 0.75rem;
+            }
+
+            nav a {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.75rem;
+            }
+            
+            .card-grid,
+            .pricing-grid,
+            .advantages ul {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .architecture {
+                padding: 2rem 1rem;
+            }
+
+            .arch-box {
+                min-width: 100%;
+            }
+        }
+
+        .music-notes {
+            position: fixed;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .note {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: floatNote 15s linear infinite;
+        }
+
+        @keyframes floatNote {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.1;
+            }
+            90% {
+                opacity: 0.1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .section-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 3rem 0;
+        }
+
+        .section-divider::before,
+        .section-divider::after {
+            content: '';
+            height: 1px;
+            flex: 1;
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.5), transparent);
+        }
+
+        .section-divider span {
+            font-size: 1.5rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="music-notes">
+        <span class="note" style="left: 10%; animation-delay: 0s;">🎵</span>
+        <span class="note" style="left: 20%; animation-delay: 3s;">🎶</span>
+        <span class="note" style="left: 35%; animation-delay: 6s;">♪</span>
+        <span class="note" style="left: 50%; animation-delay: 9s;">🎵</span>
+        <span class="note" style="left: 65%; animation-delay: 12s;">🎶</span>
+        <span class="note" style="left: 80%; animation-delay: 2s;">♪</span>
+        <span class="note" style="left: 90%; animation-delay: 7s;">🎵</span>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="#overview">📋 项目总览</a></li>
+            <li><a href="#entertainment">🎪 包房娱乐</a></li>
+            <li><a href="#marketing">📱 霸屏营销</a></li>
+            <li><a href="#management">📊 门店管理</a></li>
+            <li><a href="#compliance">✅ 合规体系</a></li>
+            <li><a href="#pricing">💰 商业报价</a></li>
+            <li><a href="#deployment">🚀 部署方案</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <h1>🎤 AI 智能·KTV 娱乐管理系统</h1>
+        <p class="subtitle">产品架构 + 商业报价方案（正式商用版）</p>
+        <span class="tagline">🚀 行业独创「包房 AI 造乐 + 全网霸屏营销 + 门店智能管控」一体化全栈智能系统</span>
+        
+        <div class="hero-icons">
+            <div class="hero-icon">
+                <span class="emoji">🎪</span>
+                <span>包房 AI 娱乐</span>
+            </div>
+            <div class="hero-icon">
+                <span class="emoji">📱</span>
+                <span>霸屏营销</span>
+            </div>
+            <div class="hero-icon">
+                <span class="emoji">📊</span>
+                <span>智能管理</span>
+            </div>
+        </div>
+    </div>
+
+    <section id="overview">
+        <div class="section-header">
+            <h2 class="section-title">01 项目总览与标准化产品架构</h2>
+            <p class="section-subtitle">重新定义 KTV 娱乐体验的三大核心系统</p>
+        </div>
+
+        <div class="architecture">
+            <div class="arch-level">
+                <div class="arch-box arch-main">🎯 AI 智能·KTV 娱乐管理系统</div>
+            </div>
+            <div class="arch-level">
+                <div class="arch-box arch-sub">🎪 包房 AI 娱乐新体验系统</div>
+                <div class="arch-box arch-sub">📱 全网霸屏营销系统</div>
+                <div class="arch-box arch-sub">📊 门店智能管理系统</div>
+            </div>
+            <div class="arch-level">
+                <div class="arch-box arch-extra">🎉 AI 主题派对智能策划系统</div>
+                <div class="arch-box arch-extra">✅ 全域合规体系 + 分层部署方案</div>
+            </div>
+        </div>
+
+        <div class="section-divider"><span>💎</span></div>
+
+        <div class="card-grid">
+            <div class="card">
+                <h3><span class="icon">🎪</span> 包房端价值</h3>
+                <p>打造极致现场体验，让每位顾客都成为传播者</p>
+                <ul class="features">
+                    <li>解决现场氛围、冷场尴尬</li>
+                    <li>创造仪式感与社交传播点</li>
+                    <li>提供付费增值体验</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3><span class="icon">📱</span> 营销端价值</h3>
+                <p>自动化内容产出，让门店持续获得线上流量</p>
+                <ul class="features">
+                    <li>自动产出宣传素材</li>
+                    <li>私域精细化运营</li>
+                    <li>抖音朋友圈引流获客</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3><span class="icon">📊</span> 管理端价值</h3>
+                <p>数字化经营底座，降本增效看得见</p>
+                <ul class="features">
+                    <li>降低人力成本</li>
+                    <li>财务风控与库存管理</li>
+                    <li>会员复购与数据分析</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="entertainment" style="background: linear-gradient(180deg, transparent 0%, rgba(168, 85, 247, 0.05) 100%);">
+        <div class="section-header">
+            <h2 class="section-title">02 包房 AI 娱乐新体验系统</h2>
+            <p class="section-subtitle">🔥 前场爆款·核心差异化｜把传统唱歌升级为沉浸式高端娱乐体验</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="card featured">
+                <h3><span class="icon">🎙️</span> AI 智能包厢 MC</h3>
+                <p>全场景氛围中枢，三风格自适应切换，无人值守自动控场</p>
+                <ul class="features">
+                    <li>歌曲分段自动烘托氛围（前奏/高潮/收尾）</li>
+                    <li>实时识别包厢气氛动态调整话术</li>
+                    <li>千人千面专属夸赞体系</li>
+                    <li>炸场/商务儒雅/走心治愈三模式切换</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🎮</span> AI 合规互动游戏</h3>
+                <p>AI 全程充当裁判、出题、计时、判分，无需服务员带动</p>
+                <ul class="features">
+                    <li>音乐类：猜歌名、歌词接龙、曲风 PK</li>
+                    <li>社交类：谁是卧底、海龟汤、数字炸弹</li>
+                    <li>仪式专属：藏头诗、集体祝福、纪念寄语</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🔗</span> 点歌系统深度联动</h3>
+                <p>底层打通点歌机曲库、播放、灯光、音量，全自动协同</p>
+                <ul class="features">
+                    <li>场景化智能歌单一键生成</li>
+                    <li>曲风联动灯光、音效自动适配</li>
+                    <li>氛围/游戏/派对三大模式切换</li>
+                    <li>演唱实时互动点评投屏</li>
+                </ul>
+            </div>
+
+            <div class="card featured">
+                <h3><span class="icon">🎬</span> AI 音视频创作系统</h3>
+                <p>社交传播爆款功能，全链路合规，用户主动授权</p>
+                <ul class="features">
+                    <li>AI 个人演唱会 MV 生成（核心爆款）</li>
+                    <li>AI 智能修音混音</li>
+                    <li>人声分离 + 曲风重编</li>
+                    <li>多人合唱智能混音</li>
+                    <li>高光自动切片 + 时空混剪</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🔒</span> 隐私保护模式</h3>
+                <p>全程不安装、不启用包厢摄像头，纯用户自主上传</p>
+                <ul class="features">
+                    <li>手机扫码快速上传素材</li>
+                    <li>素材仅用于本次 MV 合成</li>
+                    <li>离场后系统自动清零</li>
+                    <li>无图像抓拍、人脸识别</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="marketing">
+        <div class="section-header">
+            <h2 class="section-title">03 全网霸屏营销系统</h2>
+            <p class="section-subtitle">📈 线上引流裂变增收｜自动化完成门店宣传、私域运营、线上获客</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <h3><span class="icon">🤖</span> AI 全自动产出素材</h3>
+                <p>输入关键词一键生成朋友圈海报、抖音短视频脚本、门店活动文案、节日宣传物料</p>
+            </div>
+            <div class="card">
+                <h3><span class="icon">🎯</span> 客户分层精准推送</h3>
+                <p>新客推送低价体验套餐、老客赠送 MV 权益、商务客户推送高端储值活动</p>
+            </div>
+            <div class="card">
+                <h3><span class="icon">📉</span> 淡季引流方案</h3>
+                <p>AI 根据客流低谷自动策划下午场特惠、团建套餐、工作日折扣全套方案</p>
+            </div>
+            <div class="card">
+                <h3><span class="icon">💬</span> 私域轻量维护</h3>
+                <p>定时温和推送福利活动，间隔周期合理，持续引导到店消费</p>
+            </div>
+            <div class="card featured" style="grid-column: 1 / -1;">
+                <h3><span class="icon">🎉</span> AI 主题派对智能策划系统</h3>
+                <p>输入聚会类型，一键输出完整方案：流程顺序、适配歌单、互动话术、布置建议、优惠套餐、宣传文案</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="management" style="background: linear-gradient(180deg, transparent 0%, rgba(251, 191, 36, 0.05) 100%);">
+        <div class="section-header">
+            <h2 class="section-title">04 门店智能管理系统</h2>
+            <p class="section-subtitle">🏗️ 后台全域数字化底座｜经营提效、成本压降、风险管控、营收提升</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <h3><span class="icon">👋</span> AI 前厅智能接待</h3>
+                <p>24 小时线上微信、线下点歌屏双端智能接待，自动回复价格、套餐、停车指引</p>
+            </div>
+            <div class="card">
+                <h3><span class="icon">📈</span> 经营数据分析</h3>
+                <p>可视化图表展示包厢周转率、客流差异、爆款酒水、热门歌曲，AI 自动分析优化建议</p>
+            </div>
+            <div class="card">
+                <h3><span class="icon">💰</span> 财务与进销存风控</h3>
+                <p>实时消耗统计、库存预警、自动对账、排查飞单错账、自动生成财务报表</p>
+            </div>
+            <div class="card">
+                <h3><span class="icon">👥</span> AI 智能人力排班</h3>
+                <p>读取客流大数据预测高峰时段，自动生成排班表，避免人力闲置浪费</p>
+            </div>
+            <div class="card">
+                <h3><span class="icon">🎵</span> 基础音视频优化</h3>
+                <p>消除环境噪音、均衡人声大小、匹配原版伴奏、联动灯光系统</p>
+            </div>
+            <div class="card">
+                <h3><span class="icon">🛡️</span> AI 安防风控</h3>
+                <p>公共区域 AI 识别争吵、冲突、吸烟行为，实时预警，降低客诉风险</p>
+            </div>
+            <div class="card">
+                <h3><span class="icon">🎫</span> AI 会员智能管理</h3>
+                <p>基于消费数据生成客户标签，自动划分会员等级，生日自动推送福利</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="compliance">
+        <div class="section-header">
+            <h2 class="section-title">05 系统全域合规总纲</h2>
+            <p class="section-subtitle">🛡️ 全链路合规设计，无政策风险，可大规模落地推广</p>
+        </div>
+
+        <div style="background: var(--card-bg); border-radius: 25px; padding: 3rem; border: 1px solid rgba(16, 185, 129, 0.3); box-shadow: 0 0 40px rgba(16, 185, 129, 0.2);">
+            <div class="compliance-badges">
+                <span class="compliance-badge">🔒 无包厢摄像头</span>
+                <span class="compliance-badge">✅ 用户主动授权</span>
+                <span class="compliance-badge">🗑️ 离场自动清零</span>
+                <span class="compliance-badge">🚫 无低俗内容</span>
+                <span class="compliance-badge">⚖️ 版权合规</span>
+            </div>
+
+            <ul class="features" style="font-size: 1.1rem; max-width: 900px; margin: 0 auto;">
+                <li>包房全程不部署、不使用拍摄摄像头，所有影像素材仅由顾客主动上传</li>
+                <li>无强制人脸识别、不永久存储顾客影像、语音素材</li>
+                <li>无低俗互动内容、无诱导劝酒、无撮合有偿陪侍、无违规线上引流</li>
+                <li>所有 AI 视频、照片创作功能，必须用户手动主动授权才可启用</li>
+                <li>演唱、上传的临时素材，顾客离场后系统自动全部清零</li>
+                <li>曲库、AI 生成内容遵守版权规范，用户产出内容仅限个人纪念使用</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="pricing" style="background: linear-gradient(180deg, transparent 0%, rgba(168, 85, 247, 0.05) 100%);">
+        <div class="section-header">
+            <h2 class="section-title">06 商业合作方案</h2>
+            <p class="section-subtitle">💎 灵活合作模式｜支持大型门店私有化部署，详情请联系商务洽谈</p>
+        </div>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>🏆 终身全包买断模式</h3>
+                <p class="desc">适用：长期经营、不想承担年费的大型门店</p>
+                <div class="price">定制报价<span>/店</span></div>
+                <ul class="features">
+                    <li>三大系统全功能永久商用授权</li>
+                    <li>终身无年费/升级费</li>
+                    <li>免费迭代更新</li>
+                    <li>上门部署调试</li>
+                    <li>终身售后维护</li>
+                    <li>全套运营物料交付</li>
+                    <li style="color: var(--gold); font-weight: 600;">📩 联系商务获取专属报价</li>
+                </ul>
+            </div>
+
+            <div class="pricing-card featured">
+                <h3>🤝 联营合伙人模式</h3>
+                <p class="desc">适用：轻投入共赢、风险共担</p>
+                <div class="price">合作洽谈<span>/年</span></div>
+                <ul class="features">
+                    <li>全量功能开放</li>
+                    <li>全年运维、版本更新</li>
+                    <li>一对一运营培训</li>
+                    <li>门店流水分成模式（酒水耗材不计入）</li>
+                    <li>推荐同行享管道收益</li>
+                    <li style="color: var(--gold); font-weight: 600;">📩 联系商务获取合作方案</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="value-add" style="margin-top: 3rem;">
+            <h3 style="color: var(--gold); font-size: 1.5rem; margin-bottom: 1rem;">💎 门店自主增值盈利模块</h3>
+            <p style="color: var(--text-gray);">门店可自主定价，创造额外营收</p>
+            <div class="value-add-grid">
+                <div class="value-add-col free">
+                    <h4>🆓 免费权益</h4>
+                    <ul class="features">
+                        <li>标清 MV</li>
+                        <li>基础 AI 修音</li>
+                        <li>简易宣传海报</li>
+                    </ul>
+                </div>
+                <div class="value-add-col paid">
+                    <h4>💰 付费增值项目（门店自主定价）</h4>
+                    <ul class="features">
+                        <li>高清无水印成片</li>
+                        <li>全风格虚拟舞台</li>
+                        <li>歌曲曲风重编</li>
+                        <li>多人精修合唱大片</li>
+                        <li>专属纪念短片</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="deployment">
+        <div class="section-header">
+            <h2 class="section-title">07 分层部署交付方案</h2>
+            <p class="section-subtitle">🔧 兼容市面 99% 主流点歌系统，无需更换原有硬件</p>
+        </div>
+
+        <div class="deployment-steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h3>标准版</h3>
+                <p>云端软件部署<br>快速上线</p>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h3>进阶版</h3>
+                <p>本地网关部署<br>全功能软硬件联调</p>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h3>旗舰版</h3>
+                <p>灯光联动、数字人硬件<br>专属运维驻场</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <h2 class="section-title">08 产品总结与市场优势</h2>
+        </div>
+
+        <div class="advantages">
+            <h3>🚀 四大核心优势</h3>
+            <ul>
+                <li>
+                    <strong>🏰 独家产品壁垒</strong>
+                    市面唯一同时覆盖「包房 AI 娱乐体验 + 全网自动化营销 + 门店智能管控」三大闭环系统，无同质化竞品
+                </li>
+                <li>
+                    <strong>✨ 差异化体验优势</strong>
+                    传统系统仅支持点歌与基础收银，本系统兼具现场氛围互动、AI 短视频产出、线上自动引流三大增收能力
+                </li>
+                <li>
+                    <strong>💰 定价逻辑合理</strong>
+                    基于高额研发成本制定，可打造区域网红标杆门店，长期降低人力、营销、管理成本，提升门店溢价
+                </li>
+                <li>
+                    <strong>✅ 全场景合规设计</strong>
+                    取消包房拍摄硬件，隐私、内容、经营全链路合规，无政策风险，可大规模落地推广
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <div class="logo">🎤</div>
+        <h2>AI 智能·KTV 娱乐管理系统</h2>
+        <p>正式商用版 · 产品架构 + 商业报价方案</p>
+        <p class="copyright">© 2026 版权所有</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.boxShadow = '0 0 30px rgba(168, 85, 247, 0.3)';
+            } else {
+                nav.style.boxShadow = '0 0 30px rgba(168, 85, 247, 0.2)';
+            }
+        });
+    </script>
+</body>
+</html>
