@@ -1024,6 +1024,755 @@ table.brand-table {
   .back-top { display: none !important; }
 }
 
+/* ============================================================
+   移动端适配层（2026-11-06 · 陛下钦命「品牌前置调研网页移动端优化」）
+   ------------------------------------------------------------------
+   背景：原页面只有 3 个断点（1100/860/560），移动端实测三类硬伤：
+     ① 指标卡 5 张被 grid-template-columns:repeat(5,1fr) 硬塞一行
+        → 每张 ~50px 宽，中文被迫单字竖排（"官/网/公/众/号"），无法阅读
+     ② 导航 10 个胶囊换行堆叠 4 行，占掉首屏 ~30% 高度
+     ③ 表格 min-width:720px + 首列定宽 230px → 390px 屏横向溢出，
+        docW 596 vs vw 390，整页可左右拖动
+   处理原则：**只在窄屏生效，桌面版式零改动**（陛下已验收的版式不动）。
+   ============================================================ */
+
+/* ---------- 0. 全局：窄屏禁止横向溢出 ---------- */
+@media (max-width: 860px) {
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  /* 触屏上卡片 hover 位移会产生「黏住上移」的怪感，直接取消 */
+  .card:hover, .metric:hover, .tl-node:hover, .chart-box:hover {
+    transform: none;
+  }
+  /* iOS 点击高亮去掉 */
+  body { -webkit-tap-highlight-color: transparent; }
+  /* 行内代码/长英文不撑破容器 */
+  .card, .sec-body, .plan-body, .voice-script { overflow-wrap: anywhere; }
+}
+
+/* ---------- 1. 顶栏：吸顶 + 章节按钮 ---------- */
+@media (max-width: 860px) {
+  /* 顶栏改 grid：第一行 标题 | 章节按钮，第二行 客户与阶段信息通栏
+     反例（已修）：flex 多行里 .meta 的 flex:1 1 100% 会把标题挤到 88px → 标题被截成一字一行 */
+  .topbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 9px 14px 10px;
+    gap: 3px 10px;
+  }
+  .topbar h1 {
+    font-size: 15.5px;
+    gap: 8px;
+    white-space: normal;
+    line-height: 1.35;
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+    flex-wrap: nowrap;
+  }
+  .topbar h1 .logo-mark {
+    width: 28px; height: 28px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+  .topbar h1 .grad {
+    display: block;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+    line-height: 1.3;
+  }
+  /* 客户/阶段信息移到标题下方一行，缩小字号，不占整块高度 */
+  .topbar .meta {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    text-align: left;
+    font-size: 11.5px;
+    line-height: 1.55;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .topbar .meta .chip { padding: 1px 9px; font-size: 11px; }
+  .topbar .head-client { color: var(--text-dim); }
+  .head-meta-line { margin-top: 0; }
+}
+
+/* 章节抽屉按钮（仅窄屏显示） */
+.nav-toggle { display: none; }
+@media (max-width: 860px) {
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    padding: 8px 12px 8px 11px;
+    border-radius: 11px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #cdeaff;
+    background: rgba(79, 195, 247, 0.13);
+    border: 1px solid rgba(79, 195, 247, 0.42);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-toggle .ic { width: 15px; height: 15px; }
+  .nav-caret { width: 14px; height: 14px; transition: transform 0.22s ease; opacity: 0.85; }
+  .nav-toggle.open .nav-caret { transform: rotate(180deg); }
+  .nav-toggle.open { background: rgba(79, 195, 247, 0.24); border-color: #4fc3f7; }
+
+  /* 章节列表改为下拉面板（不再横向撑满正文） */
+  .section-nav {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(100% + 8px);
+    z-index: 120;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 0;
+    padding: 12px;
+    border-radius: 16px;
+    background: rgba(13, 21, 38, 0.97);
+    border: 1px solid rgba(79, 195, 247, 0.3);
+    box-shadow: 0 22px 50px -16px rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    max-height: 68vh;
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  }
+  .section-nav.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  /* 层叠顺序比 isolation 可靠：面板必须整体高于遮罩 */
+  /* 面板必须整体高于遮罩；同时容器 .container(z-index:1) 会形成层叠上下文
+     → 窄屏下容器不再自建上下文，保证 130 > 100 的层级真正生效 */
+  .section-nav { z-index: 130 !important; }
+  .container { z-index: auto; }
+  .section-nav a {
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 11px 8px;
+    font-size: 13.5px;
+    border-radius: 11px;
+    min-height: 44px;
+  }
+  /* 遮罩层级须低于下拉面板（nav z-index:120），否则面板点不动 */
+  .nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(4, 8, 15, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+  .nav-backdrop.show { opacity: 1; visibility: visible; }
+}
+
+/* ---------- 2. 容器与卡片内距 ---------- */
+@media (max-width: 860px) {
+  .container { padding: 14px 12px 26px; }
+  .card { padding: 16px 14px; margin-bottom: 14px; border-radius: 15px; }
+  .card h2 { font-size: 15.5px; margin-bottom: 14px; padding-left: 13px; gap: 7px; }
+  .card h2::before { width: 3px; height: 18px; }
+  .card h2 .sub {
+    display: block;
+    flex-basis: 100%;
+    font-size: 11.5px;
+    line-height: 1.5;
+    margin-top: 3px;
+  }
+  .card h2 { flex-wrap: wrap; }
+  .card h3 { font-size: 14px; margin: 14px 0 8px; }
+  .chart-box { padding: 13px 11px 8px; border-radius: 15px; }
+  .chart-box h3 { font-size: 13px; margin-bottom: 10px; }
+  .split-2, .split-3 { gap: 14px; margin-top: 12px; }
+  ul.bullet li { font-size: 14px; padding: 6px 0 6px 22px; line-height: 1.7; }
+  ul.bullet li::before { left: 2px; width: 6px; height: 6px; }
+  ul.bullet li:hover { padding-left: 22px; }
+  .stat-foot { font-size: 12.5px; }
+}
+
+/* ---------- 3. 指标卡：≤860px 横滑单列带（C 档 2026-11-07） ----------
+   陛下旨意：不要竖排单列，改横向可滑动。实现：
+   grid → flex 横排 + scroll-snap，每卡约 72vw 宽（右侧露出一截，暗示可滑）。
+   桌面 >860px 完全不受影响。 */
+@media (max-width: 860px) {
+  .metric-row,
+  #metricRow.metric-row {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    grid-template-columns: none !important;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-padding-left: 2px;
+    /* 让卡片能贴到容器边缘再滑出 */
+    padding: 2px 2px 12px;
+    margin: 0 -2px;
+    scrollbar-width: none;
+  }
+  .metric-row::-webkit-scrollbar,
+  #metricRow.metric-row::-webkit-scrollbar { height: 0; display: none; }
+
+  .metric-row > .metric,
+  #metricRow.metric-row > .metric {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    /* 72vw：右侧始终露 1/4 张，用户看得见「还有」 */
+    width: 72vw;
+    min-width: 72vw;
+    max-width: 300px;
+    text-align: left;
+    padding: 15px 16px 16px;
+    border-radius: 14px;
+  }
+  /* 单列带内不做首滑动画，避免滑动时卡顿 */
+  .metric { animation: none !important; }
+  .metric .label {
+    font-size: 12.5px;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+    min-height: 0;
+    text-align: left;
+  }
+  .metric .value {
+    font-size: 30px;
+    margin: 7px 0 6px;
+    text-align: left;
+    line-height: 1.12;
+  }
+  .metric .value span { font-size: 13px !important; }
+  .metric .delta-up, .metric .delta-down, .metric .delta-flat {
+    font-size: 12px;
+    line-height: 1.5;
+    word-break: keep-all;
+    text-align: left;
+  }
+  .metric .price { font-size: 20px; }
+  /* 滑动提示：「↔ 左右滑动」细标签，纯装饰不加内容字 */
+  .metric-row::after,
+  #metricRow.metric-row::after {
+    content: "";
+    flex: 0 0 2px;
+  }
+}
+/* 极窄屏：卡片略窄一点，保证一屏能看到 1.5 张 */
+@media (max-width: 400px) {
+  .metric-row > .metric,
+  #metricRow.metric-row > .metric {
+    width: 74vw;
+    min-width: 74vw;
+    padding: 14px 14px 15px;
+  }
+  .metric .value { font-size: 27px; }
+}
+
+/* 产品矩阵价格卡：窄屏两列，不再硬塞 N 列
+   ⚠️ B 档（2026-11-06 22:2x）已改为单列通栏，见文件末尾「B 档细化」 */
+@media (max-width: 860px) {
+  .price-row {
+    grid-template-columns: repeat(auto-fit, minmax(min(46%, 160px), 1fr)) !important;
+    gap: 10px;
+  }
+}
+
+/* ---------- 4. 图表高度：手机上压缩，避免一屏一图 ---------- */
+@media (max-width: 860px) {
+  .chart-wrap, .chart-wrap.tall { height: 300px; }
+  .chart-wrap.short { height: 230px; }
+  /* 雷达图标签在窄屏要留足外圈空间 */
+  #overview .chart-wrap.tall { height: 330px; }
+}
+@media (max-width: 400px) {
+  .chart-wrap, .chart-wrap.tall { height: 270px; }
+  .chart-wrap.short { height: 210px; }
+}
+
+/* ---------- 5. 表格：窄屏转「卡片式」竖排（治横向溢出） ----------
+   桌面保留真表格（陛下已验收）；≤860px 用 data-label 逐行变卡片。
+   注意：需 render.js 给每个 td 打 data-label（取 thead 列名）。 */
+@media (max-width: 860px) {
+  .table-wrap {
+    border: none;
+    overflow-x: visible;
+    margin-top: 10px;
+    border-radius: 0;
+  }
+  .brand-table,
+  .brand-table tbody,
+  .brand-table tr,
+  .brand-table td {
+    display: block;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100%;
+  }
+  .brand-table { min-width: 0 !important; border-collapse: separate; }
+  .brand-table thead { display: none; }
+
+  .brand-table tbody tr {
+    background: rgba(13, 24, 44, 0.62);
+    border: 1px solid var(--border);
+    border-left: 3px solid rgba(79, 195, 247, 0.55);
+    border-radius: 12px;
+    padding: 4px 12px;
+    margin-bottom: 10px;
+  }
+  .brand-table tbody tr:hover { background: rgba(13, 24, 44, 0.62); }
+
+  .brand-table tbody td {
+    display: grid;
+    grid-template-columns: 74px 1fr;
+    gap: 10px;
+    align-items: start;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(130, 160, 200, 0.13);
+    font-size: 13.5px;
+    line-height: 1.65;
+    white-space: normal !important;
+    word-break: normal;
+    overflow-wrap: anywhere;
+    /* 覆盖桌面的首列定宽 / 短文本 nowrap */
+    min-width: 0 !important;
+    width: auto !important;
+  }
+  .brand-table tbody td:last-child { border-bottom: none; }
+  .brand-table tbody td.cell-nowrap { white-space: normal !important; }
+
+  /* 列名标签 */
+  .brand-table tbody td::before {
+    content: attr(data-label);
+    color: var(--text-dim);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    line-height: 1.85;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* 首列（主体名）作为卡片标题：整行通栏、亮色、加大 */
+  .brand-table tbody td:first-child {
+    display: block;
+    padding: 9px 0 8px;
+    margin-bottom: 2px;
+    border-bottom: 1px solid rgba(130, 160, 200, 0.2);
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #cdeaff;
+    line-height: 1.5;
+  }
+  /* 首列若本身带列名（如"指标/主体"），用标签小字挂在上面 */
+  .brand-table tbody td:first-child::before {
+    display: block;
+    content: attr(data-label);
+    color: var(--text-dim);
+    font-size: 10.5px;
+    font-weight: 600;
+    margin-bottom: 1px;
+  }
+  /* 表格内的标签不竖排 */
+  .brand-table td .tag { white-space: nowrap; }
+}
+
+/* ---------- 6. 时间轴：窄屏改两列 ---------- */
+@media (max-width: 860px) {
+  .timeline { gap: 10px; margin-top: 12px; }
+  .tl-node { min-width: calc(50% - 5px); flex: 1 1 calc(50% - 5px); padding: 14px 8px 12px; }
+  .tl-label { font-size: 12px; }
+  .tl-date { font-size: 14px; margin: 4px 0 6px; }
+  .tl-tag { font-size: 10.5px; padding: 1px 8px; }
+}
+
+/* ---------- 7. 优化方案 / 语音播报 / Persona ---------- */
+@media (max-width: 860px) {
+  .plan-body { gap: 12px; }
+  .plan-phase { padding: 13px 13px; }
+  .plan-phase-head h3 { font-size: 14.5px; min-width: 0; }
+  .plan-item { padding: 9px 10px; }
+  .plan-item-t { font-size: 13.5px; }
+  .plan-item-d { font-size: 12.5px; }
+  .voice-btn { min-height: 44px; font-size: 14px; padding: 11px 18px; }
+  .voice-script p { font-size: 14px; line-height: 1.75; }
+  /* Persona 名称列改窄，值列留足 */
+  #user .split-3 .score-row { grid-template-columns: 66px 1fr; gap: 8px; }
+  #user .split-3 .score-row .name { width: 66px; min-width: 66px; font-size: 12.5px; }
+  #user .split-3 .score-row .num { font-size: 13px; }
+  .score-row { font-size: 13.5px; gap: 8px; margin: 8px 0; }
+  .score-row .num { font-size: 14px; }
+  .stat-list .name { font-size: 13px; }
+  .stat-list .num { font-size: 13px; }
+}
+
+/* 极窄屏（≤400px）：评分条两侧再收一点 */
+@media (max-width: 400px) {
+  .score-row .name { font-size: 13px; }
+  .score-bar { height: 8px; }
+}
+
+/* ---------- 8. 页脚与回顶按钮 ---------- */
+@media (max-width: 860px) {
+  .footer { padding: 24px 16px; font-size: 11.5px; line-height: 1.85; }
+  .back-top { right: 14px; bottom: 16px; width: 44px; height: 44px; }
+}
+
+/* ---------- 9. 手机横屏（宽度可能 >860px）：按移动端处理，防止回到桌面版式 ----------
+   常见：844×390（iPhone 横放）。这类尺寸 >860? 否（844），但 926×428 / 932×430 会漏。
+   故额外用「高度 ≤ 500px 的触屏」判定。 */
+/* 防回退守卫 ①：所有 ≤1100px 一律走两列，杜绝 4 列压成单字竖排 */
+@media (max-width: 1100px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 960px) and (max-height: 500px) and (orientation: landscape) {
+  .metric-row,
+  #metricRow.metric-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 10px;
+  }
+  .grid-4 { grid-template-columns: repeat(3, 1fr) !important; }
+  .container { padding: 10px 12px 20px; }
+  .card { padding: 14px 14px; margin-bottom: 12px; }
+  .section-nav { max-height: 80vh; }
+}
+
+/* 防回退守卫 ②：≤1000px 时导航胶囊允许换行居中对齐（10 项铺不下）
+   实测：932×430 横屏下 flex-wrap:nowrap 把导航顶到 992px → 横向溢出 */
+@media (max-width: 1000px) {
+  .section-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 10px;
+  }
+}
+/* 防回退守卫 ③：≤1000px 表格仍用「可横滑容器」兜底（桌面 min-width 不撤，但外层可滚） */
+@media (max-width: 1000px) {
+  .table-wrap { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+/* 防回退守卫 ④：≤1280px 优化方案卡由两列收成单列。
+   实测：Pro 竖屏（1180）下两列各 559px，累计比容器多 1px → 文档横向溢出。
+   1280 以下单列既免溢出，也更好读（此区间本就窄）。 */
+@media (max-width: 1280px) {
+  .plan-body { grid-template-columns: 1fr; }
+  .container { max-width: 100%; }
+  .table-wrap { max-width: 100%; }
+}
+
+/* ---------- 10. 横屏矮屏（手机横放）：压掉粘性顶栏高度 ---------- */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 480px) {
+  .topbar { padding: 6px 14px; }
+  .chart-wrap, .chart-wrap.tall { height: 240px; }
+}
+
+/* ---------- 10. 优化方案：窄屏解除 min-width:200px 造成的横向溢出 ----------
+   实测：桌面段 `.plan-phase-head h3 { flex:1 1 auto; min-width:200px }` +
+   `.plan-goal { white-space:nowrap }` 在 390px 卡里叠加超标 → 计划卡被顶到 549px 宽。
+   处置：窄屏 h3 允许收缩、goal 徽章允许折行。 */
+/* 优化方案卡：≤1100px（含平板/手机横放）都要解除桌面 min-width，否则卡片被顶宽 */
+@media (max-width: 1100px) {
+  .plan-body, .plan-phase, .plan-phase-head, .plan-actions, .plan-item {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .plan-phase-head h3 { min-width: 0; }
+  .plan-goal { white-space: normal; max-width: 100%; }
+}
+@media (max-width: 860px) {
+  .plan-body, .plan-phase, .plan-phase-head, .plan-actions, .plan-item {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .plan-phase-head h3 { min-width: 0; flex: 1 1 100%; }
+  .plan-goal {
+    white-space: normal;
+    flex: 0 1 auto;
+    max-width: 100%;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .plan-item-t { word-break: normal; overflow-wrap: anywhere; }
+}
+
+/* ============================================================
+   平板 / 小笔记本守卫（861–1100px）
+   ------------------------------------------------------------------
+   实测：1024×768 与 932×430（手机横放）仍走桌面版式，出现两处撑破：
+     · 导航 10 个胶囊 flex-wrap:nowrap → 右侧溢出（1024 屏 nav 伸到 1121px）
+     · 表格 min-width:720 + 首列 230 → 表格 1033px，比容器宽
+   处置：此区间导航一律换行居中；表格保留横滑但外层加圆角提示。
+   ============================================================ */
+@media (max-width: 1100px) {
+  .section-nav {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 8px 10px !important;
+  }
+  .section-nav a { flex: 0 1 auto; padding: 8px 14px; }
+  /* 861–1100px（平板/手机横放）也把表格切成卡片：
+     桌面 min-width:720 + 首列 230 在 1024 屏下算出 1033px，比容器宽 → 整页被顶出屏幕
+     （仅靠 .table-wrap 横滑不能阻止 document 溢出）。 */
+  .table-wrap { border: none; overflow-x: visible; margin-top: 10px; border-radius: 0; background: none; }
+  .brand-table,
+  .brand-table tbody,
+  .brand-table tr,
+  .brand-table td { display: block; width: auto !important; min-width: 0 !important; max-width: 100%; }
+  .brand-table { min-width: 0 !important; border-collapse: separate; }
+  .brand-table thead { display: none; }
+  .brand-table tbody tr {
+    background: rgba(13, 24, 44, 0.62);
+    border: 1px solid var(--border);
+    border-left: 3px solid rgba(79, 195, 247, 0.55);
+    border-radius: 12px;
+    padding: 4px 12px;
+    margin-bottom: 10px;
+  }
+  .brand-table tbody td {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    gap: 10px;
+    align-items: start;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(130, 160, 200, 0.13);
+    font-size: 13.5px;
+    line-height: 1.65;
+    white-space: normal !important;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+  .brand-table tbody td:last-child { border-bottom: none; }
+  .brand-table tbody td.cell-nowrap { white-space: normal !important; }
+  .brand-table tbody td::before {
+    content: attr(data-label);
+    color: var(--text-dim);
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.85;
+    white-space: nowrap;
+  }
+  .brand-table tbody td:first-child {
+    display: block;
+    padding: 9px 0 8px;
+    margin-bottom: 2px;
+    border-bottom: 1px solid rgba(130, 160, 200, 0.2);
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #cdeaff;
+  }
+  .brand-table tbody td:first-child::before {
+    display: block;
+    content: attr(data-label);
+    color: var(--text-dim);
+    font-size: 10.5px;
+    font-weight: 600;
+  }
+  /* 横滑提示：右侧渐隐，告诉用户「还能往右拖」 */
+  .table-wrap {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background:
+      linear-gradient(90deg, rgba(13,21,38,0.9) 0%, rgba(13,21,38,0) 12px) left / 24px 100% no-repeat local,
+      linear-gradient(270deg, rgba(13,21,38,0.9) 0%, rgba(13,21,38,0) 12px) right / 24px 100% no-repeat local;
+  }
+  .metric-row, #metricRow.metric-row { gap: 14px; }
+  .metric .value { font-size: 32px; }
+}
+
+/* ============================================================
+   B 档细化层（2026-11-06 · 照本堂移动端可读性重排）
+   基调：不动文案、不动桌面版式，仅 ≤860px 生效
+   目标：价格卡由 2×2 挤压 → 单列通栏；三层信息分离；
+        编码串/数字单位不拆行；孤立标点修正；语音稿加层级
+   ============================================================ */
+
+@media (max-width: 860px) {
+
+  /* ---------- B1. 价格卡：横滑单列带（C 档 2026-11-07 陛下旨意） ----------
+     原：2×2 挤压 → 曾改单列通栏 → 现改「横向可滑动」。
+     每卡 76vw，内部仍是三层：品类名 → 价格 → 说明，竖排完整不被砍。 */
+  #business .price-row,
+  .price-row {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    grid-template-columns: none !important;
+    gap: 12px !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    padding: 2px 2px 12px;
+    margin: 10px -2px 0;
+    scrollbar-width: none;
+  }
+  #business .price-row::-webkit-scrollbar,
+  .price-row::-webkit-scrollbar { height: 0; display: none; }
+
+  #business .price-row .metric,
+  .price-row .metric {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: 76vw;
+    min-width: 76vw;
+    max-width: 320px;
+    text-align: left;
+    padding: 15px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: none !important;
+  }
+  /* 第一层：品类名（小字灰蓝） */
+  #business .price-row .metric .label {
+    flex: 0 0 auto;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--text-dim);
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* 第二层：价格（大号，独立一行，不挤） */
+  #business .price-row .metric .price {
+    flex: 0 0 auto;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.15;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+    text-align: left;
+  }
+  /* 第三层：说明（左对齐、行高放开） */
+  #business .price-row .metric .delta-flat {
+    flex: 1 1 auto;
+    text-align: left;
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: #a9b8cc;
+    word-break: normal;
+    overflow-wrap: anywhere;
+    line-break: strict;
+    hanging-punctuation: allow-end;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(130, 160, 200, 0.22);
+  }
+
+  /* ---------- B2. 编码串 / 数字+单位：整块不拆 ----------
+     例：W12997 398 / W13018 478 / W22775 468（419 券后）
+     目标：数字与单位（㎡、元、万、%）、字母编码与价格各自成块，不被动拆行 */
+  #business .price-row .metric .delta-flat,
+  #business .price-row .metric .price {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+  /* 用零宽不换行连接常见的「数字+单位」组合：由 render 层插入 <span class="nb"> */
+
+  /* ---------- B3. 首屏「价格带错位」通栏卡：数字与其余四卡对齐 ---------- */
+  #metricRow .metric .value {
+    letter-spacing: 0.3px;
+  }
+  #metricRow > .metric:last-child:nth-child(odd) .value {
+    font-size: 32px;
+    line-height: 1.12;
+  }
+  #metricRow > .metric:last-child:nth-child(odd) .delta-flat {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* ---------- B4. 竞品表：标签列统一宽度右对齐 ---------- */
+  .brand-table tbody td .tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 92px;
+    min-height: 26px;
+    padding: 3px 10px;
+    line-height: 1.2;
+  }
+
+  /* ---------- B5. 语音播报稿：加呼吸与小结层级 ---------- */
+  .voice-script {
+    gap: 13px;
+  }
+  .voice-script p {
+    font-size: 14px;
+    line-height: 1.85;
+    padding-left: 13px;
+    border-left-width: 3px;
+  }
+  /* 段内加粗小结（render 层用 <strong> 标出，文字未改） */
+  .voice-script p strong {
+    color: #e8f3ff;
+    font-weight: 700;
+    /* 用极淡底衬把关键句拎出来，不靠换字 */
+    background: linear-gradient(180deg, transparent 62%, rgba(79, 195, 247, 0.16) 62%);
+    padding: 0 1px;
+  }
+  /* 段首编号点：视觉切分，不加字 */
+  .voice-script p {
+    position: relative;
+  }
+
+  /* ---------- B6. 柱状图：0 值柱给虚线基准，避免「像没加载」 ---------- */
+  /* 由 render 层在 chart 配置里加 minBarLength + 0 值描边，此处只调标签密度 */
+  .chart-wrap canvas {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  #business .price-row .metric,
+  .price-row .metric {
+    width: 78vw;
+    min-width: 78vw;
+    padding: 14px 14px 15px;
+  }
+  #business .price-row .metric .price {
+    font-size: 22px;
+  }
+  #business .price-row .metric .delta-flat {
+    font-size: 12px;
+    line-height: 1.72;
+  }
+  .brand-table tbody td .tag {
+    min-width: 84px;
+  }
+}
+
+/* B 档：不可拆块（数字+单位、编码+价格）——桌面与窄屏通用，纯排版 */
+.nb {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
 </style>
 <script>
 /**
@@ -2152,13 +2901,14 @@ function icon(name, cls) {
   const D = window.DASH;
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s == null ? "" : s);
+  const isNarrow = () => (window.innerWidth || 1024) <= 860;
 
   /* ---------- 页面头部（标题/客户/阶段） ---------- */
   function renderHead() {
     const m = D.meta || {};
     const ttls = D.titles || {};
     const titleEl = document.querySelector(".topbar h1");
-    if (titleEl) titleEl.innerHTML = icon("rocket", "ic") + '<span class="grad">' + esc(m.brand || "") + " · 品牌诊断系统</span>";
+    if (titleEl) titleEl.innerHTML = icon("rocket", "ic") + '<span class="grad">' + esc(m.brand || "") + " · " + esc(m.doc_title || "品牌诊断系统") + "</span>";
     const clientEl = document.querySelector(".head-client");
     if (clientEl) clientEl.textContent = "客户：" + esc(m.client_name || "");
     const metaEl = document.querySelector(".head-meta-line");
@@ -2167,11 +2917,66 @@ function icon(name, cls) {
     setChartTitle("radar", ttls.radar || D.radar && D.radar.title || "📡 6 大板块雷达对比");
     setChartTitle("bar28", ttls.bar28 || "📊 28 模块评分明细");
     setChartTitle("timeline", ttls.timeline || "📅 调研节点规划");
-    document.title = (m.brand || "") + " · 品牌诊断系统";
+    document.title = (m.brand || "") + " · " + (m.doc_title || "品牌诊断系统");
   }
   function setChartTitle(id, txt) {
     const el = document.querySelector('.chart-title[data-title-for="' + id + '"]');
     if (el) el.innerHTML = icon(id === "timeline" ? "calendar" : id === "radar" ? "radar" : "chart", "ic") + " " + esc(txt);
+  }
+
+  /* ---------- 移动端章节抽屉（≤860px 时导航收进顶栏按钮，避免胶囊换行堆叠） ---------- */
+  function setupNavDrawer() {
+    var nav = $("navLinks");
+    var bar = document.querySelector(".topbar");
+    if (!nav || !bar || bar.querySelector(".nav-toggle")) return;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "nav-toggle";
+    btn.setAttribute("aria-label", "展开章节导航");
+    btn.setAttribute("aria-expanded", "false");
+    btn.innerHTML = icon("grid", "ic") + '<span class="nav-toggle-t">章节</span>' +
+      '<svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" ' +
+      'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+    bar.appendChild(btn);
+
+    var backdrop = document.createElement("div");
+    backdrop.className = "nav-backdrop";
+    document.body.appendChild(backdrop);
+
+
+    function close() {
+      nav.classList.remove("open");
+      btn.classList.remove("open");
+      backdrop.classList.remove("show");
+      btn.setAttribute("aria-expanded", "false");
+    }
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var willOpen = !nav.classList.contains("open");
+      if (willOpen) positionNav();
+      nav.classList.toggle("open", willOpen);
+      btn.classList.toggle("open", willOpen);
+      backdrop.classList.toggle("show", willOpen);
+      btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+    });
+    // 面板定位：sticky 的 .topbar 是定位祖先但高度仅 ~117px，
+    // absolute 面板会被裁掉/滚到页面顶端 → 统一用 fixed + 实测坐标贴顶栏下沿。
+    function positionNav() {
+      var rect = bar.getBoundingClientRect();
+      nav.style.position = "fixed";
+      nav.style.top = Math.round(rect.bottom + 8) + "px";
+      nav.style.left = "12px";
+      nav.style.right = "12px";
+    }
+    positionNav();
+    window.addEventListener("resize", positionNav, { passive: true });
+    window.addEventListener("scroll", function () {
+      if (nav.classList.contains("open")) close();
+    }, { passive: true });
+
+    backdrop.addEventListener("click", close);
+    nav.addEventListener("click", function (e) { if (e.target.closest("a")) close(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
   }
 
   /* ---------- 顶部导航锚点（总览 + 六板块 + 语音/方案/时间轴，数据驱动） ---------- */
@@ -2199,6 +3004,7 @@ function icon(name, cls) {
         icon(d[1], "ic") + " " + d[2] + "</a>";
     }).join("");
     setupScrollSpy();
+    setupNavDrawer();
   }
 
   /* ---------- 滚动高亮导航 ---------- */
@@ -2227,9 +3033,10 @@ function icon(name, cls) {
         '</div><div class="value">' + esc(mm.value) + '<span style="font-size:16px;font-weight:600">' + esc(mm.sub || "") +
         '</span></div><div class="' + mode + '">' + arrow + " " + esc(mm.note || "") + "</div></div>";
     });
-    $("metricRow").className = "grid";
-    // 指标卡数量不定（4 个或 5 个），一律排成一行：按实际数量动态生成列数
-    $("metricRow").style.gridTemplateColumns = "repeat(" + arr.length + ", minmax(0, 1fr))";
+    $("metricRow").className = "grid metric-row";
+    // 指标卡数量不定（4 个或 5 个）。宽屏排一行（按实际数量定列数）；
+    // 窄屏（≤860px）由 CSS .metric-row 的 auto-fit 接管，避免卡片被压成竖排单字。
+    $("metricRow").style.setProperty("--metric-cols", arr.length);
     $("metricRow").innerHTML = arr.join("");
   }
 
@@ -2257,32 +3064,70 @@ function icon(name, cls) {
             beginAtZero: true, max: r.normalMax || 10,
             ticks: { stepSize: 2, color: "#8b9bb0", backdropColor: "transparent" },
             grid: { color: "rgba(255,255,255,0.1)" },
-            pointLabels: { color: "#e0e6ed", font: { size: 12.5 } }
+            pointLabels: { color: "#e0e6ed", font: { size: isNarrow() ? 11 : 12.5 } }
           }
         },
-        plugins: { legend: { labels: { color: "#93a4bc", boxWidth: 12 } } }
+        plugins: { legend: { labels: { color: "#93a4bc", boxWidth: 12, font: { size: isNarrow() ? 11.5 : 12 } } } }
       }
     });
   }
 
-  /* ---------- 28 模块柱状图 ---------- */
+  /* ---------- 28 模块柱状图 ----------
+     桌面：28 根竖柱一行铺满。
+     手机（≤860px）：竖柱在 390px 里必挤成一团（标签重叠不可读），
+     改为「横向条形图」——模块名在左、分数在右，纵向滚动最省力。
+     数据顺序倒置，使得分最高的模块出现在最上方。 */
   function renderBar28() {
     if (!$("barModules") || !D.bar28) return;
     const B = D.bar28;
-    const data = B.data;
+    const narrow = isNarrow();
+    const labels = narrow ? B.labels.slice().reverse() : B.labels;
+    const data = narrow ? B.data.slice().reverse() : B.data;
     const colors = data.map(function (s) { return s >= 8 ? "#66bb6a" : s >= 6 ? "#4fc3f7" : "#ffa726"; });
-    new Chart($("barModules"), {
+    const bar = new Chart($("barModules"), {
       type: "bar",
-      data: { labels: B.labels, datasets: [{ label: "得分", data: data, backgroundColor: colors, borderRadius: 4 }] },
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "得分",
+          data: data,
+          backgroundColor: colors,
+          borderRadius: 4,
+          barPercentage: narrow ? 0.78 : 0.9,
+          categoryPercentage: narrow ? 0.88 : 0.9
+        }]
+      },
       options: {
         responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
+        indexAxis: narrow ? "y" : "x",
+        layout: { padding: narrow ? { right: 6 } : 0 },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: "rgba(10,18,32,0.94)",
+            borderColor: "rgba(79,195,247,0.4)",
+            borderWidth: 1,
+            titleColor: "#e8eef7",
+            bodyColor: "#cdeaff",
+            displayColors: false,
+            callbacks: { label: function (c) { return "得分 " + c.parsed[narrow ? "x" : "y"] + " / 10"; } }
+          }
+        },
+        scales: narrow ? {
+          x: { beginAtZero: true, max: 10, ticks: { color: "#8b9bb0", font: { size: 10.5 }, stepSize: 2 }, grid: { color: "rgba(255,255,255,0.05)" } },
+          y: { ticks: { color: "#c3d0e0", font: { size: 11.5 }, autoSkip: false }, grid: { display: false } }
+        } : {
           y: { beginAtZero: true, max: 10, ticks: { color: "#8b9bb0" }, grid: { color: "rgba(255,255,255,0.05)" } },
           x: { ticks: { color: "#8b9bb0", font: { size: 10.5, weight: "600" }, maxRotation: 62, minRotation: 45 }, grid: { display: false } }
         }
       }
     });
+    // 窄屏时容器随模块数增高，避免 28 行挤在 300px 里
+    if (narrow) {
+      const wrap = $("barModules").closest(".chart-wrap");
+      if (wrap) wrap.style.height = Math.max(320, data.length * 21 + 46) + "px";
+    }
+    return bar;
   }
 
   /* ---------- 通用：评分条 ---------- */
@@ -2392,6 +3237,72 @@ function icon(name, cls) {
       h += "</div>";
       return h;
     },
+    path: function (s) {
+      let h = "";
+      const phases = s.planItems || [];
+      if (phases.length) {
+        h += '<div class="plan-body">';
+        phases.forEach(function (ph, i) {
+          h += '<div class="plan-phase"><div class="plan-phase-head"><span class="plan-no">' +
+            esc(ph.no || (i + 1)) + '</span><h3>' + icon(ph.icon || "target", "ic") + " " + esc(ph.title) + "</h3>" +
+            (ph.goal ? '<span class="plan-goal">' + esc(ph.goal) + "</span>" : "") + "</div>";
+          h += '<div class="plan-actions">' + (ph.items || []).map(function (it) {
+            return '<div class="plan-item"><div class="plan-item-t">' + esc(it.t) +
+              (it.prio ? ' <span class="tag ' + prioCls(it.prio) + '">' + esc(it.prio) + "</span>" : "") + "</div>" +
+              (it.d ? '<div class="plan-item-d">' + esc(it.d) + "</div>" : "") + "</div>";
+          }).join("") + "</div></div>";
+        });
+        h += "</div>";
+      }
+      return h;
+    },
+    /* 通用：对照两列 + 可选下方阶段卡（用于「六项服务」类板块） */
+    svc_x: function (s) {
+      let h = '<div class="split-2"><div><h3>' + icon("check", "ic") + " " + esc(s.good_title || "要点") + "</h3>" +
+        listHtml(s.good || []) + "</div>";
+      if ((s.gap || []).length) {
+        h += '<div><h3>' + icon("bolt", "ic") + " " + esc(s.gap_title || "其余") + "</h3>" + listHtml(s.gap) + "</div>";
+      }
+      h += "</div>";
+      if ((s.planItems || []).length) {
+        h += '<div class="plan-body" style="margin-top:18px">';
+        (s.planItems || []).forEach(function (ph, i) {
+          h += '<div class="plan-phase"><div class="plan-phase-head"><span class="plan-no">' +
+            esc(ph.no || (i + 1)) + '</span><h3>' + icon(ph.icon || "target", "ic") + " " + esc(ph.title) + "</h3>" +
+            (ph.goal ? '<span class="plan-goal">' + esc(ph.goal) + "</span>" : "") + "</div>";
+          h += '<div class="plan-actions">' + (ph.items || []).map(function (it) {
+            return '<div class="plan-item"><div class="plan-item-t">' + esc(it.t) +
+              (it.prio ? ' <span class="tag ' + prioCls(it.prio) + '">' + esc(it.prio) + "</span>" : "") + "</div>" +
+              (it.d ? '<div class="plan-item-d">' + esc(it.d) + "</div>" : "") + "</div>";
+          }).join("") + "</div></div>";
+        });
+        h += "</div>";
+      }
+      return h;
+    },
+    /* 合作模式：表格 + 结语 */
+    modes: function (s) {
+      let h = "";
+      if (s.table) {
+        h += '<div class="table-wrap"><table class="brand-table"><thead><tr>';
+        (s.table.head || []).forEach(function (th) { h += "<th>" + esc(th) + "</th>"; });
+        h += "</tr></thead><tbody>";
+        (s.table.rows || []).forEach(function (row) {
+          h += "<tr>";
+          row.forEach(function (cell) {
+            if (cell && typeof cell === "object" && cell.tag) {
+              h += '<td><span class="tag ' + (cell.tag || "blue") + '">' + esc(cell.text) + "</span></td>";
+            } else {
+              h += "<td>" + esc(cell) + "</td>";
+            }
+          });
+          h += "</tr>";
+        });
+        h += "</tbody></table></div>";
+        if (s.tableFoot) h += '<p class="stat-foot">' + esc(s.tableFoot) + "</p>";
+      }
+      return h;
+    },
     asset: function (s) {
       let h = barsHtml(s.bars);
       if (s.chart) {
@@ -2402,11 +3313,11 @@ function icon(name, cls) {
     },
     business: function (s) {
       let h = barsHtml(s.bars);
-      h += '<h3>' + icon("dollar", "ic") + ' 产品矩阵</h3><div class="split-3" style="grid-template-columns: repeat(' + ((s.prices || []).length || 3) + ', minmax(0,1fr))">';
+      h += '<h3>' + icon("dollar", "ic") + ' 产品矩阵</h3><div class="split-3 price-row" style="--price-cols:' + ((s.prices || []).length || 3) + '">';
       (s.prices || []).forEach(function (p) {
         h += '<div class="metric"><div class="label">' + esc(p.label) +
-          '</div><div class="price" data-tone="' + (p.tone || "prim") + '">' + esc(p.price) +
-          '</div><div class="delta-flat">' + esc(p.desc) + "</div></div>";
+          '</div><div class="price" data-tone="' + (p.tone || "prim") + '">' + wrapNB(p.price) +
+          '</div><div class="delta-flat">' + wrapNB(p.desc) + "</div></div>";
       });
       h += "</div>";
       return h;
@@ -2421,9 +3332,12 @@ function icon(name, cls) {
       sec.className = "card";
       sec.id = s.id;
       const sub = s.meta ? '<span class="sub">' + esc(s.meta) + "</span>" : "";
+      const lfn = layout[s.id] || (s.table || s.planItems ? layout[s.layout || (s.planItems ? "path" : "competition")] : null);
+      const inner = lfn ? lfn(s) : ((s.bars && s.bars.length) ? barsHtml(s.bars) : "");
       sec.innerHTML = "<h2>" + icon(s.icon || "target", "ic") + " " +
         esc(s.no || "") + "、" + esc(s.name) + " " + sub + "</h2>" +
-        '<div class="sec-body">' + (layout[s.id] ? layout[s.id](s) : barsHtml(s.bars || [])) + "</div>";
+        (s.intro ? '<p class="sec-intro">' + esc(s.intro) + "</p>" : "") +
+        (inner ? '<div class="sec-body">' + inner + "</div>" : "");
       holder.appendChild(sec);
     });
     // 渲染各板块内置图表
@@ -2460,6 +3374,36 @@ function icon(name, cls) {
     });
   }
 
+  /* ---------- B 档：文本轻处理（不改字，只加标记） ----------
+     ① wrapNB  ：把「数字+单位」「字母编码+价格」包成不拆块 <span class="nb">
+     ② markKey ：语音稿每段挑一句关键句包 <strong>（原句原字，仅加粗）   */
+
+  // 不可拆组合：30-80㎡ / 199-799 元 / 100% / 5-10 万 / W12997 398 / 419 券后
+  const NB_RE = /((?:[A-Z]{1,3}\d{3,}\s*\d{3,})|(?:\d+(?:\.\d+)?(?:\s*[-~]\s*\d+(?:\.\d+)?)?\s*(?:㎡|m²|%|元|万|家|省|城|期|点|[A-Za-z]{1,2}\b)?))/g;
+
+  function wrapNB(text) {
+    return String(text == null ? "" : text).replace(NB_RE, function (m) {
+      if (!m || !m.trim()) return m;
+      return '<span class="nb">' + m + "</span>";
+    });
+  }
+
+  // 语音稿：每段取「首句」或含结论词的那一句加粗（不加字、不改字、不删字）
+  const KEY_HINT = /(一句话|必须说|最扎心|总结|建议先做|我也找到|还有一件事)/;
+  function markKey(para) {
+    const p = String(para == null ? "" : para);
+    if (!p) return "";
+    const parts = p.split(/(?<=[。！？])/);      // 按中文句末切句，保留标点
+    if (!parts.length) return wrapNB(p);
+    // 找到需要加粗的句子下标：优先含 KEY_HINT，否则取首句
+    let idx = parts.findIndex(function (x) { return KEY_HINT.test(x); });
+    if (idx < 0) idx = 0;
+    return parts.map(function (x, i) {
+      const body = wrapNB(x);
+      return i === idx ? "<strong>" + body + "</strong>" : body;
+    }).join("");
+  }
+
   /* ---------- 语音播报卡（edge-tts 生成的 mp3 内嵌播放） ---------- */
   function renderVoice() {
     const v = D.voice;
@@ -2470,7 +3414,7 @@ function icon(name, cls) {
     const subEl = el.querySelector(".voice-sub");
     if (subEl) subEl.innerHTML = esc(v.sub || "要点播报");
     const txtEl = el.querySelector(".voice-script");
-    if (txtEl) txtEl.innerHTML = (v.script || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+    if (txtEl) txtEl.innerHTML = (v.script || []).map(function (p) { return "<p>" + markKey(p) + "</p>"; }).join("");
     // 音频资源
     const box = el.querySelector("#voiceAudio");
     if (box && v.audio) {
@@ -2562,6 +3506,24 @@ function icon(name, cls) {
      字号放大后，短文本（如「存续」「持服饰 37%」）在窄列里会被折成两行，
      视觉上显得碎裂。CSS 无法按内容长度判断，故在此按字符数打标。
      阈值 10 字：中文 10 字在 14px 下约 140px，绝大多数表格列容得下。 */
+  /* ---------- 移动端表格卡片化：按 thead 列名给每个 td 打 data-label ----------
+     桌面不受影响；≤860px 时 CSS 用 data-label 渲染成「列名 + 值」的竖排卡片，
+     从根上消除表格 min-width 导致的横向溢出。 */
+  function labelTableCells() {
+    document.querySelectorAll(".brand-table").forEach(function (tb) {
+      const heads = Array.prototype.map.call(tb.querySelectorAll("thead th"), function (th) {
+        return (th.textContent || "").trim();
+      });
+      if (!heads.length) return;
+      tb.querySelectorAll("tbody tr").forEach(function (tr) {
+        Array.prototype.forEach.call(tr.children, function (td, i) {
+          const lbl = heads[i] || "";
+          if (lbl && !td.hasAttribute("data-label")) td.setAttribute("data-label", lbl);
+        });
+      });
+    });
+  }
+
   function markShortCells() {
     document.querySelectorAll(".brand-table td, .brand-table th").forEach(function (cell) {
       const t = (cell.textContent || "").trim();
@@ -2579,6 +3541,8 @@ function icon(name, cls) {
     // nowrap 会让表格重新分配列宽，此时再量一次：
     //   若内容仍超出单元格宽度 → 撤销 nowrap，让它正常折行（绝不撑破页面）
     requestAnimationFrame(function () {
+      // 窄屏走卡片化布局，撑宽无意义（还会写死 min-width 影响回流），直接跳过
+      if (isNarrow()) return;
       // 阶段二：能放下就单行；放不下但只差一点点（≤40%）则撑宽该列，别折
       document.querySelectorAll(".brand-table td.cell-nowrap").forEach(function (cell) {
         const over = cell.scrollWidth - cell.clientWidth;
@@ -2627,6 +3591,33 @@ function icon(name, cls) {
   }
 
   /* ============ 启动 ============ */
+  /* ---------- 窄屏转向 / 跨断点缩放后重绘图表 ----------
+     柱状图在横竖屏切换时需要从「竖柱」换成「横条」，Chart 需重建。
+     防抖 300ms，避免拖动窗口时反复重建。 */
+  var lastNarrow = null;
+  function watchNarrow() {
+    lastNarrow = isNarrow();
+    var t = null;
+    window.addEventListener("resize", function () {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        var now = isNarrow();
+        if (now === lastNarrow) return;
+        lastNarrow = now;
+        ["radarMain", "barModules", "chart-market", "chart-asset"].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (!el) return;
+          var inst = Chart.getChart(el);
+          if (inst) inst.destroy();
+        });
+        if (now) { var w = document.querySelector("#barModules"); if (w) { var wr = w.closest(".chart-wrap"); if (wr) wr.style.height = ""; } }
+        renderRadar();
+        renderBar28();
+        (D.sections || []).forEach(function (sec) { if (sec.chart && document.getElementById("chart-" + sec.id)) renderInlineChart(sec); });
+      }, 300);
+    }, { passive: true });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     renderHead();
     renderNav();
@@ -2636,11 +3627,13 @@ function icon(name, cls) {
     renderPlan();
     renderTimeline();
     renderFooter();
+    labelTableCells();
     markShortCells();
     renderBackTop();
     setTimeout(function () {
       renderRadar();
       renderBar28();
+      watchNarrow();
     }, 50);
   });
 })();
